@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
-
+import 'package:jogo_de_memoria_flutter/src/utils/simple_object_util.dart';
 
 class CardsGridInherited extends InheritedWidget {
   CardsGridInherited({
@@ -14,8 +14,8 @@ class CardsGridInherited extends InheritedWidget {
 
   final List<Widget> cardsWidget;
   ValueNotifier<bool> showCreation;
-  CardModel cardQuestion;
-  CardModel cardAnswer;
+  SimpleObjectUtil<CardModel> cardQuestion;
+  SimpleObjectUtil<CardModel> cardAnswer;
 
   static CardsGridInherited of(BuildContext context) {
     final CardsGridInherited? result =

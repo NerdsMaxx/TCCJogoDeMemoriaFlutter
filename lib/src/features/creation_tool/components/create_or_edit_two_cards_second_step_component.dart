@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jogo_de_memoria_flutter/src/colors/colors_palette.dart';
 import 'package:jogo_de_memoria_flutter/src/components/create_button_component.dart';
+import 'package:jogo_de_memoria_flutter/src/enums/type_card.dart';
 import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_a_card_third_step_component.dart';
 import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_card_first_step_component.dart';
 import 'package:jogo_de_memoria_flutter/src/features/creation_tool/inherited_widgets/cards_grid_inherited.dart';
@@ -39,15 +40,24 @@ class _CreateOrEditTwoCardsSecondStepCompState extends State<CreateOrEditTwoCard
 
     List<Widget> cardsWidget = CardsGridInherited.of(context).cardsWidget;
 
+    Widget cardQuestionWidget = CreateOrEditCardFirstStepComp(
+      key: widget.cardQuestion.id,
+      card: widget.cardQuestion,
+    );
+
+    Widget cardAnswerWidget = CreateOrEditCardFirstStepComp(
+      key: widget.cardAnswer.id,
+      card: widget.cardAnswer,
+    );
+
+    if (cardsWidget.any((card) => card.key! == cardQuestionWidget.key!)) {
+      cardsWidget.removeWhere((cardWidget) => cardWidget.key == cardQuestionWidget.key);
+      cardsWidget.removeWhere((cardWidget) => cardWidget.key == cardAnswerWidget.key);
+    }
+
     cardsWidget.addAll([
-      CreateOrEditCardFirstStepComp(
-        key: widget.cardQuestion.id,
-        card: widget.cardQuestion,
-      ),
-      CreateOrEditCardFirstStepComp(
-        key: widget.cardAnswer.id,
-        card: widget.cardAnswer,
-      ),
+      cardQuestionWidget,
+      cardAnswerWidget,
     ]);
 
     CardsGridInherited.of(context).showCreation.value = false;
