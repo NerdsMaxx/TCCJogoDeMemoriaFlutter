@@ -1,23 +1,28 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_a_card_third_step_component.dart';
 
-import 'package:jogo_de_memoria_flutter/src/pages/creation_tool/creation_tool.dart';
-import 'package:jogo_de_memoria_flutter/src/pages/dashboard/dashboard.dart';
-import 'package:jogo_de_memoria_flutter/src/pages/login/login.dart';
+import 'package:jogo_de_memoria_flutter/src/features/dashboard/pages/dashboard_page.dart';
+import 'package:jogo_de_memoria_flutter/src/features/login/pages/login_page.dart';
+import 'package:jogo_de_memoria_flutter/src/models/card.dart';
 
 GoRouter routes = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/creation_tool',
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const Login(),
+      builder: (context, state) => const LoginPage(),
     ),
     GoRoute(
       path: '/dashboard',
-      builder: (context, state) => const Dashboard(),
+      builder: (context, state) => const DashboardPage(),
     ),
     GoRoute(
       path: '/creation_tool',
-      builder: (context, state) => const CreationTool(),
+      builder: (context, state) => CreateOrEditACardThirdStepComp(
+        card: CardModel.empty(),
+        cardNotifier: ValueNotifier<CardModel>(CardModel.empty()),
+      ),
     )
   ],
 );

@@ -1,0 +1,28 @@
+{
+    "card" : [
+        {
+            "id": 1,
+            "question": "Quando aconteceu revolução francesa?",
+            "answer": "1789",
+            "memory_game_id": 1
+        },
+        {
+            "id": 2,
+            "question": "???????",
+            "answer": "???????",
+            "memory_game_id": 1
+        },
+        {
+            "id": 3,
+            "question": "???????",
+            "answer": "???????",
+            "memory_game_id": 1
+        },
+        {
+            "id": 4,
+            "question": "???????",
+            "answer": "???????",
+            "memory_game_id": 1
+        }
+    ]
+}

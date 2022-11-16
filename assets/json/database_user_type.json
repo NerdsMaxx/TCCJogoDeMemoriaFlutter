@@ -1,0 +1,12 @@
+{
+	"user_type": [
+		{
+			"id": 1,
+			"type": "Aluno"
+		},
+		{
+			"id": 2,
+			"type": "Professor"
+		}
+	]
+}

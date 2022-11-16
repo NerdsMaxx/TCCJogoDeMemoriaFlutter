@@ -1,0 +1,12 @@
+{
+	"user": [
+		{
+            "id" : 1,
+			"name": "Guilherme Henrique",
+			"username": "guitcc",
+			"email": "henrique101124@gmail.com",
+			"password": "123456",
+            "userType": 2
+		}
+	]
+}

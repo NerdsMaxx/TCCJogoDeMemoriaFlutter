@@ -1,0 +1,99 @@
+import 'package:flutter/material.dart';
+import 'package:jogo_de_memoria_flutter/src/components/app_bar.dart';
+import 'package:jogo_de_memoria_flutter/src/pages/creation_tool/components/creating_a_card.dart';
+import 'package:jogo_de_memoria_flutter/src/components/custom_title.dart';
+import 'package:jogo_de_memoria_flutter/src/models/card.dart';
+import 'package:jogo_de_memoria_flutter/src/notifiers/card.dart';
+import 'package:jogo_de_memoria_flutter/src/utils/size.dart';
+
+class CreationTool extends StatefulWidget {
+  const CreationTool({super.key});
+
+  @override
+  State<CreationTool> createState() => _CreationToolState();
+}
+
+class _CreationToolState extends State<CreationTool> {
+  final List<CreateCard> _cardsWidget = [];
+  late final CardNotifier _cardNotifier;
+  bool _isFirstTime = true;
+
+  CreateCard _createCardWidget() {
+    return CreateCard(
+      key: UniqueKey(),
+      card: CardModel(),
+      cardNotifier: _cardNotifier,
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    CardModel card = CardModel();
+
+    _cardNotifier = CardNotifier(card);
+
+    _cardsWidget.add(
+      CreateCard(
+        key: UniqueKey(),
+        cardNotifier: _cardNotifier,
+        card: card,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomAppBar(
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 30,
+          ),
+          const CustomTitle(
+            title: 'Criação de jogo de memória',
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          ValueListenableBuilder<CardModel>(
+            valueListenable: _cardNotifier,
+            builder: (_, __, ___) {
+              if (!_isFirstTime) {
+                if (_cardNotifier.card.isActive) {
+                  _cardsWidget.add(_createCardWidget());
+                } else {
+                  _cardsWidget
+                      .removeWhere((cardWidget) => cardWidget.card.id == _cardNotifier.card.id);
+
+                  if (_cardsWidget.isEmpty) {
+                    _cardsWidget.add(_createCardWidget());
+                  }
+                }
+              }
+
+              _isFirstTime = false;
+
+              return Center(
+                child: SizedBox(
+                  width: getWidth(context, 0.9),
+                  height: getHeight(context, 0.7),
+                  child: SingleChildScrollView(
+                    child: Wrap(
+                      spacing: 20,
+                      runSpacing: 20,
+                      alignment: WrapAlignment.center,
+                      runAlignment: WrapAlignment.center,
+                      children: _cardsWidget,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}

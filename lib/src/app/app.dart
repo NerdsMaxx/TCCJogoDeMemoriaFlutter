@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:jogo_de_memoria_flutter/src/configurations/palette.dart';
+import 'package:jogo_de_memoria_flutter/src/colors/colors_palette.dart';
 import 'package:jogo_de_memoria_flutter/src/routes/route.dart';
 
 class App extends StatelessWidget {
@@ -15,7 +15,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
         backgroundColor: const Color(0xff342f27),
-        primarySwatch: Palette.colorDefault,
+        primarySwatch: ColorsPalette.colorDefault,
       ),
     );
   }

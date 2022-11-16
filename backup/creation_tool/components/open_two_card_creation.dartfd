@@ -1,0 +1,15 @@
+import 'package:flutter/material.dart';
+
+class OpenTwoCardsCreation extends StatefulWidget {
+  const OpenTwoCardsCreation({super.key});
+
+  @override
+  State<OpenTwoCardsCreation> createState() => _OpenTwoCardsCreationState();
+}
+
+class _OpenTwoCardsCreationState extends State<OpenTwoCardsCreation> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}

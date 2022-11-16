@@ -1,0 +1,253 @@
+import 'package:flutter/material.dart';
+import 'package:jogo_de_memoria_flutter/src/components/app_bar.dart';
+import 'package:jogo_de_memoria_flutter/src/components/custom_card.dart';
+import 'package:jogo_de_memoria_flutter/src/components/custom_title.dart';
+import 'package:jogo_de_memoria_flutter/src/colors/palette.dart';
+import 'package:jogo_de_memoria_flutter/src/enums/type_card.dart';
+import 'package:jogo_de_memoria_flutter/src/models/card.dart';
+import '../../../../backup/new_creation_tool/components/creating_a_card.dart';
+import 'package:jogo_de_memoria_flutter/src/utils/size.dart';
+
+class NewCreationTool extends StatefulWidget {
+  const NewCreationTool({super.key});
+
+  @override
+  State<NewCreationTool> createState() => _NewCreationToolState();
+}
+
+class _NewCreationToolState extends State<NewCreationTool> {
+  final List<CreateCard> _cardsWidget = [];
+
+  late CreateCard _createCardQuestion;
+
+  late CreateCard _createCardAnswer;
+
+  final ValueNotifier<CardModel> _cardNotifier =
+      ValueNotifier(CardModel(typeCard: TypeCard.question));
+
+  @override
+  void initState() {
+    super.initState();
+
+    _createCardQuestion = CreateCard(
+      card: CardModel(typeCard: TypeCard.question),
+      cardNotifier: _cardNotifier,
+    );
+
+    _createCardAnswer = CreateCard(
+      card: CardModel(typeCard: TypeCard.answer),
+      cardNotifier: _cardNotifier,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomAppBar(
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 30,
+          ),
+          const CustomTitle(
+            title: 'Criação de jogo de memória',
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          ValueListenableBuilder<CardModel>(
+            valueListenable: _cardNotifier,
+            builder: (_, __, ___) => Stack(
+              children: [
+                Stack(
+                  children: [
+                    Center(
+                      child: SizedBox(
+                        width: getWidth(context, 0.9),
+                        height: getHeight(context, 0.7),
+                        child: SingleChildScrollView(
+                          child: Wrap(
+                            spacing: 20,
+                            runSpacing: 20,
+                            alignment: WrapAlignment.center,
+                            runAlignment: WrapAlignment.center,
+                            children: [
+                              CustomCard(
+                                key: UniqueKey(),
+                                child: TextButton(
+                                  child: const Text(
+                                    '+',
+                                    style: TextStyle(
+                                      fontSize: 46,
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    CardModel cardQuestion = CardModel(
+                                      typeCard: TypeCard.question,
+                                      inCreationMode: true,
+                                    );
+
+                                    CardModel cardAnswer = CardModel(
+                                      typeCard: TypeCard.answer,
+                                      inCreationMode: true,
+                                    );
+
+                                    cardQuestion.otherCard = cardAnswer;
+                                    cardAnswer.otherCard = cardQuestion;
+
+                                    _createCardQuestion = CreateCard(
+                                      key: UniqueKey(),
+                                      card: cardQuestion,
+                                      cardNotifier: _cardNotifier,
+                                    );
+
+                                    _createCardAnswer = CreateCard(
+                                      key: UniqueKey(),
+                                      card: cardAnswer,
+                                      cardNotifier: _cardNotifier,
+                                    );
+
+                                    _cardNotifier.value = cardQuestion;
+                                  },
+                                ),
+                              ),
+                              ..._cardsWidget,
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    LayoutBuilder(builder: (_, __) {
+                      if (!_cardNotifier.value.inCreationMode &&
+                          (_cardNotifier.value.otherCard == null ||
+                              !_cardNotifier.value.otherCard!.inCreationMode)) {
+                        return const SizedBox.shrink();
+                      }
+
+                      if (_cardNotifier.value.inCreationMode &&
+                          _cardNotifier.value.otherCard?.otherCard == true) {
+                        _createCardQuestion = _cardsWidget.firstWhere(
+                          (createCard) => (createCard.card.id == _cardNotifier.value.id &&
+                              createCard.card.typeCard == TypeCard.question),
+                          orElse: () => _createCardQuestion,
+                        );
+
+                        _createCardAnswer = _cardsWidget.firstWhere(
+                          (createCard) =>
+                              (createCard.card.id == _cardNotifier.value.otherCard!.id &&
+                                  createCard.card.typeCard == TypeCard.answer),
+                          orElse: () => _createCardAnswer,
+                        );
+                      }
+
+                      return Center(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Palette.colorDefault.shade400,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            children: [
+                              Row(mainAxisSize: MainAxisSize.min, children: [
+                                _createCardQuestion,
+                                const SizedBox(
+                                  width: 25,
+                                ),
+                                _createCardAnswer,
+                              ]),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              ElevatedButton(
+                                child: const Text(
+                                  'Criar',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  if (_createCardQuestion.phrase.isEmpty) {
+                                    ScaffoldMessenger.of(context)
+                                      ..clearSnackBars()
+                                      ..showSnackBar(
+                                        const SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor: Colors.red,
+                                          content: SelectableText(
+                                            'Faltou criar a carta de pergunta.',
+                                            style: TextStyle(
+                                              fontSize: 32,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+
+                                    return;
+                                  }
+
+                                  if (_createCardAnswer.phrase.isEmpty) {
+                                    ScaffoldMessenger.of(context)
+                                      ..clearSnackBars()
+                                      ..showSnackBar(
+                                        const SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor: Colors.red,
+                                          content: SelectableText(
+                                            'Faltou criar a carta de resposta.',
+                                            style: TextStyle(
+                                              fontSize: 32,
+                                            ),
+                                          ),
+                                        ),
+                                      );
+
+                                    return;
+                                  }
+
+                                  if (!_cardsWidget.contains(_createCardQuestion) &&
+                                      !_cardsWidget.contains(_createCardAnswer)) {
+                                    _cardsWidget.addAll([
+                                      _createCardQuestion,
+                                      _createCardAnswer,
+                                    ]);
+                                  } else if (_cardsWidget.contains(_createCardQuestion) &&
+                                      _cardsWidget.contains(_createCardAnswer)) {
+                                    int times = 0;
+
+                                    for (int index = 0; index < _cardsWidget.length; ++index) {
+                                      if (_cardsWidget[index].card.id ==
+                                          _createCardQuestion.card.id) {
+                                        _cardsWidget[index] = _createCardQuestion;
+                                        ++times;
+                                      } else if (_cardsWidget[index].card.id ==
+                                          _createCardAnswer.card.id) {
+                                        _cardsWidget[index] = _createCardAnswer;
+                                        ++times;
+                                      }
+
+                                      if (times == 2) {
+                                        break;
+                                      }
+                                    }
+                                  }
+
+                                  _cardNotifier.value = CardModel.empty();
+
+                                  // _showCreation.value = false;
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

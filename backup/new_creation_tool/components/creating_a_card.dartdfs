@@ -1,0 +1,171 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:jogo_de_memoria_flutter/src/components/custom_card.dart';
+import 'package:jogo_de_memoria_flutter/src/models/card.dart';
+
+class CreateCard extends StatefulWidget {
+  const CreateCard({
+    super.key,
+    required this.card,
+    required this.cardNotifier,
+  });
+
+  final CardModel card;
+  final ValueNotifier<CardModel> cardNotifier;
+
+  get phrase => card.phrase;
+
+  @override
+  State<CreateCard> createState() => _CreateCardState();
+}
+
+class _CreateCardState extends State<CreateCard> {
+  final ValueNotifier<bool> _isWriting = ValueNotifier(false);
+  bool _isImage = false;
+
+  String get _phrase => widget.card.phrase;
+  set _phrase(String otherPhrase) => widget.card.phrase = otherPhrase;
+
+  CardModel get _cardNotifierValue => widget.cardNotifier.value;
+
+  set _cardNotifierValue(CardModel card) => widget.cardNotifier.value = card;
+
+  CardModel get _card => widget.card;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomCard(
+      child: ValueListenableBuilder<bool>(
+        valueListenable: _isWriting,
+        builder: ((context, value, child) {
+          if (value) {
+            return Column(
+              children: [
+                SizedBox(
+                  width: 180,
+                  height: 180,
+                  child: TextFormField(
+                    initialValue: _phrase,
+                    autofocus: true,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                    ),
+                    maxLines: 6,
+                    style: GoogleFonts.montserrat(
+                      fontSize: 26,
+                    ),
+                    cursorColor: const Color(0xff342f27),
+                    onChanged: ((value) => _phrase = value),
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    if (!_isWriting.value) {
+                      _card.inCreationMode = false;
+                    }
+
+                    _isWriting.value = !_isWriting.value;
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xff342f27),
+                  ),
+                  child: Text(
+                    (_phrase.isNotEmpty) ? 'Editar texto' : 'Adicionar texto',
+                    style: const TextStyle(
+                      fontSize: 22,
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: _phrase.isEmpty,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          _isImage = true;
+                          _isWriting.value = !_isWriting.value;
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xff342f27),
+                        ),
+                        child: const Text(
+                          'Imagem',
+                          style: TextStyle(
+                            fontSize: 22,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Visibility(
+                  visible: _phrase.isNotEmpty,
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          _isWriting.value = !_isWriting.value;
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xff342f27),
+                        ),
+                        child: const Text(
+                          'Cancelar',
+                          style: TextStyle(
+                            fontSize: 22,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          }
+
+          return TextButton(
+              onPressed: () {
+                _isWriting.value = !_isWriting.value;
+
+                _cardNotifierValue = CardModel.from(_card
+                  ..inCreationMode = true
+                  ..otherCard
+                  ..inCreationMode = true);
+              },
+              style: TextButton.styleFrom(
+                foregroundColor: const Color(0xff342f27),
+              ),
+              child: Builder(
+                builder: (context) {
+                  if (!_isImage) {
+                    return Text(
+                      (_phrase.isNotEmpty) ? _phrase : '+',
+                      style: TextStyle(
+                        fontSize: (_phrase.isNotEmpty) ? 26 : 64,
+                        color: const Color(0xff342f27),
+                      ),
+                    );
+                  }
+
+                  return Image.network(
+                    _phrase,
+                    width: 200,
+                    height: 300,
+                    fit: BoxFit.fill,
+                  );
+                },
+              ));
+        }),
+      ),
+    );
+  }
+}

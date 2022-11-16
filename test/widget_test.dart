@@ -7,8 +7,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:jogo_de_memoria_flutter/main.dart';
 import 'package:jogo_de_memoria_flutter/src/app/app.dart';
 
 void main() {

@@ -1,0 +1,64 @@
+import 'package:flutter/material.dart';
+import 'package:jogo_de_memoria_flutter/src/components/app_bar_component.dart';
+import 'package:jogo_de_memoria_flutter/src/enums/type_card.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_card_first_step_component.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_two_cards_second_step_component.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/inherited_widgets/cards_grid_inherited.dart';
+import 'package:jogo_de_memoria_flutter/src/models/card.dart';
+import 'package:jogo_de_memoria_flutter/src/utils/size_util.dart';
+
+class CreateOrEditCardsGridComponent extends StatefulWidget {
+  const CreateOrEditCardsGridComponent({super.key});
+
+  @override
+  State<CreateOrEditCardsGridComponent> createState() => _CreateOrEditCardsGridComponentState();
+}
+
+class _CreateOrEditCardsGridComponentState extends State<CreateOrEditCardsGridComponent> {
+  final ValueNotifier<bool> _showCreation = ValueNotifier(false);
+  final List<Widget> _cardsWidget = List.empty(growable: true);
+
+  @override
+  Widget build(BuildContext context) {
+    CardModel cardQuestion = CardModel(typeCard: TypeCard.question);
+    CardModel cardAnswer = CardModel(typeCard: TypeCard.question);
+
+    return CustomAppBarComp(
+      body: CardsGridInherited(
+        cardsWidget: _cardsWidget,
+        child: Stack(
+          children: [
+            Center(
+              child: SizedBox(
+                width: getWidth(context, 0.9),
+                height: getHeight(context, 0.7),
+                child: SingleChildScrollView(
+                  child: Wrap(
+                    spacing: 20,
+                    runSpacing: 20,
+                    alignment: WrapAlignment.center,
+                    runAlignment: WrapAlignment.center,
+                    children: [
+                      CreateOrEditCardFirstStepComp(
+                        key: UniqueKey(),
+                        showCreation: _showCreation,
+                      ),
+                      ..._cardsWidget,
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: _showCreation.value,
+              child: CreateOrEditTwoCardsSecondStepComp(
+                cardAnswer: cardAnswer,
+                cardQuestion: cardQuestion,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

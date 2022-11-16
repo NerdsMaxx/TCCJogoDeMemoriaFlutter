@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+import 'package:jogo_de_memoria_flutter/src/colors/colors_palette.dart';
+import '../../../../../backup/creation_tool/components/creating_a_card.dartds';
+
+class CreateTwoCards extends StatelessWidget {
+  const CreateTwoCards({
+    super.key,
+    required this.createCard1,
+    required this.createCard2,
+  });
+
+  final CreateCard createCard1;
+  final CreateCard createCard2;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: ColorsPalette.colorDefault.shade400,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        children: [
+          createCard1,
+          const SizedBox(
+            width: 25,
+          ),
+          createCard2,
+        ],
+      ),
+    );
+  }
+}
