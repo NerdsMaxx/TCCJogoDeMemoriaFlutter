@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
+
 
 class CardsGridInherited extends InheritedWidget {
-  const CardsGridInherited({
+  CardsGridInherited({
     super.key,
     required this.cardsWidget,
+    required this.showCreation,
+    required this.cardQuestion,
+    required this.cardAnswer,
     required super.child,
   });
 
   final List<Widget> cardsWidget;
+  ValueNotifier<bool> showCreation;
+  CardModel cardQuestion;
+  CardModel cardAnswer;
 
   static CardsGridInherited of(BuildContext context) {
     final CardsGridInherited? result =
@@ -17,5 +25,5 @@ class CardsGridInherited extends InheritedWidget {
   }
 
   @override
-  bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;
+  bool updateShouldNotify(covariant CardsGridInherited oldWidget) => false;
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jogo_de_memoria_flutter/src/colors/colors_palette.dart';
 import 'package:jogo_de_memoria_flutter/src/components/custom_card_component.dart';
-import 'package:jogo_de_memoria_flutter/src/models/card.dart';
+import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
 
 class _DataInherited extends InheritedWidget {
   const _DataInherited({

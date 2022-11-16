@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jogo_de_memoria_flutter/src/widgets/circular_button.dart';
+import 'package:jogo_de_memoria_flutter/src/widgets/circular_button_widget.dart';
 
 class AddButtonComp extends StatelessWidget {
   const AddButtonComp({
@@ -13,7 +13,7 @@ class AddButtonComp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircularButton(
+    return CircularButtonWidget(
       onPressed: onPressed,
       icon: Icons.add,
       size: size,

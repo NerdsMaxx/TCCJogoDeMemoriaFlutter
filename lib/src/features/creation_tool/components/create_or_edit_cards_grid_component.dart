@@ -4,7 +4,7 @@ import 'package:jogo_de_memoria_flutter/src/enums/type_card.dart';
 import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_card_first_step_component.dart';
 import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_two_cards_second_step_component.dart';
 import 'package:jogo_de_memoria_flutter/src/features/creation_tool/inherited_widgets/cards_grid_inherited.dart';
-import 'package:jogo_de_memoria_flutter/src/models/card.dart';
+import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
 import 'package:jogo_de_memoria_flutter/src/utils/size_util.dart';
 
 class CreateOrEditCardsGridComponent extends StatefulWidget {
@@ -26,37 +26,40 @@ class _CreateOrEditCardsGridComponentState extends State<CreateOrEditCardsGridCo
     return CustomAppBarComp(
       body: CardsGridInherited(
         cardsWidget: _cardsWidget,
-        child: Stack(
-          children: [
-            Center(
-              child: SizedBox(
-                width: getWidth(context, 0.9),
-                height: getHeight(context, 0.7),
-                child: SingleChildScrollView(
-                  child: Wrap(
-                    spacing: 20,
-                    runSpacing: 20,
-                    alignment: WrapAlignment.center,
-                    runAlignment: WrapAlignment.center,
-                    children: [
-                      CreateOrEditCardFirstStepComp(
-                        key: UniqueKey(),
-                        showCreation: _showCreation,
-                      ),
-                      ..._cardsWidget,
-                    ],
+        showCreation: _showCreation,
+        cardQuestion: cardQuestion,
+        cardAnswer: cardAnswer,
+        child: ValueListenableBuilder(
+          valueListenable: _showCreation,
+          builder: (context, showCreation, child) => Stack(
+            children: [
+              Center(
+                child: SizedBox(
+                  width: getWidth(context, 0.9),
+                  height: getHeight(context, 0.7),
+                  child: SingleChildScrollView(
+                    child: Wrap(
+                      spacing: 20,
+                      runSpacing: 20,
+                      alignment: WrapAlignment.center,
+                      runAlignment: WrapAlignment.center,
+                      children: [
+                        const CreateOrEditCardFirstStepComp(),
+                        ..._cardsWidget,
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            Visibility(
-              visible: _showCreation.value,
-              child: CreateOrEditTwoCardsSecondStepComp(
-                cardAnswer: cardAnswer,
-                cardQuestion: cardQuestion,
+              Visibility(
+                visible: showCreation,
+                child: CreateOrEditTwoCardsSecondStepComp(
+                  cardAnswer: cardAnswer,
+                  cardQuestion: cardQuestion,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
