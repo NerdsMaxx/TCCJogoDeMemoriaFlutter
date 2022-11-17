@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jogo_de_memoria_flutter/src/colors/colors_palette.dart';
 
-class CreateButtonComp extends StatelessWidget {
-  const CreateButtonComp({
+class EditButtonComp extends StatelessWidget {
+  const EditButtonComp({
     super.key,
     required this.onPressed,
   });
@@ -17,7 +17,7 @@ class CreateButtonComp extends StatelessWidget {
         backgroundColor: ColorsPalette.colorDefault[200],
       ),
       child: const Text(
-        'Criar',
+        'Editar',
         style: TextStyle(
           fontSize: 26,
         ),
