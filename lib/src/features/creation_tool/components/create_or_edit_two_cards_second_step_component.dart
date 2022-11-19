@@ -33,14 +33,14 @@ class CreateOrEditTwoCardsSecondStepComp extends StatelessWidget {
         return;
       }
 
-      List<Widget> cardsWidget = CardsGridInherited.of(context).cardsWidget;
+      List<CreateOrEditCardFirstStepComp> cardsWidget = CardsGridInherited.of(context).cardsWidget;
 
-      Widget cardQuestionWidget = CreateOrEditCardFirstStepComp(
+      CreateOrEditCardFirstStepComp cardQuestionWidget = CreateOrEditCardFirstStepComp(
         key: cardQuestion.id,
         card: cardQuestion,
       );
 
-      Widget cardAnswerWidget = CreateOrEditCardFirstStepComp(
+      CreateOrEditCardFirstStepComp cardAnswerWidget = CreateOrEditCardFirstStepComp(
         key: cardAnswer.id,
         card: cardAnswer,
       );
@@ -107,7 +107,6 @@ class CreateOrEditTwoCardsSecondStepComp extends StatelessWidget {
 
 class _CardCreation extends StatelessWidget {
   const _CardCreation({
-    super.key,
     required this.text,
     required this.card,
   });

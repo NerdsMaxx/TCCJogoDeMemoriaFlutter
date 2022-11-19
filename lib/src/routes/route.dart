@@ -1,11 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_cards_grid_component.dart';
-
+import 'package:jogo_de_memoria_flutter/src/auth/auth.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_card_first_step_component.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/pages/creation_tool_page.dart';
 import 'package:jogo_de_memoria_flutter/src/features/dashboard/pages/dashboard_page.dart';
 import 'package:jogo_de_memoria_flutter/src/features/login/pages/login_page.dart';
 
 GoRouter routes = GoRouter(
-  initialLocation: '/creation_tool',
+  initialLocation: '/',
   routes: [
     GoRoute(
       path: '/',
@@ -13,11 +15,28 @@ GoRouter routes = GoRouter(
     ),
     GoRoute(
       path: '/dashboard',
-      builder: (context, state) => const DashboardPage(),
+      builder: (context, state) {
+        Object? extra = state.extra;
+
+        if (extra is Auth) {
+          return DashboardPage(auth: extra);
+        }
+
+        return const SizedBox.shrink();
+      },
     ),
     GoRoute(
-      path: '/creation_tool',
-      builder: (context, state) => const CreateOrEditCardsGridComponent(),
-    )
+        path: '/creation_tool',
+        builder: (context, state) {
+          Object? extra = state.extra;
+
+          if (extra is List<CreateOrEditCardFirstStepComp>?) {
+            return CreationToolPage(
+              cardsWidget: extra,
+            );
+          }
+
+          return const SizedBox.shrink();
+        })
   ],
 );

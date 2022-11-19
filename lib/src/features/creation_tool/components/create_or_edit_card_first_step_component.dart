@@ -5,7 +5,7 @@ import 'package:jogo_de_memoria_flutter/src/features/creation_tool/inherited_wid
 import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
 
 class CreateOrEditCardFirstStepComp extends StatelessWidget {
-  CreateOrEditCardFirstStepComp({
+  const CreateOrEditCardFirstStepComp({
     required super.key,
     this.card,
   });
