@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:jogo_de_memoria_flutter/src/colors/colors_palette.dart';
 import 'package:jogo_de_memoria_flutter/src/components/create_button_component.dart';
 import 'package:jogo_de_memoria_flutter/src/components/edit_button_component.dart';
-import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_a_card_third_step_component.dart';
-import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_card_first_step_component.dart';
-import 'package:jogo_de_memoria_flutter/src/features/creation_tool/inherited_widgets/cards_grid_inherited.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit/third_step_component.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit/first_step_component.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/context/cards_grid_context.dart';
 import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
 import 'package:jogo_de_memoria_flutter/src/utils/snackbar_util.dart';
 
-class CreateOrEditTwoCardsSecondStepComp extends StatelessWidget {
-  const CreateOrEditTwoCardsSecondStepComp({
+class CreateOrEditTwoCardsSecondStepComponent extends StatelessWidget {
+  const CreateOrEditTwoCardsSecondStepComponent({
     super.key,
     required this.cardQuestion,
     required this.cardAnswer,
@@ -33,14 +33,15 @@ class CreateOrEditTwoCardsSecondStepComp extends StatelessWidget {
         return;
       }
 
-      List<CreateOrEditCardFirstStepComp> cardsWidget = CardsGridInherited.of(context).cardsWidget;
+      List<CreateOrEditCardFirstStepComponent> cardsWidget =
+          CardsGridContext.of(context).cardsWidget;
 
-      CreateOrEditCardFirstStepComp cardQuestionWidget = CreateOrEditCardFirstStepComp(
+      CreateOrEditCardFirstStepComponent cardQuestionWidget = CreateOrEditCardFirstStepComponent(
         key: cardQuestion.id,
         card: cardQuestion,
       );
 
-      CreateOrEditCardFirstStepComp cardAnswerWidget = CreateOrEditCardFirstStepComp(
+      CreateOrEditCardFirstStepComponent cardAnswerWidget = CreateOrEditCardFirstStepComponent(
         key: cardAnswer.id,
         card: cardAnswer,
       );
@@ -55,7 +56,7 @@ class CreateOrEditTwoCardsSecondStepComp extends StatelessWidget {
         cardAnswerWidget,
       ]);
 
-      CardsGridInherited.of(context).showCreation.value = false;
+      CardsGridContext.of(context).showCreation.value = false;
     };
   }
 
@@ -92,10 +93,10 @@ class CreateOrEditTwoCardsSecondStepComp extends StatelessWidget {
               Visibility(
                 visible: cardAnswer.phrase.isEmpty && cardQuestion.phrase.isEmpty,
                 // ignore: sort_child_properties_last
-                child: CreateButtonComp(
+                child: CreateButtonComponent(
                   onPressed: _onPressed(context),
                 ),
-                replacement: EditButtonComp(
+                replacement: EditButtonComponent(
                   onPressed: _onPressed(context),
                 ),
               ),

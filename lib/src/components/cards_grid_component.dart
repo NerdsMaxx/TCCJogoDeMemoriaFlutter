@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jogo_de_memoria_flutter/src/utils/size_util.dart';
 
-class GridCardsComp extends StatelessWidget {
-  const GridCardsComp({super.key, required this.cards});
+class CardsGridComponent extends StatelessWidget {
+  const CardsGridComponent({super.key, required this.cards});
   final List<Widget> cards;
 
   @override

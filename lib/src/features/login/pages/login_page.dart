@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:jogo_de_memoria_flutter/src/auth/auth.dart';
 import 'package:jogo_de_memoria_flutter/src/utils/snackbar_util.dart';
-import 'package:jogo_de_memoria_flutter/src/widget_settings/custom_outline_input_border_setting.dart';
+import 'package:jogo_de_memoria_flutter/src/settings/widgets/custom_outline_input_border_setting.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomCardComp extends StatelessWidget {
-  const CustomCardComp({
+class CustomCardComponent extends StatelessWidget {
+  const CustomCardComponent({
     super.key,
     required this.child,
     this.sizeFactor = 1,

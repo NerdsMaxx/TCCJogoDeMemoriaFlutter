@@ -1,4 +1,4 @@
-enum TypeCard {
+enum TypeCardEnum {
   question,
   answer,
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jogo_de_memoria_flutter/src/colors/colors_palette.dart';
+import 'package:jogo_de_memoria_flutter/src/widgets/text_button_widget.dart';
 
-class CreateButtonComp extends StatelessWidget {
-  const CreateButtonComp({
+class CreateButtonComponent extends StatelessWidget {
+  const CreateButtonComponent({
     super.key,
     required this.onPressed,
   });
@@ -11,17 +11,9 @@ class CreateButtonComp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButtonWidget(
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: ColorsPalette.colorDefault[200],
-      ),
-      child: const Text(
-        'Criar',
-        style: TextStyle(
-          fontSize: 26,
-        ),
-      ),
+      text: 'Criar',
     );
   }
 }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CustomAppBarComp extends StatelessWidget {
-  const CustomAppBarComp({
+class CustomAppBarComponent extends StatelessWidget {
+  const CustomAppBarComponent({
     super.key,
     required this.body,
     this.showHomeButton = true,

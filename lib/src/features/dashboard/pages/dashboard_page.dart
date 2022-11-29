@@ -25,14 +25,27 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  late final Future _future;
+  late Future _future;
 
   @override
   void initState() {
     super.initState();
 
     _future = http.get(
-      Uri.parse('http://127.0.0.1:8080/memoryGame/${widget.auth.username}'),
+      Uri.parse('http://127.0.0.1:8080/memory-game/${widget.auth.username}'),
+      headers: {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        HttpHeaders.acceptLanguageHeader: 'pt-BR',
+      },
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant DashboardPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    _future = http.get(
+      Uri.parse('http://127.0.0.1:8080/memory-game/${widget.auth.username}'),
       headers: {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.acceptLanguageHeader: 'pt-BR',
@@ -42,7 +55,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomAppBarComp(
+    return CustomAppBarComponent(
       showHomeButton: false,
       body: AuthContext(
         auth: widget.auth,
@@ -55,51 +68,61 @@ class _DashboardPageState extends State<DashboardPage> {
 
             final http.Response response = snapshot.data;
             final List memoryGameList = jsonDecode(const Utf8Decoder().convert(response.bodyBytes));
-            final List memoryGameNameList =
-                memoryGameList.map((memoryGame) => (memoryGame['name']!)).toList();
+
+            final List<String> memoryGameNameList =
+                memoryGameList.map<String>((memoryGame) => (memoryGame['name']!)).toList();
 
             return Align(
               alignment: Alignment.topCenter,
               child: SizedBox(
                 width: getWidth(context, 0.9),
-                height: getHeight(context, 0.8),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const CustomTitleComp(
-                          title: 'Seus jogos de memória',
-                        ),
-                        AddButtonComp(
-                          onPressed: () => context.push('/creation_tool'),
-                          size: 42,
-                        )
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    FractionallySizedBox(
-                      widthFactor: 1,
-                      child: Wrap(
-                        crossAxisAlignment: WrapCrossAlignment.start,
-                        spacing: 45,
-                        runSpacing: 50,
-                        children: memoryGameNameList
-                            .map<Widget>(
-                              (name) => CardDashboardComp(
-                                name: name,
-                                memoryGameList: memoryGameList,
-                              ),
-                            )
-                            .toList(),
+                //height: getHeight(context, 0.8),
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 30,
                       ),
-                    )
-                  ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const CustomTitleComponent(
+                            title: 'Seus jogos de memória',
+                          ),
+                          AddButtonComponent(
+                            onPressed: () => context.push('/creation_tool'),
+                            size: 42,
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Column(
+                        children: [
+                          FractionallySizedBox(
+                            widthFactor: 1,
+                            child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.start,
+                              spacing: 45,
+                              runSpacing: 50,
+                              children: memoryGameNameList
+                                  .map<Widget>(
+                                    (name) => CardDashboardComponent(
+                                      name: name,
+                                      memoryGameList: memoryGameList,
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

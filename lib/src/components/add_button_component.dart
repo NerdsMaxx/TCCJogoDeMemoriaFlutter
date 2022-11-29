@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jogo_de_memoria_flutter/src/widgets/circular_button_widget.dart';
 
-class AddButtonComp extends StatelessWidget {
-  const AddButtonComp({
+class AddButtonComponent extends StatelessWidget {
+  const AddButtonComponent({
     super.key,
     required this.onPressed,
     this.size,

@@ -4,8 +4,8 @@ import 'package:jogo_de_memoria_flutter/src/colors/colors_palette.dart';
 import 'package:jogo_de_memoria_flutter/src/components/custom_card_component.dart';
 import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
 
-class _DataInherited extends InheritedWidget {
-  const _DataInherited({
+class _ParametersContext extends InheritedWidget {
+  const _ParametersContext({
     required this.card,
     required this.isWriting,
     required super.child,
@@ -14,8 +14,9 @@ class _DataInherited extends InheritedWidget {
   final CardModel card;
   final ValueNotifier<bool> isWriting;
 
-  static _DataInherited of(BuildContext context) {
-    final _DataInherited? result = context.dependOnInheritedWidgetOfExactType<_DataInherited>();
+  static _ParametersContext of(BuildContext context) {
+    final _ParametersContext? result =
+        context.dependOnInheritedWidgetOfExactType<_ParametersContext>();
     assert(result != null, '_DataInherited não foi encontrado no contexto.');
     return result!;
   }
@@ -41,10 +42,10 @@ class _CreateOrEditACardThirdStepCompState extends State<CreateOrEditACardThirdS
 
   @override
   Widget build(BuildContext context) {
-    return _DataInherited(
+    return _ParametersContext(
       card: widget.card,
       isWriting: _isWriting,
-      child: CustomCardComp(
+      child: CustomCardComponent(
         child: ValueListenableBuilder(
           valueListenable: _isWriting,
           builder: (_, value, __) {
@@ -65,8 +66,8 @@ class _TextAddButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ValueNotifier<bool> isWaiting = _DataInherited.of(context).isWriting;
-    String phrase = _DataInherited.of(context).card.phrase;
+    ValueNotifier<bool> isWaiting = _ParametersContext.of(context).isWriting;
+    String phrase = _ParametersContext.of(context).card.phrase;
 
     return Center(
       child: TextButton(
@@ -105,7 +106,7 @@ class _TextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String phrase = _DataInherited.of(context).card.phrase;
+    String phrase = _ParametersContext.of(context).card.phrase;
 
     return SizedBox(
       width: 180,
@@ -121,7 +122,7 @@ class _TextFormField extends StatelessWidget {
           fontSize: 26,
         ),
         cursorColor: ColorsPalette.colorDefault,
-        onChanged: ((value) => _DataInherited.of(context).card.phrase = value),
+        onChanged: ((value) => _ParametersContext.of(context).card.phrase = value),
       ),
     );
   }
@@ -130,8 +131,8 @@ class _TextFormField extends StatelessWidget {
 class _AddButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ValueNotifier<bool> isWriting = _DataInherited.of(context).isWriting;
-    CardModel card = _DataInherited.of(context).card;
+    ValueNotifier<bool> isWriting = _ParametersContext.of(context).isWriting;
+    CardModel card = _ParametersContext.of(context).card;
     String phrase = card.phrase;
 
     return ElevatedButton(
@@ -154,7 +155,7 @@ class _AddButton extends StatelessWidget {
 class _CancelButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ValueNotifier<bool> isWriting = _DataInherited.of(context).isWriting;
+    ValueNotifier<bool> isWriting = _ParametersContext.of(context).isWriting;
 
     return ElevatedButton(
       onPressed: () => isWriting.value = !isWriting.value,

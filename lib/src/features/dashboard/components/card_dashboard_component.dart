@@ -1,14 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jogo_de_memoria_flutter/src/components/custom_card_component.dart';
 import 'package:jogo_de_memoria_flutter/src/enums/type_card.dart';
-import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_card_first_step_component.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit/first_step_component.dart';
 import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
 
-class CardDashboardComp extends StatelessWidget {
-  const CardDashboardComp({
+class CardDashboardComponent extends StatelessWidget {
+  const CardDashboardComponent({
     super.key,
     required this.name,
     required this.memoryGameList,
@@ -24,64 +22,26 @@ class CardDashboardComp extends StatelessWidget {
     return GestureDetector(
       child: SizedBox(
         width: 240 * sizeFactor,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 340 * sizeFactor,
-              child: Stack(
-                children: const [
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: CustomCardComp(
-                      sizeFactor: sizeFactor,
-                      child: SizedBox.shrink(),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: CustomCardComp(
-                      sizeFactor: sizeFactor,
-                      child: SizedBox.shrink(),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: CustomCardComp(
-                      sizeFactor: sizeFactor,
-                      child: SizedBox.shrink(),
-                    ),
-                  ),
-                ],
+        child: SizedBox(
+          height: 340 * sizeFactor,
+          child: CustomCardComponent(
+            sizeFactor: sizeFactor,
+            child: Center(
+              child: Text(
+                name,
+                style: const TextStyle(
+                  fontSize: 26,
+                ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            SelectableText(
-              name,
-              style: const TextStyle(
-                fontSize: 26,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
       onTap: () {
-        final List cards = memoryGameList.where((memoryGame) {
-          if (memoryGame['name'] != null && memoryGame['name']!  == name) {
-            return true;
-          }
+        final List cards = memoryGameList.firstWhere(
+            (memoryGame) => memoryGame['name'] != null && memoryGame['name']! == name)['cards']!;
 
-          return false;
-        }).map((memoryGame) {
-          if (memoryGame['cards'] is Map<String, String>) {
-            return memoryGame['cards'];
-          }
-
-          return {'': ''};
-        }).toList();
-
-        List<CreateOrEditCardFirstStepComp>? cardsWidget = List.empty(growable: true);
+        List<CreateOrEditCardFirstStepComponent>? cardsWidget = [];
 
         for (var card in cards) {
           String questionPhrase;
@@ -89,17 +49,20 @@ class CardDashboardComp extends StatelessWidget {
 
           if (card['question'] is String && card['answer'] is String) {
             questionPhrase = card['question']!;
-            CardModel question = CardModel(phrase: questionPhrase, typeCard: TypeCard.question);
+            CardModel question = CardModel(phrase: questionPhrase, typeCard: TypeCardEnum.question);
 
             answerPhrase = card['answer']!;
-            CardModel answer = CardModel(phrase: answerPhrase, typeCard: TypeCard.answer);
+            CardModel answer = CardModel(phrase: answerPhrase, typeCard: TypeCardEnum.answer);
+
+            question.otherCard = answer;
+            answer.otherCard = question;
 
             cardsWidget.addAll([
-              CreateOrEditCardFirstStepComp(
+              CreateOrEditCardFirstStepComponent(
                 key: question.id,
                 card: question,
               ),
-              CreateOrEditCardFirstStepComp(
+              CreateOrEditCardFirstStepComponent(
                 key: answer.id,
                 card: answer,
               )
@@ -107,7 +70,10 @@ class CardDashboardComp extends StatelessWidget {
           }
         }
 
-        context.push('/creation_tool', extra: cardsWidget);
+        context.go(
+          '/creation_tool',
+          extra: cardsWidget,
+        );
       },
     );
   }

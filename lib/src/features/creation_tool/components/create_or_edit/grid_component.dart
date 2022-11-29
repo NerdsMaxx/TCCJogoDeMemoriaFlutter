@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jogo_de_memoria_flutter/src/enums/type_card.dart';
-import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_card_first_step_component.dart';
-import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit_two_cards_second_step_component.dart';
-import 'package:jogo_de_memoria_flutter/src/features/creation_tool/inherited_widgets/cards_grid_inherited.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit/first_step_component.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit/second_step_component.dart';
+import 'package:jogo_de_memoria_flutter/src/features/creation_tool/context/cards_grid_context.dart';
 import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
-import 'package:jogo_de_memoria_flutter/src/utils/simple_object_util.dart';
+import 'package:jogo_de_memoria_flutter/src/models/simple_object_model.dart';
 import 'package:jogo_de_memoria_flutter/src/utils/size_util.dart';
 
 class CreateOrEditCardsGridComponent extends StatefulWidget {
@@ -12,8 +12,8 @@ class CreateOrEditCardsGridComponent extends StatefulWidget {
     super.key,
     required this.cardsWidget,
   });
-  
-  final List<CreateOrEditCardFirstStepComp> cardsWidget;
+
+  final List<CreateOrEditCardFirstStepComponent> cardsWidget;
 
   @override
   State<CreateOrEditCardsGridComponent> createState() => _CreateOrEditCardsGridComponentState();
@@ -22,14 +22,15 @@ class CreateOrEditCardsGridComponent extends StatefulWidget {
 class _CreateOrEditCardsGridComponentState extends State<CreateOrEditCardsGridComponent> {
   final ValueNotifier<bool> _showCreation = ValueNotifier(false);
 
-  final SimpleObjectUtil<CardModel> cardQuestion =
-      SimpleObjectUtil(CardModel(typeCard: TypeCard.question));
+  final SimpleObjectModel<CardModel> cardQuestion =
+      SimpleObjectModel(CardModel(typeCard: TypeCardEnum.question));
 
-  final SimpleObjectUtil<CardModel> cardAnswer = SimpleObjectUtil(CardModel(typeCard: TypeCard.answer));
+  final SimpleObjectModel<CardModel> cardAnswer =
+      SimpleObjectModel(CardModel(typeCard: TypeCardEnum.answer));
 
   @override
   Widget build(BuildContext context) {
-    return CardsGridInherited(
+    return CardsGridContext(
       cardsWidget: widget.cardsWidget,
       showCreation: _showCreation,
       cardQuestion: cardQuestion,
@@ -49,7 +50,7 @@ class _CreateOrEditCardsGridComponentState extends State<CreateOrEditCardsGridCo
                     alignment: WrapAlignment.center,
                     runAlignment: WrapAlignment.center,
                     children: [
-                      CreateOrEditCardFirstStepComp(
+                      CreateOrEditCardFirstStepComponent(
                         key: UniqueKey(),
                       ),
                       ...widget.cardsWidget,
@@ -60,7 +61,7 @@ class _CreateOrEditCardsGridComponentState extends State<CreateOrEditCardsGridCo
             ),
             Visibility(
               visible: showCreation,
-              child: CreateOrEditTwoCardsSecondStepComp(
+              child: CreateOrEditTwoCardsSecondStepComponent(
                 cardAnswer: cardAnswer.value!..otherCard = cardQuestion.value,
                 cardQuestion: cardQuestion.value!..otherCard = cardAnswer.value,
               ),
