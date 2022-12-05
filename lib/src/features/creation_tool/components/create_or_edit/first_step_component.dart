@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:jogo_de_memoria_flutter/src/components/custom_card_component.dart';
 import 'package:jogo_de_memoria_flutter/src/enums/type_card.dart';
@@ -22,8 +23,9 @@ class CreateOrEditCardFirstStepComponent extends StatelessWidget {
     return CustomCardComponent(
       key: key,
       child: TextButton(
-        child: Text(
+        child: AutoSizeText(
           text,
+          wrapWords: false,
           style: TextStyle(
             fontSize: fontSize,
           ),

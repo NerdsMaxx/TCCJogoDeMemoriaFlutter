@@ -1,46 +1,46 @@
 import 'dart:convert';
-import 'dart:io' show HttpHeaders;
 
+import 'package:flutter/material.dart';
 import 'package:jogo_de_memoria_flutter/src/api/api.dart';
-import 'package:jogo_de_memoria_flutter/src/api/url_api.dart';
 import 'package:jogo_de_memoria_flutter/src/auth/auth.dart';
 import 'package:jogo_de_memoria_flutter/src/enums/type_card.dart';
 import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
 
-import 'package:http/http.dart' as http;
+abstract class MemoryGameRepository {
+  static Future<List<String>> getAllMemoryGameNameByUsername() async {
+    String username = await Auth.instance().username;
 
-class MemoryGameRepository {
-  Future<List<String>> getAllMemoryGameNameByUsername() async {
-    Auth auth = Auth.instance();
+    String body = (await Api.get('memory-game/memory-game-name/$username')).body;
 
-    String body = (await Api.get(auth.username)).body;
-
-    List<Map<String, dynamic>> result = jsonDecode(body) as List<Map<String, dynamic>>;
+    dynamic decodeResult = jsonDecode(body);
 
     List<String> memoryGameNameList =
-        result.map<String>((element) => element['name']! as String).toList(growable: false);
+        decodeResult.map<String>((memoryGameName) => memoryGameName as String).toList();
 
-    return memoryGameNameList;
+    return memoryGameNameList
+        .map((memoryGameName) => const Utf8Decoder().convert(memoryGameName.codeUnits))
+        .toList();
   }
 
-  Future<List<CardModel>> getAllCardByMemoryGameName(final String memoryGameName) async {
-    Auth auth = Auth.instance();
+  static Future<List<CardModel>> getAllCardByMemoryGameName(final String memoryGameName) async {
+    String username = await Auth.instance().username;
 
-    String body = (await Api.get(auth.username)).body;
+    String body = (await Api.get('memory-game/$username/$memoryGameName')).body;
+    debugPrint(body);
 
-    Map<String, dynamic> result = jsonDecode(body) as Map<String, dynamic>;
+    dynamic decodeResult = jsonDecode(body);
 
-    List<Map<String, String>> cardMapList = result['cards']! as List<Map<String, String>>;
+    List<dynamic> cardMapList = decodeResult['cards']!;
 
     List<CardModel> cardList = [];
-    for (Map<String, String> cardMap in cardMapList) {
+    for (dynamic cardMap in cardMapList) {
       final CardModel questionCard = CardModel(
-        phrase: cardMap['question']!,
+        phrase: const Utf8Decoder().convert((cardMap['question']! as String).codeUnits),
         typeCard: TypeCardEnum.question,
       );
 
       final CardModel answerCard = CardModel(
-        phrase: cardMap['answer']!,
+        phrase: const Utf8Decoder().convert((cardMap['answer']! as String).codeUnits),
         typeCard: TypeCardEnum.answer,
       );
 

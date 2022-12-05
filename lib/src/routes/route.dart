@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:jogo_de_memoria_flutter/src/auth/auth.dart';
-import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit/first_step_component.dart';
 import 'package:jogo_de_memoria_flutter/src/features/creation_tool/pages/creation_tool_page.dart';
 import 'package:jogo_de_memoria_flutter/src/features/dashboard/pages/dashboard_page.dart';
 import 'package:jogo_de_memoria_flutter/src/features/login/pages/login_page.dart';
+import 'package:jogo_de_memoria_flutter/src/features/memory_game/pages/memory_game_page.dart';
+import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
 
 GoRouter routes = GoRouter(
   initialLocation: '/',
@@ -15,29 +15,38 @@ GoRouter routes = GoRouter(
     ),
     GoRoute(
       path: '/dashboard',
+      builder: (context, state) => const DashboardPage(),
+    ),
+    GoRoute(
+      path: '/creation_tool',
       builder: (context, state) {
-        Object? extra = state.extra;
+        Map? parameters = state.extra as Map?;
 
-        if (extra is Auth) {
-          return DashboardPage(auth: extra);
+        if (parameters != null) {
+          return CreationToolPage(
+            cardsWidget: parameters['cardsWidget'],
+            memoryGameName: parameters['name'],
+          );
+        }
+
+        return const CreationToolPage();
+        
+      },
+    ),
+    GoRoute(
+      path: '/memory_game',
+      builder: (context, state) {
+        List<CardModel>? cardList = state.extra as List<CardModel>?;
+
+        if (cardList != null) {
+          return MemoryGamePage(
+            cardList: cardList,
+          );
         }
 
         return const SizedBox.shrink();
       },
-    ),
-    GoRoute(
-        path: '/creation_tool',
-        builder: (context, state) {
-          Object? extra = state.extra;
-
-          if (extra is List<CreateOrEditCardFirstStepComponent>?) {
-            return CreationToolPage(
-              cardsWidget: extra,
-            );
-          }
-
-          return const SizedBox.shrink();
-        })
+    )
   ],
 );
 

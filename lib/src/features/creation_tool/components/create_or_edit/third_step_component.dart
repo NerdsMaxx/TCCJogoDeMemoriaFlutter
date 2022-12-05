@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:jogo_de_memoria_flutter/src/colors/colors_palette.dart';
@@ -72,8 +73,9 @@ class _TextAddButton extends StatelessWidget {
     return Center(
       child: TextButton(
         onPressed: () => isWaiting.value = !isWaiting.value,
-        child: Text(
+        child: AutoSizeText(
           (phrase.isNotEmpty) ? phrase : '+',
+          wrapWords: false,
           style: TextStyle(
             fontSize: (phrase.isNotEmpty) ? 26 : 64,
             color: ColorsPalette.colorDefault,

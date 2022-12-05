@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:jogo_de_memoria_flutter/src/features/memory_game/notifier/face_card_count_notifier.dart';
 import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
+import 'package:jogo_de_memoria_flutter/src/models/optional_model.dart';
 
 // ignore: must_be_immutable
 class MemoryGameContext extends InheritedWidget {
   MemoryGameContext({
     super.key,
     required this.faceCardCountNotifier,
-    this.firstCard,
-    this.secondCard,
+    required this.optionalFirstCard,
+    required this.optionalSecondCard,
+    required this.optionalTemporaryCard,
     required super.child,
   });
 
-  ValueNotifier<int> faceCardCountNotifier;
-  CardModel? firstCard;
-  CardModel? secondCard;
+  FaceCardCountNotifier faceCardCountNotifier;
+  OptionalModel<CardModel> optionalFirstCard;
+  OptionalModel<CardModel> optionalSecondCard;
+  OptionalModel<CardModel> optionalTemporaryCard;
 
   static MemoryGameContext? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<MemoryGameContext>();

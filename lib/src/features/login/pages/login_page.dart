@@ -20,7 +20,6 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   String _username = '';
   String _password = '';
-  Auth? _auth;
 
   @override
   Widget build(BuildContext context) {
@@ -123,9 +122,9 @@ class _LoginPageState extends State<LoginPage> {
                           bool isValid = jsonDecode(response.body) as bool;
 
                           if (isValid) {
-                            _auth = Auth(_username);
+                            await Auth.setAuth(_username);
                             // ignore: use_build_context_synchronously
-                            context.push('/dashboard', extra: _auth);
+                            context.go('/dashboard');
                             return;
                           }
 

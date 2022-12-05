@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:jogo_de_memoria_flutter/src/utils/size_util.dart';
 
 class CardsGridComponent extends StatelessWidget {
-  const CardsGridComponent({super.key, required this.cards});
+  const CardsGridComponent({
+    super.key,
+    required this.cards,
+  });
+  
   final List<Widget> cards;
 
   @override
   Widget build(BuildContext context) {
-
     return Center(
       child: SizedBox(
         width: getWidth(context, 0.9),

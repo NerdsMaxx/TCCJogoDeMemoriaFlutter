@@ -4,7 +4,7 @@ import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/cr
 import 'package:jogo_de_memoria_flutter/src/features/creation_tool/components/create_or_edit/second_step_component.dart';
 import 'package:jogo_de_memoria_flutter/src/features/creation_tool/context/cards_grid_context.dart';
 import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
-import 'package:jogo_de_memoria_flutter/src/models/simple_object_model.dart';
+import 'package:jogo_de_memoria_flutter/src/models/optional_model.dart';
 import 'package:jogo_de_memoria_flutter/src/utils/size_util.dart';
 
 class CreateOrEditCardsGridComponent extends StatefulWidget {
@@ -22,11 +22,11 @@ class CreateOrEditCardsGridComponent extends StatefulWidget {
 class _CreateOrEditCardsGridComponentState extends State<CreateOrEditCardsGridComponent> {
   final ValueNotifier<bool> _showCreation = ValueNotifier(false);
 
-  final SimpleObjectModel<CardModel> cardQuestion =
-      SimpleObjectModel(CardModel(typeCard: TypeCardEnum.question));
+  final OptionalModel<CardModel> cardQuestion =
+      OptionalModel(CardModel(typeCard: TypeCardEnum.question));
 
-  final SimpleObjectModel<CardModel> cardAnswer =
-      SimpleObjectModel(CardModel(typeCard: TypeCardEnum.answer));
+  final OptionalModel<CardModel> cardAnswer =
+      OptionalModel(CardModel(typeCard: TypeCardEnum.answer));
 
   @override
   Widget build(BuildContext context) {
