@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:jogo_de_memoria_flutter/src/components/app_bar_component.dart';
 import 'package:jogo_de_memoria_flutter/src/components/cards_grid_component.dart';
+import 'package:jogo_de_memoria_flutter/src/components/custom_container_component.dart';
 import 'package:jogo_de_memoria_flutter/src/features/memory_game/components/memory_game_card_component.dart';
 import 'package:jogo_de_memoria_flutter/src/features/memory_game/context/memory_game_context.dart';
 import 'package:jogo_de_memoria_flutter/src/features/memory_game/notifier/face_card_count_notifier.dart';
 import 'package:jogo_de_memoria_flutter/src/models/card_model.dart';
 import 'package:jogo_de_memoria_flutter/src/models/optional_model.dart';
+import 'package:jogo_de_memoria_flutter/src/widgets/text_button_widget.dart';
 
 class MemoryGamePage extends StatefulWidget {
   const MemoryGamePage({
@@ -28,6 +31,34 @@ class _MemoryGamePageState extends State<MemoryGamePage> {
 
   int _movements = 0;
   int _found = 0;
+
+  bool _isFinished = false;
+
+  void reset() {
+    _faceCardCountNotifier.value = 0;
+    _optionalFirstCard.clear();
+    _optionalSecondCard.clear();
+    _optionalTemporaryCard.clear();
+
+    _cardWidgets.clear();
+
+    for (CardModel card in widget.cardList) {
+      card.isAccepted = false;
+      card.isTurned = false;
+      MemoryGameCardComponent memoryGameCardComponent = MemoryGameCardComponent(
+        card: card,
+      );
+
+      _cardWidgets.add(memoryGameCardComponent);
+    }
+
+    _cardWidgets.shuffle();
+
+    _movements = 0;
+    _found = 0;
+
+    _isFinished = false;
+  }
 
   @override
   void initState() {
@@ -53,6 +84,8 @@ class _MemoryGamePageState extends State<MemoryGamePage> {
             _optionalFirstCard.value!.isAccepted = true;
             _optionalSecondCard.value!.isAccepted = true;
             ++_found;
+
+            _isFinished = _cardWidgets.length / 2 == _found;
           }
 
           ++_movements;
@@ -89,49 +122,100 @@ class _MemoryGamePageState extends State<MemoryGamePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return CustomAppBarComponent(
       body: MemoryGameContext(
         faceCardCountNotifier: _faceCardCountNotifier,
         optionalFirstCard: _optionalFirstCard,
         optionalSecondCard: _optionalSecondCard,
         optionalTemporaryCard: _optionalTemporaryCard,
-        child: Column(
+        child: Stack(
           children: [
-            const SizedBox(
-              height: 56,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Column(
               children: [
-                SelectableText(
-                  'Movimentos: $_movements',
-                  style: const TextStyle(
-                    fontSize: 30,
-                  ),
+                const SizedBox(
+                  height: 56,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SelectableText(
+                      'Movimentos: $_movements',
+                      style: const TextStyle(
+                        fontSize: 30,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    SelectableText(
+                      'Encontrados: $_found',
+                      style: const TextStyle(
+                        fontSize: 30,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
-                  width: 20,
+                  height: 52,
                 ),
-                SelectableText(
-                  'Encontrados: $_found',
-                  style: const TextStyle(
-                    fontSize: 30,
-                  ),
+                CardsGridComponent(
+                  cards: _cardWidgets
+                      .map((cardWidget) => MemoryGameCardComponent(
+                            key: UniqueKey(),
+                            card: cardWidget.card,
+                          ))
+                      .toList(),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 52,
-            ),
-            CardsGridComponent(
-              cards: _cardWidgets
-                  .map((cardWidget) => MemoryGameCardComponent(
-                        key: UniqueKey(),
-                        card: cardWidget.card,
-                      ))
-                  .toList(),
-            ),
+            Visibility(
+              visible: _isFinished,
+              child: CustomContainerComponent(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SelectableText(
+                      'Terminou!',
+                      style: TextStyle(
+                        fontSize: 32,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    SelectableText(
+                      'Movimentos: $_movements',
+                      style: const TextStyle(
+                        fontSize: 32,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                     SelectableText(
+                      'Encontrados: $_found',
+                      style: const TextStyle(
+                        fontSize: 32,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    TextButtonWidget(
+                      text: 'Jogar novamente',
+                      onPressed: reset,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextButtonWidget(
+                      text: 'Voltar para tela inicial',
+                      onPressed: () => context.go('/dashboard'),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),
