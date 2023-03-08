@@ -1,0 +1,44 @@
+import 'dart:convert';
+import 'dart:io' show HttpHeaders;
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' show Response;
+import 'package:http/http.dart' as http show get, post, put;
+import 'package:injectable/injectable.dart';
+import 'package:memory_game_web/src/interfaces/api_interface.dart';
+
+import '../api/url_api.dart';
+import '../auth/auth.dart';
+
+@named
+@Injectable(as: ApiInterface)
+class Api implements ApiInterface {
+  @override
+  Future<Response> get(String request, {Auth? auth}) {
+    return http.get(
+      Uri.parse('$URL_API/$request'),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'}..addEntries(
+          (auth?.token != null) ? [MapEntry(HttpHeaders.authorizationHeader, auth!.token!)] : []),
+    );
+  }
+
+  @override
+  Future<Response> post(String request, dynamic body, {Auth? auth}) {
+    return http.post(
+      Uri.parse('$URL_API/$request'),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'}..addEntries(
+          (auth?.token != null) ? [MapEntry(HttpHeaders.authorizationHeader, auth!.token!)] : []),
+      body: jsonEncode(body),
+    );
+  }
+
+  @override
+  Future<Response> put(String request, dynamic body, {Auth? auth}) {
+    return http.put(
+      Uri.parse('$URL_API/$request'),
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'}..addEntries(
+          (auth?.token != null) ? [MapEntry(HttpHeaders.authorizationHeader, auth!.token!)] : []),
+      body: jsonEncode(body),
+    );
+  }
+}
