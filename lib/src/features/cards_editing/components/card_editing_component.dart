@@ -22,7 +22,7 @@ class _CardEditingComponentState extends State<CardEditingComponent> {
   final validatorContent = ValidationBuilder(requiredMessage: 'É obrigatório escrever um conteúdo!')
       .minLength(1, 'Deve ter no mínimo um caracter')
       .build();
-  final ValueNotifier<bool> editing = ValueNotifier(false);
+  final ValueNotifier<bool> editing = ValueNotifier(true);
 
   @override
   Widget build(BuildContext context) {

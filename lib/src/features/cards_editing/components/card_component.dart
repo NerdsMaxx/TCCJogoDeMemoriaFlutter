@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/features/cards_editing/context/card_editing_context.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/card_editing_model.dart';
 import 'package:memory_game_web/src/widgets/card_widget.dart';
+import 'package:memory_game_web/src/widgets/circle_button_widget.dart';
 
 class CardComponent extends StatefulWidget {
   const CardComponent({
@@ -27,12 +28,13 @@ class _CardComponentState extends State<CardComponent> {
             widget.card.content,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
-          ElevatedButton(
+          CircleButtonWidget(
+            tooltip: 'Editar',
             onPressed: () {
               CardEditingContext.setCardFromContext(context, widget.card);
             },
-            child: const Text('Editar'),
-          )
+            icon: Icons.edit,
+          ),
         ],
       ),
     );

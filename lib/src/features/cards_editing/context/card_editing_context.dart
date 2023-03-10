@@ -13,6 +13,7 @@ class CardEditingContext extends InheritedWidget {
           child: child,
         );
 
+  @override
   final Widget child;
   CardEditingModel? card;
   final List<CardEditingModel> cardEditingList;

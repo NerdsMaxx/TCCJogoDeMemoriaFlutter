@@ -1,5 +1,5 @@
-import 'package:memory_game_web/src/dtos/card_dto.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:memory_game_web/src/dtos/card_dto.dart';
 
 part 'memory_game_dto.g.dart';
 
@@ -14,7 +14,7 @@ class MemoryGameDto {
   @JsonKey(name: 'cardSet')
   final List<CardDto>? cardDtoList;
 
-  MemoryGameDto({
+  const MemoryGameDto({
     required this.name,
     required this.creator,
     required this.subjectList,

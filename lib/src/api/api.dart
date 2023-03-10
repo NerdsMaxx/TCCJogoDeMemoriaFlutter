@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io' show HttpHeaders;
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http show get, post, put;
 import 'package:injectable/injectable.dart';
@@ -23,22 +22,22 @@ class Api implements ApiInterface {
   }
 
   @override
-  Future<Response> post(String request, dynamic body, {Auth? auth}) {
+  Future<Response> post(String request, {dynamic body, Auth? auth}) {
     return http.post(
       Uri.parse('$URL_API/$request'),
       headers: {HttpHeaders.contentTypeHeader: 'application/json'}..addEntries(
           (auth?.token != null) ? [MapEntry(HttpHeaders.authorizationHeader, auth!.token!)] : []),
-      body: jsonEncode(body),
+      body: (body != null) ? jsonEncode(body) : null,
     );
   }
 
   @override
-  Future<Response> put(String request, dynamic body, {Auth? auth}) {
+  Future<Response> put(String request, {dynamic body, Auth? auth}) {
     return http.put(
       Uri.parse('$URL_API/$request'),
       headers: {HttpHeaders.contentTypeHeader: 'application/json'}..addEntries(
           (auth?.token != null) ? [MapEntry(HttpHeaders.authorizationHeader, auth!.token!)] : []),
-      body: jsonEncode(body),
+      body: (body != null) ? jsonEncode(body) : null,
     );
   }
 }

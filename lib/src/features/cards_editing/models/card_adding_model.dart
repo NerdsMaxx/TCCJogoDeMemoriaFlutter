@@ -1,5 +1,4 @@
 import 'package:memory_game_web/src/features/cards_editing/models/card_editing_model.dart';
-import 'package:uuid/uuid.dart';
 
 class CardAddingModel extends CardEditingModel {
   CardAddingModel() {

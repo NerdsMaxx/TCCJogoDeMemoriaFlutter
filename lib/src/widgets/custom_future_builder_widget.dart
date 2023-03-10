@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CustomFutureBuilderWidget<TF, TS, TE> extends StatelessWidget {
   const CustomFutureBuilderWidget({
     super.key,
-    required this.future,
+    this.future,
     required this.onLoading,
     required this.onData,
     required this.onError,
@@ -11,7 +11,7 @@ class CustomFutureBuilderWidget<TF, TS, TE> extends StatelessWidget {
     this.transformData,
   });
 
-  final Future<TF> future;
+  final Future<TF>? future;
 
   final Widget Function(BuildContext context) onLoading;
   final Widget Function(BuildContext context, TS value) onData;
@@ -21,6 +21,10 @@ class CustomFutureBuilderWidget<TF, TS, TE> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (future == null) {
+      return const SizedBox.shrink();
+    }
+
     return FutureBuilder(
       future: future,
       builder: (context, snapshot) {
@@ -37,15 +41,14 @@ class CustomFutureBuilderWidget<TF, TS, TE> extends StatelessWidget {
 
             return const SizedBox.shrink();
           }
-          
+
           final TS data;
-          if(transformData != null) {
+          if (transformData != null) {
             data = transformData!(snapshot.data as TF);
-          }
-          else {
+          } else {
             data = snapshot.data as TS;
           }
-          
+
           return onData(context, data);
         }
 

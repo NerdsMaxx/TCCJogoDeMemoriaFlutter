@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/dtos/memory_game_dto.dart';
-import 'package:memory_game_web/src/features/cards_editing/components/card_component.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/cards_editing_component.dart';
 import 'package:memory_game_web/src/features/cards_editing/context/card_editing_context.dart';
 import 'package:memory_game_web/src/features/cards_editing/controller/cards_editing_controller.dart';
@@ -38,7 +37,7 @@ class _CardsEditingPageState extends State<CardsEditingPage> {
               const SizedBox(
                 height: 50,
               ),
-              CustomFutureBuilderWidget<MemoryGameDto, MemoryGameEditingModel, String>(
+              CustomFutureBuilderWidget<MemoryGameDto, MemoryGameEditingModel, Object>(
                 future: _controller.futureMemoryGameDto,
                 transformData: (data) => MemoryGameEditingModel.fromDto(data),
                 onLoading: (context) => Row(
@@ -70,7 +69,7 @@ class _CardsEditingPageState extends State<CardsEditingPage> {
                     ),
                   );
                 },
-                onError: (context, error) => SelectableText(error ?? 'ERRO!!!'),
+                onError: (context, error) => SelectableText(error.toString()),
               ),
             ],
           ),

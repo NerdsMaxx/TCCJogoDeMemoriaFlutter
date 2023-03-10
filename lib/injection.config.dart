@@ -10,8 +10,9 @@ import 'package:injectable/injectable.dart' as _i2;
 import 'package:memory_game_web/src/api/api.dart' as _i4;
 import 'package:memory_game_web/src/auth/auth.dart' as _i5;
 import 'package:memory_game_web/src/interfaces/api_interface.dart' as _i3;
+import 'package:memory_game_web/src/services/gameplay_service.dart' as _i6;
 import 'package:memory_game_web/src/services/memory_game_service.dart'
-    as _i6; // ignore_for_file: unnecessary_lambdas
+    as _i7; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 extension GetItInjectableX on _i1.GetIt {
@@ -31,7 +32,11 @@ extension GetItInjectableX on _i1.GetIt {
     );
     gh.factory<_i5.Auth>(
         () => _i5.Auth(gh<_i3.ApiInterface>(instanceName: 'Api')));
-    gh.factory<_i6.MemoryGameService>(() => _i6.MemoryGameService(
+    gh.factory<_i6.GameplayService>(() => _i6.GameplayService(
+          gh<_i5.Auth>(),
+          gh<_i3.ApiInterface>(instanceName: 'Api'),
+        ));
+    gh.factory<_i7.MemoryGameService>(() => _i7.MemoryGameService(
           gh<_i5.Auth>(),
           gh<_i3.ApiInterface>(instanceName: 'Api'),
         ));

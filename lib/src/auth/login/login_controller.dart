@@ -1,6 +1,11 @@
-part of 'login_page.dart';
 
-class _LoginLogic {
+import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
+import 'package:form_validator/form_validator.dart';
+import 'package:memory_game_web/injection.dart';
+import 'package:memory_game_web/src/auth/auth.dart';
+
+class LoginController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String username = '';
   String password = '';

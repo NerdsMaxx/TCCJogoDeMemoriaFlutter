@@ -19,7 +19,8 @@ class AppBarWidget extends StatelessWidget {
           children: [
             SelectableText(
               'Jogo de memória',
-              style: Theme.of(context).textTheme.headlineLarge,
+              maxLines: 1,
+              style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white),
             ),
             Visibility(
               visible: getIt<Auth>().isValid(),
@@ -27,8 +28,7 @@ class AppBarWidget extends StatelessWidget {
             ),
           ],
         ),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
       ),
       body: SingleChildScrollView(
         child: Padding(

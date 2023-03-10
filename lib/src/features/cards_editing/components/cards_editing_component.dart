@@ -3,6 +3,7 @@ import 'package:memory_game_web/src/features/cards_editing/components/card_editi
 import 'package:memory_game_web/src/features/cards_editing/context/card_editing_context.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/card_adding_model.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/card_editing_model.dart';
+import 'package:memory_game_web/src/widgets/custom_container_widget.dart';
 
 class CardsEditingComponent extends StatefulWidget {
   const CardsEditingComponent({super.key});
@@ -21,17 +22,7 @@ class _CardsEditingComponentState extends State<CardsEditingComponent> {
     cardEditing2 = cardEditing1.otherCard;
 
     return Center(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(12),
-          ),
-          border: Border.all(
-            width: 8,
-          ),
-        ),
-        padding: const EdgeInsets.all(32),
+      child: CustomContainerWidget(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -56,8 +47,7 @@ class _CardsEditingComponentState extends State<CardsEditingComponent> {
             ),
             ElevatedButton(
               onPressed: () {
-                CardEditingContext.addCardsIfNotExistsFromContext(
-                    context, cardEditing1);
+                CardEditingContext.addCardsIfNotExistsFromContext(context, cardEditing1);
                 debugPrint(CardEditingContext.getCardListFromContext(context)!
                     .map((e) => e.content.toString())
                     .toString());

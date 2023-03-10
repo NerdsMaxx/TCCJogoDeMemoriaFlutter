@@ -20,7 +20,10 @@ class Auth {
   Future<void> login(String username, String password) async {
     Response response = await _api.post(
       'login',
-      {'username': username, 'password': password},
+      body: {
+        'username': username,
+        'password': password,
+      },
     );
 
     dynamic json = jsonDecode(response.body);

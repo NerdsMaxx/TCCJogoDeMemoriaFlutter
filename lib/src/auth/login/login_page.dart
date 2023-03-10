@@ -1,11 +1,6 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:form_validator/form_validator.dart';
-import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/auth/auth.dart';
+import 'package:memory_game_web/src/auth/login/login_controller.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
-
-part 'login_logic.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,7 +10,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _LoginLogic _logic = _LoginLogic();
+  final LoginController _controller = LoginController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
             height: 100,
           ),
           Form(
-            key: _logic.formKey,
+            key: _controller.formKey,
             child: Align(
               alignment: Alignment.center,
               child: Column(
@@ -36,19 +31,19 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: [
                         TextFormField(
-                          validator: _logic.validatorUsernameOrEmail,
-                          onChanged: (value) => _logic.username = value,
-                          style: Theme.of(context).textTheme.headlineMedium,
+                          validator: _controller.validatorUsernameOrEmail,
+                          onChanged: (value) => _controller.username = value,
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         const SizedBox(
                           height: 30,
                         ),
                         TextFormField(
-                          validator: _logic.validatorPassword,
+                          validator: _controller.validatorPassword,
                           obscureText: true,
                           autocorrect: false,
-                          onChanged: (value) => _logic.password = value,
-                          style: Theme.of(context).textTheme.headlineMedium,
+                          onChanged: (value) => _controller.password = value,
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ],
                     ),
@@ -57,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 26,
                   ),
                   ElevatedButton(
-                    onPressed: _logic.onPressed(context),
+                    onPressed: _controller.onPressed(context),
                     child: const Text('Logar'),
                   )
                 ],
