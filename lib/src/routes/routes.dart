@@ -1,8 +1,8 @@
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:memory_game_web/src/auth/login/login_page.dart';
-import 'package:memory_game_web/src/features/cards_editing/pages/cards_adding_page.dart';
-import 'package:memory_game_web/src/features/cards_editing/pages/cards_editing_page.dart';
+import 'package:memory_game_web/src/features/cards_editing/pages/cards_adding/cards_adding_page.dart';
+import 'package:memory_game_web/src/features/cards_editing/pages/cards_editing/cards_editing_page.dart';
 import 'package:memory_game_web/src/features/dashboard/pages/dashboard/dashboard_page.dart';
 import 'package:memory_game_web/src/features/gameplay/pages/gameplay_page.dart';
 

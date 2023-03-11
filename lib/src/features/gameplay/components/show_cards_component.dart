@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/features/gameplay/components/card_component.dart';
+import 'package:memory_game_web/src/features/gameplay/components/card/card_component.dart';
 import 'package:memory_game_web/src/features/gameplay/contexts/card_gameplay_context.dart';
 import 'package:memory_game_web/src/features/gameplay/models/card_gameplay_model.dart';
 
@@ -10,7 +10,7 @@ class ShowCardsComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<CardGameplayModel> cardList = CardGameplayContext.getCardListFromContext(context)!;
+    final List<CardGameplayModel> cardList = CardGameplayContext.of(context)!.getCardList();
 
     return Padding(
       padding: const EdgeInsets.only(

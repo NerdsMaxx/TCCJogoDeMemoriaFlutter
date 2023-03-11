@@ -12,7 +12,7 @@ class _ScoresComponentState extends State<ScoresComponent> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: CardGameplayContext.getScore(context)!,
+      valueListenable: CardGameplayContext.of(context)!.getScore(),
       builder: (context, value, _) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

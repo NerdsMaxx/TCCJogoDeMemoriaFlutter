@@ -3,6 +3,8 @@ import 'package:form_validator/form_validator.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/card_editing_model.dart';
 import 'package:memory_game_web/src/widgets/card_widget.dart';
 
+part 'card_editing_component_logic.dart';
+
 class CardEditingComponent extends StatefulWidget {
   CardEditingComponent({
     super.key,
@@ -18,19 +20,15 @@ class CardEditingComponent extends StatefulWidget {
 }
 
 class _CardEditingComponentState extends State<CardEditingComponent> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final validatorContent = ValidationBuilder(requiredMessage: 'É obrigatório escrever um conteúdo!')
-      .minLength(1, 'Deve ter no mínimo um caracter')
-      .build();
-  final ValueNotifier<bool> editing = ValueNotifier(true);
+  final _CardEditingComponentLogic logic = _CardEditingComponentLogic();
 
   @override
   Widget build(BuildContext context) {
     return CardWidget(
       child: Form(
-        key: formKey,
+        key: logic.formKey,
         child: ValueListenableBuilder(
-          valueListenable: editing,
+          valueListenable: logic.editing,
           builder: (context, editingValue, _) => Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -46,19 +44,12 @@ class _CardEditingComponentState extends State<CardEditingComponent> {
                   ),
                   maxLines: 6,
                   onChanged: ((value) => widget.cardEditing.content = value),
-                  validator: validatorContent,
+                  validator: logic.validatorContent,
                   readOnly: !editingValue,
                 ),
               ),
               ElevatedButton(
-                onPressed: () {
-                  if (!widget.isFirst && !formKey.currentState!.validate()) {
-                    return;
-                  }
-
-                  widget.isFirst = false;
-                  editing.value = !editing.value;
-                },
+                onPressed: logic.onPressedEditing(widget.isFirst),
                 child: Text((!editingValue) ? 'Editar' : 'Aplicar'),
               ),
             ],

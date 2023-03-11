@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/features/cards_editing/components/cards_editing_component.dart';
+import 'package:memory_game_web/src/features/cards_editing/components/cards_editing/cards_editing_component.dart';
 import 'package:memory_game_web/src/features/cards_editing/context/card_editing_context.dart';
-import 'package:memory_game_web/src/features/cards_editing/controller/cards_adding_controller.dart';
+import 'package:memory_game_web/src/features/cards_editing/models/card_editing_model.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/show_cards_component.dart';
+
+part 'cards_adding_logic.dart';
 
 class CardsAddingPage extends StatefulWidget {
   const CardsAddingPage({
@@ -15,14 +17,14 @@ class CardsAddingPage extends StatefulWidget {
 }
 
 class _CardsAddingPageState extends State<CardsAddingPage> {
-  final CardsAddingController _controller = CardsAddingController();
+  final _CardsAddingLogic logic = _CardsAddingLogic();
 
   @override
   Widget build(BuildContext context) {
     return AppBarWidget(
       body: CardEditingContext(
-        showEditableCard: _controller.showEditableCard,
-        cardEditingList: _controller.cardEditingList,
+        showEditableCard: logic.showEditableCard,
+        cardEditingList: logic.cardEditingList,
         child: Center(
           child: Column(
             children: [
@@ -30,7 +32,7 @@ class _CardsAddingPageState extends State<CardsAddingPage> {
                 height: 50,
               ),
               ValueListenableBuilder(
-                valueListenable: _controller.showEditableCard,
+                valueListenable: logic.showEditableCard,
                 builder: (context, showCardsEditing, _) => Stack(
                   children: [
                     ShowCardsComponent(), //não pode ser constante, pois senão não vai atualizar

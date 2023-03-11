@@ -3,6 +3,8 @@ import 'package:memory_game_web/src/features/gameplay/contexts/card_gameplay_con
 import 'package:memory_game_web/src/features/gameplay/models/card_gameplay_model.dart';
 import 'package:memory_game_web/src/widgets/card_widget.dart';
 
+part 'card_component_logic.dart';
+
 class CardComponent extends StatefulWidget {
   const CardComponent({
     super.key,
@@ -16,24 +18,22 @@ class CardComponent extends StatefulWidget {
 }
 
 class _CardComponentState extends State<CardComponent> {
+
+  late final _CardComponentLogic logic = _CardComponentLogic(widget.card);
+
   @override
   Widget build(BuildContext context) {
-    final CardGameplayModel card = widget.card;
-
     return CardWidget(
       key: Key(widget.card.id),
       child: ValueListenableBuilder(
-        valueListenable: card.isTurned,
+        valueListenable: logic.card.isTurned,
         builder: (context, value, _) => TextButton(
+          onPressed: logic.onPressedCard(context),
           child: Text(
-            (value) ? card.content : '?',
+            (value) ? logic.card.content : '?',
             style: Theme.of(context).textTheme.headlineLarge,
           ),
-          onPressed: () {
-            card.turnsCard();
-            CardGameplayContext.setCardFromContext(context, card);
-          },
-        ),
+        )
       ),
     );
   }

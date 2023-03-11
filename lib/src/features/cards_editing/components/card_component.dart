@@ -30,9 +30,7 @@ class _CardComponentState extends State<CardComponent> {
           ),
           CircleButtonWidget(
             tooltip: 'Editar',
-            onPressed: () {
-              CardEditingContext.setCardFromContext(context, widget.card);
-            },
+            onPressed: () => CardEditingContext.of(context)!.setCard(widget.card),
             icon: Icons.edit,
           ),
         ],

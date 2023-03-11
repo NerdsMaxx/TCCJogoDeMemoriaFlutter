@@ -13,10 +13,13 @@ class CardGameplayContext extends InheritedWidget {
           child: child,
         );
 
+
   @override
   final Widget child;
+
   CardGameplayModel? card1;
   CardGameplayModel? card2;
+  
   final List<CardGameplayModel> cardGameplayList;
   final ValueNotifier<bool> showGameplayCard;
   final ValueNotifier<int> score = ValueNotifier(0);
@@ -28,66 +31,65 @@ class CardGameplayContext extends InheritedWidget {
     return context.dependOnInheritedWidgetOfExactType<CardGameplayContext>();
   }
 
-  static CardGameplayModel? getCard1FromContext(BuildContext context) => of(context)?.card1;
+  CardGameplayModel? getCard1() => card1;
 
-  static CardGameplayModel? getCard2FromContext(BuildContext context) => of(context)?.card2;
+  CardGameplayModel? getCard2() => card2;
 
-  static void setCardFromContext(BuildContext context, CardGameplayModel card) {
-    if (of(context)?.card1 == null) {
-      of(context)?.card1 = card;
+  void setCard(CardGameplayModel card) {
+    if (card1 == null) {
+      card1 = card;
       return;
     }
 
-    if (card != of(context)!.card1 && of(context)?.card2 == null) {
-      of(context)?.card2 = card;
-      of(context)?.showGameplayCard.value = true;
+    if (card != card1 && card2 == null) {
+      card2 = card;
+      showGameplayCard.value = true;
     }
   }
 
-  static void clearCard(BuildContext context) {
-    if (of(context)?.card1 != null && of(context)?.card2 != null) {
-      of(context)?.card1 = null;
-      of(context)?.card2 = null;
-      of(context)?.showGameplayCard.value = false;
+  void clearCard() {
+    if (card1 != null && card2 != null) {
+      card1 = null;
+      card2 = null;
+      showGameplayCard.value = false;
     }
   }
 
-  static List<CardGameplayModel>? getCardListFromContext(BuildContext context) =>
-      of(context)?.cardGameplayList;
+  List<CardGameplayModel> getCardList() => cardGameplayList;
 
-  static void itsRight(BuildContext context) {
-    bool right = of(context)?.card1 != null &&
-        of(context)?.card2 != null &&
-        of(context)?.card1!.otherCard == of(context)?.card2!;
+  void itsRight() {
+    bool right = card1 != null &&
+        card2 != null &&
+        card1!.otherCard == card2!;
 
     if (right) {
-      of(context)?.score.value += 1;
+      score.value += 1;
     } else {
-      of(context)?.score.value -= 2;
+      score.value -= 2;
     }
 
-    of(context)?.card1!.accept();
-    of(context)?.card2!.accept();
+    card1!.accept();
+    card2!.accept();
 
-    clearCard(context);
+    clearCard();
   }
 
-  static void itsWrong(BuildContext context) {
-    bool wrong = of(context)?.card1 != null &&
-        of(context)?.card2 != null &&
-        of(context)?.card1!.otherCard != of(context)?.card2!;
+  void itsWrong() {
+    bool wrong = card1 != null &&
+        card2 != null &&
+        card1!.otherCard != card2!;
 
     // if (wrong) {
     //   of(context)?.score.value += 1;
     // } else {
     if (!wrong) {
-      of(context)?.score.value -= 2;
+      score.value -= 2;
     }
 
-    of(context)?.card1!.turnCardOver();
-    of(context)?.card2!.turnCardOver();
-    clearCard(context);
+    card1!.turnCardOver();
+    card2!.turnCardOver();
+    clearCard();
   }
 
-  static ValueNotifier<int>? getScore(BuildContext context) => of(context)?.score;
+  ValueNotifier<int> getScore() => score;
 }

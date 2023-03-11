@@ -54,7 +54,7 @@ class _CardsGameplayComponentState extends State<CardsGameplayComponent> {
                       return;
                     }
 
-                    CardGameplayContext.itsRight(context);
+                    CardGameplayContext.of(context)!.itsRight();
                   },
                   child: const Text('Está certo!'),
                 ),
@@ -67,7 +67,7 @@ class _CardsGameplayComponentState extends State<CardsGameplayComponent> {
                       return;
                     }
 
-                    CardGameplayContext.itsWrong(context);
+                    CardGameplayContext.of(context)!.itsWrong();
                   },
                   child: const Text('Está errado!'),
                 ),

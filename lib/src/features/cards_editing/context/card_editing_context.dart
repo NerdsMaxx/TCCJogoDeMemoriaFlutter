@@ -15,10 +15,11 @@ class CardEditingContext extends InheritedWidget {
 
   @override
   final Widget child;
+
   CardEditingModel? card;
   final List<CardEditingModel> cardEditingList;
+
   final ValueNotifier<bool> showEditableCard;
-  final ValueNotifier<bool> newChanges = ValueNotifier(false);
 
   @override
   bool updateShouldNotify(CardEditingContext oldWidget) => false;
@@ -27,29 +28,27 @@ class CardEditingContext extends InheritedWidget {
     return context.dependOnInheritedWidgetOfExactType<CardEditingContext>();
   }
 
-  static CardEditingModel? getCardFromContext(BuildContext context) => of(context)?.card;
+  CardEditingModel? getCard() => card;
 
-  static void setCardFromContext(BuildContext context, CardEditingModel card) {
-    of(context)?.showEditableCard.value = true;
-    of(context)?.card = card;
+  void setCard(CardEditingModel card) {
+    showEditableCard.value = true;
+    card = card;
   }
 
-  static void clearCard(BuildContext context) {
-    of(context)?.showEditableCard.value = false;
-    of(context)?.card = null;
+  void clearCard() {
+    showEditableCard.value = false;
+    card = null;
   }
 
-  static void addCardsIfNotExistsFromContext(BuildContext context, CardEditingModel card) {
+  void addCardsIfNotExists(CardEditingModel card) {
     if (card is CardAddingModel) {
       CardEditingModel cardEditing = CardEditingModel.fromCardAddingModel(card);
 
-      of(context)?.cardEditingList.addAll([cardEditing, cardEditing.otherCard]);
-      of(context)?.newChanges.value = of(context)?.newChanges.value ?? false;
+      cardEditingList.addAll([cardEditing, cardEditing.otherCard]);
     }
   }
 
-  static List<CardEditingModel>? getCardListFromContext(BuildContext context) =>
-      of(context)?.cardEditingList;
+  List<CardEditingModel> getCardList() => cardEditingList;
 
-  static bool isFirstCard(BuildContext context) => of(context)?.card is CardAddingModel;
+  bool isFirstCard() => card is CardAddingModel;
 }
