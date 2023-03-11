@@ -15,10 +15,12 @@ import 'package:auto_route/auto_route.dart' as _i7;
 import 'package:flutter/material.dart' as _i8;
 
 import '../auth/login/login_page.dart' as _i2;
-import '../features/cards_editing/pages/cards_adding/cards_adding_page.dart' as _i5;
-import '../features/cards_editing/pages/cards_editing/cards_editing_page.dart' as _i4;
+import '../features/cards_editing/pages/cards_adding/cards_adding_page.dart'
+    as _i5;
+import '../features/cards_editing/pages/cards_editing/cards_editing_page.dart'
+    as _i4;
 import '../features/dashboard/pages/dashboard/dashboard_page.dart' as _i3;
-import '../features/gameplay/pages/gameplay_page.dart' as _i6;
+import '../features/gameplay/pages/gameplay/gameplay_page.dart' as _i6;
 import 'guard/auth_guard.dart' as _i9;
 import 'router_observer/initial_route.dart' as _i1;
 
@@ -103,7 +105,7 @@ class AppRouter extends _i7.RootStackRouter {
         ),
         _i7.RouteConfig(
           CardAddingRoute.name,
-          path: '/dashboard/card-adding',
+          path: '/dashboard/cards-adding',
           guards: [authGuard],
         ),
         _i7.RouteConfig(
@@ -190,7 +192,7 @@ class CardAddingRoute extends _i7.PageRouteInfo<void> {
   const CardAddingRoute()
       : super(
           CardAddingRoute.name,
-          path: '/dashboard/card-adding',
+          path: '/dashboard/cards-adding',
         );
 
   static const String name = 'CardAddingRoute';

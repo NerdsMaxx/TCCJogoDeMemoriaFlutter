@@ -8,10 +8,18 @@ class AuthGuard extends AutoRouteGuard {
     final Auth auth = getIt<Auth>();
 
     if (auth.isValid()) {
+      if (auth.isNotCreator() &&
+          (router.currentPath == '/dashboard/cards-editing' ||
+              router.currentPath == '/dashboard/cards-adding')) {
+        router.pushNamed('/dashboard');
+        return;
+      }
+
       resolver.next();
-      return;
+    } else {
+      router.pushNamed('/');
     }
 
-    router.pushNamed('/');
+    
   }
 }

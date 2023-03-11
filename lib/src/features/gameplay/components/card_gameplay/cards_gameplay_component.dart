@@ -4,6 +4,8 @@ import 'package:memory_game_web/src/features/gameplay/models/card_gameplay_model
 import 'package:memory_game_web/src/widgets/card_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_container_widget.dart';
 
+part 'cards_gameplay_component_logic.dart';
+
 class CardsGameplayComponent extends StatefulWidget {
   const CardsGameplayComponent({super.key});
 
@@ -12,8 +14,7 @@ class CardsGameplayComponent extends StatefulWidget {
 }
 
 class _CardsGameplayComponentState extends State<CardsGameplayComponent> {
-  late final CardGameplayModel cardGameplay1 = CardGameplayContext.of(context)!.card1!;
-  late final CardGameplayModel cardGameplay2 = CardGameplayContext.of(context)!.card2!;
+  late final _CardsGameplayComponentLogic logic = _CardsGameplayComponentLogic(context);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class _CardsGameplayComponentState extends State<CardsGameplayComponent> {
               children: [
                 CardWidget(
                   child: Text(
-                    cardGameplay1.content,
+                    logic.cardGameplay1.content,
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
                 ),
@@ -36,7 +37,7 @@ class _CardsGameplayComponentState extends State<CardsGameplayComponent> {
                 ),
                 CardWidget(
                   child: Text(
-                    cardGameplay2.content,
+                    logic.cardGameplay2.content,
                     style: Theme.of(context).textTheme.headlineLarge,
                   ),
                 ),
@@ -49,26 +50,14 @@ class _CardsGameplayComponentState extends State<CardsGameplayComponent> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    if (cardGameplay1.isAccepted && cardGameplay2.isAccepted) {
-                      return;
-                    }
-
-                    CardGameplayContext.of(context)!.itsRight();
-                  },
+                  onPressed: logic.onPressedItsRight(context),
                   child: const Text('Está certo!'),
                 ),
                 const SizedBox(
                   width: 15,
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    if (cardGameplay1.isAccepted || cardGameplay2.isAccepted) {
-                      return;
-                    }
-
-                    CardGameplayContext.of(context)!.itsWrong();
-                  },
+                  onPressed: logic.onPressedItsWrong(context),
                   child: const Text('Está errado!'),
                 ),
               ],

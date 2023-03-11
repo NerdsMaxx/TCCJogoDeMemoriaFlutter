@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
-import 'package:memory_game_web/src/api/api.dart';
+import 'package:memory_game_web/src/api/http_impl.dart';
 import 'package:memory_game_web/src/enums/user_type_enum.dart';
 import 'package:memory_game_web/src/exceptions/custom_exception.dart';
-import 'package:memory_game_web/src/interfaces/api_interface.dart';
+import 'package:memory_game_web/src/interfaces/http_interface.dart';
 import 'package:memory_game_web/src/local_storage/local_storage.dart';
 
 part 'user.dart';
@@ -14,8 +14,8 @@ part 'user.dart';
 class Auth {
   static const String TOKEN_KEY = 'token';
 
-  final ApiInterface _api;
-  Auth(@Named.from(Api) this._api);
+  final HttpInterface _api;
+  Auth(@Named.from(HttpImpl) this._api);
 
   Future<void> login(String username, String password) async {
     Response response = await _api.post(
@@ -63,7 +63,15 @@ class Auth {
     return _user?._userType == UserType.creator;
   }
 
+  bool isNotCreator() {
+    return !isCreator();
+  }
+
   bool isPlayer() {
     return _user?._userType == UserType.player;
+  }
+
+  bool isNotPlayer() {
+    return !isPlayer();
   }
 }

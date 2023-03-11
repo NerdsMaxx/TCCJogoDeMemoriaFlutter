@@ -5,8 +5,6 @@ class CardGameplayContext extends InheritedWidget {
   CardGameplayContext({
     super.key,
     required this.child,
-    required this.showGameplayCard,
-    required this.cardGameplayList,
     this.card1,
     this.card2,
   }) : super(
@@ -19,9 +17,10 @@ class CardGameplayContext extends InheritedWidget {
 
   CardGameplayModel? card1;
   CardGameplayModel? card2;
-  
-  final List<CardGameplayModel> cardGameplayList;
-  final ValueNotifier<bool> showGameplayCard;
+
+  final List<CardGameplayModel> cardGameplayList = [];
+
+  final ValueNotifier<bool> showGameplayCard = ValueNotifier(false);
   final ValueNotifier<int> score = ValueNotifier(0);
 
   @override
