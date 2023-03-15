@@ -57,9 +57,7 @@ class CardGameplayContext extends InheritedWidget {
   List<CardGameplayModel> getCardList() => cardGameplayList;
 
   void itsRight() {
-    bool right = card1 != null &&
-        card2 != null &&
-        card1!.otherCard == card2!;
+    bool right = card1 != null && card2 != null && card1!.otherCard == card2!;
 
     if (right) {
       score.value += 1;
@@ -87,6 +85,7 @@ class CardGameplayContext extends InheritedWidget {
 
     card1!.turnCardOver();
     card2!.turnCardOver();
+    
     clearCard();
   }
 

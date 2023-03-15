@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/dtos/memory_game_dto.dart';
+import 'package:memory_game_web/src/models/memory_game_model.dart';
 import 'package:memory_game_web/src/features/gameplay/components/card_gameplay/cards_gameplay_component.dart';
 import 'package:memory_game_web/src/features/gameplay/components/scores_component.dart';
 import 'package:memory_game_web/src/features/gameplay/contexts/card_gameplay_context.dart';
@@ -45,9 +45,9 @@ class _GameplayPageState extends State<GameplayPage> {
                 const SizedBox(
                   height: 50,
                 ),
-                CustomFutureBuilderWidget<MemoryGameDto, MemoryGameGameplayModel, Object>(
-                  future: logic.futureMemoryGameDto,
-                  transformData: (data) => MemoryGameGameplayModel.fromDto(data),
+                CustomFutureBuilderWidget<MemoryGameModel, MemoryGameGameplayModel, Object>(
+                  future: logic.futureMemoryGameModel,
+                  transformData: (data) => MemoryGameGameplayModel.fromModel(data),
                   onLoading: (context) => Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [

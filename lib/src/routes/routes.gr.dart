@@ -60,6 +60,7 @@ class AppRouter extends _i7.RootStackRouter {
         child: _i4.CardsEditingPage(
           key: args.key,
           memoryGameName: args.memoryGameName,
+          isAdding: args.isAdding,
         ),
       );
     },
@@ -158,12 +159,14 @@ class CardsEditingRoute extends _i7.PageRouteInfo<CardsEditingRouteArgs> {
   CardsEditingRoute({
     _i8.Key? key,
     String? memoryGameName,
+    bool isAdding = false,
   }) : super(
           CardsEditingRoute.name,
           path: '/dashboard/cards-editing',
           args: CardsEditingRouteArgs(
             key: key,
             memoryGameName: memoryGameName,
+            isAdding: isAdding,
           ),
         );
 
@@ -174,15 +177,18 @@ class CardsEditingRouteArgs {
   const CardsEditingRouteArgs({
     this.key,
     this.memoryGameName,
+    this.isAdding = false,
   });
 
   final _i8.Key? key;
 
   final String? memoryGameName;
 
+  final bool isAdding;
+
   @override
   String toString() {
-    return 'CardsEditingRouteArgs{key: $key, memoryGameName: $memoryGameName}';
+    return 'CardsEditingRouteArgs{key: $key, memoryGameName: $memoryGameName, isAdding: $isAdding}';
   }
 }
 

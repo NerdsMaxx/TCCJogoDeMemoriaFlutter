@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/card_editing/card_editing_component.dart';
-import 'package:memory_game_web/src/features/cards_editing/context/card_editing_context.dart';
+import 'package:memory_game_web/src/features/cards_editing/context/memory_game_editing_context.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/card_adding_model.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/card_editing_model.dart';
 import 'package:memory_game_web/src/widgets/custom_container_widget.dart';

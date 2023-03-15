@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/card_adding_model.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/card_editing_model.dart';
 
-class CardEditingContext extends InheritedWidget {
-  CardEditingContext({
+class MemoryGameEditingContext extends InheritedWidget {
+  MemoryGameEditingContext({
     super.key,
     required this.child,
-    required this.showEditableCard,
-    required this.cardEditingList,
     this.card,
   }) : super(
           child: child,
@@ -15,29 +13,32 @@ class CardEditingContext extends InheritedWidget {
 
   @override
   final Widget child;
-
+  
+  String memoryGameName = '';
+  List<String> subjectList = [];
+  
   CardEditingModel? card;
-  final List<CardEditingModel> cardEditingList;
+  final List<CardEditingModel> cardEditingList = [];
 
-  final ValueNotifier<bool> showEditableCard;
+  final ValueNotifier<bool> showEditableCard = ValueNotifier(false);
 
   @override
-  bool updateShouldNotify(CardEditingContext oldWidget) => false;
+  bool updateShouldNotify(MemoryGameEditingContext oldWidget) => false;
 
-  static CardEditingContext? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<CardEditingContext>();
+  static MemoryGameEditingContext? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MemoryGameEditingContext>();
   }
 
   CardEditingModel? getCard() => card;
 
-  void setCard(CardEditingModel card) {
+  void setCard(CardEditingModel cardEditing) {
+    card = cardEditing;
     showEditableCard.value = true;
-    card = card;
   }
 
   void clearCard() {
-    showEditableCard.value = false;
     card = null;
+    showEditableCard.value = false;
   }
 
   void addCardsIfNotExists(CardEditingModel card) {

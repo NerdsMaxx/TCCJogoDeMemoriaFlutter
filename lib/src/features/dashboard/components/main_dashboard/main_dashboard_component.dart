@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/dtos/gameplay_dto.dart';
-import 'package:memory_game_web/src/dtos/memory_game_dto.dart';
+import 'package:memory_game_web/src/models/gameplay_model.dart';
+import 'package:memory_game_web/src/models/memory_game_model.dart';
 import 'package:memory_game_web/src/features/dashboard/components/card_component/card_component.dart';
 import 'package:memory_game_web/src/features/dashboard/components/title/title_component.dart';
 import 'package:memory_game_web/src/services/memory_game_service.dart';
@@ -25,8 +25,8 @@ class MainDashboardComponent extends StatelessWidget {
         const SizedBox(
           height: 50,
         ),
-        CustomFutureBuilderWidget<List<MemoryGameDto>, List<MemoryGameDto>, Object>(
-          future: logic.futureMemoryGameDtoList,
+        CustomFutureBuilderWidget<List<MemoryGameModel>, List<MemoryGameModel>, Object>(
+          future: logic.futureMemoryGameModelList,
           onLoading: (context) => Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -51,10 +51,8 @@ class MainDashboardComponent extends StatelessWidget {
                 spacing: 30,
                 runSpacing: 30,
                 children: [
-                  for (MemoryGameDto memoryGameDto in data)
-                    CardComponent(
-                      memoryGameDto: memoryGameDto
-                    )
+                  for (MemoryGameModel memoryGameModel in data)
+                    CardComponent(memoryGameModel: memoryGameModel)
                 ],
               ),
             ),

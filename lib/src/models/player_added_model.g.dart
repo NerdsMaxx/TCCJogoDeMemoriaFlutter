@@ -1,19 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'player_added_dto.dart';
+part of 'player_added_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-PlayerAddedDto _$PlayerAddedDtoFromJson(Map<String, dynamic> json) =>
-    PlayerAddedDto(
+PlayerAddedModel _$PlayerAddedModelFromJson(Map<String, dynamic> json) =>
+    PlayerAddedModel(
       player: json['player'] as String,
       memoryGame:
-          MemoryGameDto.fromJson(json['memoryGame'] as Map<String, dynamic>),
+          MemoryGameModel.fromJson(json['memoryGame'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$PlayerAddedDtoToJson(PlayerAddedDto instance) =>
+Map<String, dynamic> _$PlayerAddedModelToJson(PlayerAddedModel instance) =>
     <String, dynamic>{
       'player': instance.player,
       'memoryGame': instance.memoryGame,

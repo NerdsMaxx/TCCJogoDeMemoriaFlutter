@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/dtos/player_added_dto.dart';
+import 'package:memory_game_web/src/models/player_added_model.dart';
 import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_context.dart';
 import 'package:memory_game_web/src/local_storage/keys.dart';
 import 'package:memory_game_web/src/local_storage/local_storage.dart';
@@ -69,8 +69,8 @@ class _CodeEntryComponentState extends State<CodeEntryComponent> {
               ),
               Visibility(
                 visible: searchCode,
-                child: CustomFutureBuilderWidget<PlayerAddedDto, PlayerAddedDto, Object>(
-                  future: logic.futurePlayerAddedDto,
+                child: CustomFutureBuilderWidget<PlayerAddedModel, PlayerAddedModel, Object>(
+                  future: logic.futurePlayerAddedModel,
                   onLoading: (context) => const CircularProgressIndicator(),
                   onData: (context, value) => Column(
                     children: [

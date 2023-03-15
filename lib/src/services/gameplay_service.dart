@@ -1,15 +1,14 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
 import 'package:memory_game_web/src/abstract_classes/service_abs.dart';
 import 'package:memory_game_web/src/api/http_impl.dart';
-import 'package:memory_game_web/src/dtos/gameplay_dto.dart';
-import 'package:memory_game_web/src/dtos/gameplay_result_dto.dart';
-import 'package:memory_game_web/src/dtos/player_added_dto.dart';
-import 'package:memory_game_web/src/dtos/player_score_dto.dart';
+import 'package:memory_game_web/src/models/gameplay_model.dart';
+import 'package:memory_game_web/src/models/gameplay_result_model.dart';
+import 'package:memory_game_web/src/models/player_added_model.dart';
+import 'package:memory_game_web/src/models/player_score_model.dart';
 
 @injectable
 class GameplayService extends Service {
@@ -17,30 +16,30 @@ class GameplayService extends Service {
 
   static const String path = 'gameplay';
 
-  Future<PlayerAddedDto> enterInGameplay(String code) async {
+  Future<PlayerAddedModel> enterInGameplay(String code) async {
     Response response = await http.post('$path/jogar/$code', auth: auth);
     dynamic json = jsonDecode(response.body);
 
     if (json is Map<String, dynamic>) {
       debugPrint(json.toString());
-      return PlayerAddedDto.fromJson(json);
+      return PlayerAddedModel.fromJson(json);
     }
 
     throw Exception('Não foi possível encontrar um jogo com este código!');
   }
 
-  Future<GameplayResultDto> finishGameplay(String code, PlayerScoreDto playerScoreDto) async {
-    Response response = await http.post('$path/terminar/$code', body: playerScoreDto.toJson());
+  Future<GameplayResultModel> finishGameplay(String code, PlayerScoreModel playerScoreModel) async {
+    Response response = await http.post('$path/terminar/$code', body: playerScoreModel.toJson());
     dynamic json = jsonDecode(response.body);
 
     if (json is Map<String, dynamic>) {
-      return GameplayResultDto.fromJson(json);
+      return GameplayResultModel.fromJson(json);
     }
 
     throw Exception('Não foi possível obter o resultado do jogo!');
   }
 
-  Future<GameplayDto> generateGameplay(String memoryGame, [String? creatorName]) async {
+  Future<GameplayModel> generateGameplay(String memoryGame, [String? creatorName]) async {
     Response response = await http.post(
       '$path/comecar',
       body: {
@@ -53,7 +52,7 @@ class GameplayService extends Service {
     dynamic json = jsonDecode(response.body);
 
     if (json is Map<String, dynamic>) {
-      return GameplayDto.fromJson(json);
+      return GameplayModel.fromJson(json);
     }
 
     throw Exception('Não foi possível gerar gameplay!');

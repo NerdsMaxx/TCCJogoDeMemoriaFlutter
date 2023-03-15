@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/features/cards_editing/context/card_editing_context.dart';
+import 'package:memory_game_web/src/features/cards_editing/context/memory_game_editing_context.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/card_editing_model.dart';
 import 'package:memory_game_web/src/widgets/card_widget.dart';
 import 'package:memory_game_web/src/widgets/circle_button_widget.dart';
@@ -30,7 +30,7 @@ class _CardComponentState extends State<CardComponent> {
           ),
           CircleButtonWidget(
             tooltip: 'Editar',
-            onPressed: () => CardEditingContext.of(context)!.setCard(widget.card),
+            onPressed: () => MemoryGameEditingContext.of(context)!.setCard(widget.card),
             icon: Icons.edit,
           ),
         ],

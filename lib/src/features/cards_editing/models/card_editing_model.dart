@@ -1,4 +1,4 @@
-import 'package:memory_game_web/src/dtos/card_dto.dart';
+import 'package:memory_game_web/src/models/card_model.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/card_adding_model.dart';
 import 'package:uuid/uuid.dart';
 
@@ -9,10 +9,10 @@ class CardEditingModel {
 
   CardEditingModel();
 
-  CardEditingModel.fromDto(CardDto cardDto) {
-    content = cardDto.firstContent;
+  CardEditingModel.fromModel(CardModel cardModel) {
+    content = cardModel.firstContent;
     otherCard = CardEditingModel();
-    otherCard.content = cardDto.secondContent;
+    otherCard.content = cardModel.secondContent;
     otherCard.otherCard = this;
   }
 

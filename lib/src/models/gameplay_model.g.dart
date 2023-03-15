@@ -1,16 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'gameplay_dto.dart';
+part of 'gameplay_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-GameplayDto _$GameplayDtoFromJson(Map<String, dynamic> json) => GameplayDto(
+GameplayModel _$GameplayModelFromJson(Map<String, dynamic> json) =>
+    GameplayModel(
       code: json['code'] as String,
     );
 
-Map<String, dynamic> _$GameplayDtoToJson(GameplayDto instance) =>
+Map<String, dynamic> _$GameplayModelToJson(GameplayModel instance) =>
     <String, dynamic>{
       'code': instance.code,
     };

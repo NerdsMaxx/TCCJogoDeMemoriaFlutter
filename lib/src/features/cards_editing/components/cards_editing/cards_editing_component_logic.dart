@@ -2,7 +2,7 @@ part of 'cards_editing_component.dart';
 
 class _CardsEditingComponentLogic {
   _CardsEditingComponentLogic(BuildContext context) {
-    cardEditing1 = CardEditingContext.of(context)!.card!;
+    cardEditing1 = MemoryGameEditingContext.of(context)!.card!;
     cardEditing2 = cardEditing1.otherCard;
   }
 
@@ -10,7 +10,7 @@ class _CardsEditingComponentLogic {
   late final CardEditingModel cardEditing2;
 
   VoidCallback onPressedApplyChange(BuildContext context) => () {
-        CardEditingContext.of(context)!.addCardsIfNotExists(cardEditing1);
-        CardEditingContext.of(context)!.clearCard();
+        MemoryGameEditingContext.of(context)!.addCardsIfNotExists(cardEditing1);
+        MemoryGameEditingContext.of(context)!.clearCard();
       };
 }

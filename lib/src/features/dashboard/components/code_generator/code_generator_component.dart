@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/dtos/gameplay_dto.dart';
-import 'package:memory_game_web/src/dtos/memory_game_dto.dart';
+import 'package:memory_game_web/src/models/gameplay_model.dart';
+import 'package:memory_game_web/src/models/memory_game_model.dart';
 import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_context.dart';
 
 import 'package:memory_game_web/src/services/gameplay_service.dart';
@@ -31,7 +31,7 @@ class _CodeGeneratorComponentState extends State<CodeGeneratorComponent> {
           ValueListenableBuilder(
             valueListenable: logic.reload,
             builder: (context, _, __) =>
-                CustomFutureBuilderWidget<GameplayDto, GameplayDto, Object>(
+                CustomFutureBuilderWidget<GameplayModel, GameplayModel, Object>(
               future: logic.futureCode,
               onLoading: (context) => const CircularProgressIndicator(),
               onData: (context, code) => SelectableText(

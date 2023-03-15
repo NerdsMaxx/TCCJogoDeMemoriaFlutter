@@ -5,13 +5,13 @@ class _GameplayPageLogic {
     this.memoryGameName = memoryGameName ?? LocalStorage.getString(Keys.MEMORY_GAME_NAME)!;
     this.creatorUsername = creatorUsername ?? LocalStorage.getString(Keys.CREATOR_USERNAME)!;
 
-    futureMemoryGameDto =
+    futureMemoryGameModel =
         getIt<MemoryGameService>().getMemoryGame(this.memoryGameName, this.creatorUsername);
   }
 
   late final String memoryGameName;
   late final String creatorUsername;
-  late final Future<MemoryGameDto> futureMemoryGameDto;
+  late final Future<MemoryGameModel> futureMemoryGameModel;
   late final MemoryGameGameplayModel memoryGameGameplayModel;
   final List<CardGameplayModel> cardGameplayList = [];
 }

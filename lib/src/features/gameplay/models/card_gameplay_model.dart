@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/dtos/card_dto.dart';
+import 'package:memory_game_web/src/models/card_model.dart';
 import 'package:uuid/uuid.dart';
 
 class CardGameplayModel {
   final id = const Uuid().v4();
-  late final int originalId;
+  late final int? originalId;
   late final String content;
   late final CardGameplayModel otherCard;
   bool isAccepted = false;
@@ -12,12 +12,12 @@ class CardGameplayModel {
 
   CardGameplayModel();
 
-  CardGameplayModel.fromDto(CardDto cardDto) {
-    originalId = cardDto.id;
-    content = cardDto.firstContent;
+  CardGameplayModel.fromModel(CardModel cardModel) {
+    originalId = cardModel.id;
+    content = cardModel.firstContent;
     otherCard = CardGameplayModel();
-    otherCard.originalId = cardDto.id;
-    otherCard.content = cardDto.secondContent;
+    otherCard.originalId = cardModel.id;
+    otherCard.content = cardModel.secondContent;
     otherCard.otherCard = this;
   }
 

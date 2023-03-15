@@ -2,9 +2,9 @@ part of 'main_dashboard_component.dart';
 
 class _MainDashboardComponentLogic {
   _MainDashboardComponentLogic() {
-    futureMemoryGameDtoList = getIt<MemoryGameService>().getAllMemoryGame();
+    futureMemoryGameModelList = getIt<MemoryGameService>().getAllMemoryGame();
   }
 
-  late final Future<List<MemoryGameDto>> futureMemoryGameDtoList;
-  late final Future<GameplayDto> futureGameplayDto;
+  late final Future<List<MemoryGameModel>> futureMemoryGameModelList;
+  late final Future<GameplayModel> futureGameplayModel;
 }

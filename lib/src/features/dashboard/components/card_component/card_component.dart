@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/auth/auth.dart';
-import 'package:memory_game_web/src/dtos/memory_game_dto.dart';
+import 'package:memory_game_web/src/models/memory_game_model.dart';
 import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_context.dart';
 import 'package:memory_game_web/src/local_storage/keys.dart';
 import 'package:memory_game_web/src/local_storage/local_storage.dart';
@@ -15,14 +15,14 @@ part 'card_component_logic.dart';
 class CardComponent extends StatelessWidget {
   const CardComponent({
     super.key,
-    required this.memoryGameDto,
+    required this.memoryGameModel,
   });
 
-  final MemoryGameDto memoryGameDto;
+  final MemoryGameModel memoryGameModel;
 
   @override
   Widget build(BuildContext context) {
-    final _CardComponentLogic logic = _CardComponentLogic(memoryGameDto);
+    final _CardComponentLogic logic = _CardComponentLogic(memoryGameModel);
 
     return CardWidget(
       child: Padding(
@@ -33,7 +33,7 @@ class CardComponent extends StatelessWidget {
             Align(
               alignment: Alignment.topCenter,
               child: SelectableText(
-                memoryGameDto.name,
+                memoryGameModel.name,
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             ),

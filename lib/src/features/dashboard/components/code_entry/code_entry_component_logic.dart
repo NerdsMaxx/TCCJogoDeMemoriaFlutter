@@ -9,7 +9,7 @@ class _CodeEntryComponentLogic {
   String code = '';
   String label = '';
 
-  Future<PlayerAddedDto>? futurePlayerAddedDto;
+  Future<PlayerAddedModel>? futurePlayerAddedModel;
   ValueNotifier<bool> searchCode = ValueNotifier(false);
 
   VoidCallback onPressedSearchCode(BuildContext context) => () async {
@@ -17,19 +17,20 @@ class _CodeEntryComponentLogic {
           return;
         }
 
-        futurePlayerAddedDto = getIt<GameplayService>().enterInGameplay(code);
+        futurePlayerAddedModel = getIt<GameplayService>().enterInGameplay(code);
         searchCode.value = true;
       };
 
-  VoidCallback onPressedEnterInGameplay(BuildContext context, PlayerAddedDto playerAddedDto) => () {
+  VoidCallback onPressedEnterInGameplay(BuildContext context, PlayerAddedModel playerAddedModel) =>
+      () {
         LocalStorage.setString(
           Keys.MEMORY_GAME_NAME,
-          playerAddedDto.memoryGame.name,
+          playerAddedModel.memoryGame.name,
         );
 
         context.router.push(
           GameplayRoute(
-            memoryGameName: playerAddedDto.memoryGame.name,
+            memoryGameName: playerAddedModel.memoryGame.name,
           ),
         );
       };

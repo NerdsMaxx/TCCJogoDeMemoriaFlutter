@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/dtos/memory_game_dto.dart';
+import 'package:memory_game_web/src/models/memory_game_model.dart';
 
 class DashboardContext extends InheritedWidget {
   DashboardContext({
@@ -9,7 +9,7 @@ class DashboardContext extends InheritedWidget {
 
   final ValueNotifier<bool> codeEntry = ValueNotifier(false);
   final ValueNotifier<bool> codeGenerator = ValueNotifier(false);
-  MemoryGameDto? memoryGameDto;
+  MemoryGameModel? memoryGameModel;
 
   void showCodeEntry() => codeEntry.value = true;
 
@@ -19,7 +19,8 @@ class DashboardContext extends InheritedWidget {
 
   void hideCodeGenerator() => codeGenerator.value = false;
 
-  void setMemoryGameDto(MemoryGameDto memoryGameDto) => this.memoryGameDto = memoryGameDto;
+  void setMemoryGameModel(MemoryGameModel memoryGameModel) =>
+      this.memoryGameModel = memoryGameModel;
 
   static DashboardContext? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<DashboardContext>();

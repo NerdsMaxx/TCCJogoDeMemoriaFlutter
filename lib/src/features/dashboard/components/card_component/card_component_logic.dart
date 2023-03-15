@@ -1,25 +1,25 @@
 part of 'card_component.dart';
 
 class _CardComponentLogic {
-  const _CardComponentLogic(this.memoryGameDto);
+  const _CardComponentLogic(this.memoryGameModel);
 
-  final MemoryGameDto memoryGameDto;
+  final MemoryGameModel memoryGameModel;
 
   VoidCallback onPressedGameplay(BuildContext context) => () {
         LocalStorage.setString(
           Keys.MEMORY_GAME_NAME,
-          memoryGameDto.name,
+          memoryGameModel.name,
         );
 
         LocalStorage.setString(
           Keys.CREATOR_USERNAME,
-          memoryGameDto.creator,
+          memoryGameModel.creator,
         );
 
         context.router.push(
           GameplayRoute(
-            memoryGameName: memoryGameDto.name,
-            creatorUsername: memoryGameDto.creator,
+            memoryGameName: memoryGameModel.name,
+            creatorUsername: memoryGameModel.creator,
           ),
         );
       };
@@ -27,16 +27,16 @@ class _CardComponentLogic {
   VoidCallback onPressedEditing(BuildContext context) => () {
         LocalStorage.setString(
           Keys.MEMORY_GAME_NAME,
-          memoryGameDto.name,
+          memoryGameModel.name,
         );
 
         context.router.push(
-          CardsEditingRoute(memoryGameName: memoryGameDto.name),
+          CardsEditingRoute(memoryGameName: memoryGameModel.name),
         );
       };
 
   VoidCallback onPressedCodeGenerator(BuildContext context) => () {
-        DashboardContext.of(context)!.setMemoryGameDto(memoryGameDto);
+        DashboardContext.of(context)!.setMemoryGameModel(memoryGameModel);
         DashboardContext.of(context)!.showCodeGenerator();
       };
 }
