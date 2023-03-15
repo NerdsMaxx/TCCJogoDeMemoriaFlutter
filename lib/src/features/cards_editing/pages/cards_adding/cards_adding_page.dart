@@ -30,7 +30,6 @@ class _CardsAddingPageState extends State<CardsAddingPage> {
                 builder: (context) {
                   return Column(
                     children: [
-                      MemoryGameFieldComponent(),
                       SaveButtonComponent(),
                       ValueListenableBuilder(
                         valueListenable: MemoryGameEditingContext.of(context)!.showEditableCard,

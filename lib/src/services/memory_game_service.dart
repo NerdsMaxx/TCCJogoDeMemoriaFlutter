@@ -15,7 +15,7 @@ class MemoryGameService extends Service {
 
   Future<List<MemoryGameModel>> getAllMemoryGame() async {
     Response response = await http.get(path, auth: auth);
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(const Utf8Decoder().convert(response.body.codeUnits));
     json = json['content'];
 
     if (json is List) {
@@ -34,7 +34,7 @@ class MemoryGameService extends Service {
     }
 
     Response response = await http.get(request, auth: auth);
-    dynamic json = jsonDecode(response.body);
+    dynamic json = jsonDecode(const Utf8Decoder().convert(response.body.codeUnits));
 
     if (json is Map<String, dynamic>) {
       return MemoryGameModel.fromJson(json);
@@ -46,7 +46,7 @@ class MemoryGameService extends Service {
   Future<MemoryGameModel> saveMemoryGame(MemoryGameModel memoryGame) async {
     if (auth.isNotCreator()) {
       throw CustomException('Não é autorizado!');
-    }
+    } 
 
     Response response = await http.post(path, body: memoryGame.toJson(), auth: auth);
     dynamic json = jsonDecode(response.body);
