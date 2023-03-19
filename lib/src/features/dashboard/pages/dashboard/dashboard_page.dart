@@ -3,6 +3,7 @@ import 'package:memory_game_web/src/features/dashboard/components/code_entry/cod
 import 'package:memory_game_web/src/features/dashboard/components/code_generator/code_generator_component.dart';
 import 'package:memory_game_web/src/features/dashboard/components/main_dashboard/main_dashboard_component.dart';
 import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_context.dart';
+import 'package:memory_game_web/src/features/gameplay/contexts/memory_game_gameplay_context.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/value_listenable_builder_2_widget.dart';
 

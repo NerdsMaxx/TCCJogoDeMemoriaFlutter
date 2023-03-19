@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/features/gameplay/models/card_gameplay_model.dart';
+import 'package:memory_game_web/src/models/gameplay_result_model.dart';
+import 'package:memory_game_web/src/models/player_result_model.dart';
 
-class CardGameplayContext extends InheritedWidget {
-  CardGameplayContext({
+class MemoryGameGameplayContext extends InheritedWidget {
+  MemoryGameGameplayContext({
     super.key,
     required this.child,
     this.card1,
@@ -10,7 +12,6 @@ class CardGameplayContext extends InheritedWidget {
   }) : super(
           child: child,
         );
-
 
   @override
   final Widget child;
@@ -23,16 +24,28 @@ class CardGameplayContext extends InheritedWidget {
   final ValueNotifier<bool> showGameplayCard = ValueNotifier(false);
   final ValueNotifier<int> score = ValueNotifier(0);
 
-  @override
-  bool updateShouldNotify(CardGameplayContext oldWidget) => false;
+  final ValueNotifier<bool> finishGameplay = ValueNotifier(false);
 
-  static CardGameplayContext? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<CardGameplayContext>();
+  late Future<GameplayResultModel> futureGameplayResult;
+
+  final ValueNotifier<bool> showScores = ValueNotifier(false);
+
+  @override
+  bool updateShouldNotify(MemoryGameGameplayContext oldWidget) => false;
+
+  static MemoryGameGameplayContext? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MemoryGameGameplayContext>();
   }
 
   CardGameplayModel? getCard1() => card1;
 
   CardGameplayModel? getCard2() => card2;
+
+  ValueNotifier<int> getScore() => score;
+
+  int getScoreValue() => score.value;
+
+  List<CardGameplayModel> getCardList() => cardGameplayList;
 
   void setCard(CardGameplayModel card) {
     if (card1 == null) {
@@ -54,40 +67,40 @@ class CardGameplayContext extends InheritedWidget {
     }
   }
 
-  List<CardGameplayModel> getCardList() => cardGameplayList;
+  void verifiyIfFinish() {
+    if (cardGameplayList.where((card) => card.isAccepted).length == cardGameplayList.length) {
+      finishGameplay.value = true;
+    }
+  }
 
   void itsRight() {
     bool right = card1 != null && card2 != null && card1!.otherCard == card2!;
 
     if (right) {
       score.value += 1;
+      card1!.win();
+      card2!.win();
     } else {
-      score.value -= 2;
+      score.value -= 1;
+      card1!.turnCardOver();
+      card2!.turnCardOver();
     }
 
-    card1!.accept();
-    card2!.accept();
-
     clearCard();
+    verifiyIfFinish();
   }
 
   void itsWrong() {
-    bool wrong = card1 != null &&
-        card2 != null &&
-        card1!.otherCard != card2!;
+    bool wrong = card1 != null && card2 != null && card1!.otherCard != card2!;
 
-    // if (wrong) {
-    //   of(context)?.score.value += 1;
-    // } else {
     if (!wrong) {
-      score.value -= 2;
+      score.value -= 1;
     }
 
     card1!.turnCardOver();
     card2!.turnCardOver();
-    
-    clearCard();
-  }
 
-  ValueNotifier<int> getScore() => score;
+    clearCard();
+    verifiyIfFinish();
+  }
 }

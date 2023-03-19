@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/features/gameplay/contexts/card_gameplay_context.dart';
+import 'package:memory_game_web/src/features/gameplay/contexts/memory_game_gameplay_context.dart';
 
-class ScoresComponent extends StatefulWidget {
-  const ScoresComponent({super.key});
+class PlayerScoreComponent extends StatefulWidget {
+  const PlayerScoreComponent({super.key});
 
   @override
-  State<ScoresComponent> createState() => _ScoresComponentState();
+  State<PlayerScoreComponent> createState() => _PlayerScoreComponentState();
 }
 
-class _ScoresComponentState extends State<ScoresComponent> {
+class _PlayerScoreComponentState extends State<PlayerScoreComponent> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: CardGameplayContext.of(context)!.getScore(),
+      valueListenable: MemoryGameGameplayContext.of(context)!.getScore(),
       builder: (context, value, _) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

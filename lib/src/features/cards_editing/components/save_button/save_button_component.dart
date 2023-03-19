@@ -16,14 +16,24 @@ class SaveButtonComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     final _SaveButtonComponentLogic logic = _SaveButtonComponentLogic();
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        MemoryGameFieldComponent(),
-        ElevatedButton(
-          onPressed: logic.onPressedSave(context),
-          child: const Text('Salvar'),
-        )
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const MemoryGameFieldComponent(),
+            const SizedBox(
+              width: 20,
+            ),
+            ElevatedButton(
+              onPressed: logic.onPressedSave(context),
+              child: const Text('Salvar'),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: 40,
+        ),
       ],
     );
   }

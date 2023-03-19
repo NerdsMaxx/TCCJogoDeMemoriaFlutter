@@ -17,10 +17,12 @@ class AppBarWidget extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SelectableText(
+            const SelectableText(
               'Jogo de memória',
               maxLines: 1,
-              style: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.white),
+              style: TextStyle(
+                fontSize: 32,
+              ),
             ),
             Visibility(
               visible: getIt<Auth>().isValid(),
@@ -28,7 +30,7 @@ class AppBarWidget extends StatelessWidget {
             ),
           ],
         ),
-        automaticallyImplyLeading: true,
+        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Padding(

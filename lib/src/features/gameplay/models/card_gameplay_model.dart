@@ -4,19 +4,21 @@ import 'package:uuid/uuid.dart';
 
 class CardGameplayModel {
   final id = const Uuid().v4();
-  late final int? originalId;
+  late final int originalId;
   late final String content;
   late final CardGameplayModel otherCard;
   bool isAccepted = false;
   ValueNotifier<bool> isTurned = ValueNotifier(false);
+  bool winner = false;
 
   CardGameplayModel();
 
   CardGameplayModel.fromModel(CardModel cardModel) {
-    originalId = cardModel.id;
+    originalId = cardModel.id!;
     content = cardModel.firstContent;
+
     otherCard = CardGameplayModel();
-    otherCard.originalId = cardModel.id;
+    otherCard.originalId = cardModel.id!;
     otherCard.content = cardModel.secondContent;
     otherCard.otherCard = this;
   }
@@ -32,6 +34,12 @@ class CardGameplayModel {
   }
 
   void accept() {
+    isAccepted = true;
+    isTurned.value = true;
+  }
+
+  void win() {
+    winner = true;
     isAccepted = true;
     isTurned.value = true;
   }

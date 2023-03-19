@@ -39,6 +39,7 @@ dependencies:
  form_validator: ^2.1.1
  auto_route: ^5.0.4
  json_serializable: ^6.6.1
+ flex_color_scheme: ^6.1.2
 
 dev_dependencies:
  flutter_test:

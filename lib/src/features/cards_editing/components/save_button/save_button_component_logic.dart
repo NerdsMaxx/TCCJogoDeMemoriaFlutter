@@ -34,8 +34,15 @@ class _SaveButtonComponentLogic {
           cardList: cardList,
         );
 
-        debugPrint(memoryGame.toJson().toString());
+        if (MemoryGameEditingContext.of(context)!.isNew) {
+          memoryGameService.saveMemoryGame(memoryGame);
+        } else {
+          memoryGameService.updateMemoryGame(
+            MemoryGameEditingContext.of(context)!.oldMemoryGameName!,
+            memoryGame,
+          );
+        }
 
-        memoryGameService.saveMemoryGame(memoryGame);
+        MemoryGameEditingContext.of(context)!.showSavedMemoryGame.value = true;
       };
 }

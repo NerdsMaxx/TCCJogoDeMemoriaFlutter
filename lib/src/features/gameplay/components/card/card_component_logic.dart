@@ -7,6 +7,6 @@ class _CardComponentLogic {
 
   VoidCallback onPressedCard(BuildContext context) => () {
         card.turnsCard();
-        CardGameplayContext.of(context)!.setCard(card);
+        MemoryGameGameplayContext.of(context)!.setCard(card);
       };
 }

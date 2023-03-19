@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/features/gameplay/contexts/card_gameplay_context.dart';
+import 'package:memory_game_web/src/features/gameplay/contexts/memory_game_gameplay_context.dart';
 import 'package:memory_game_web/src/features/gameplay/models/card_gameplay_model.dart';
 import 'package:memory_game_web/src/widgets/card_widget.dart';
 

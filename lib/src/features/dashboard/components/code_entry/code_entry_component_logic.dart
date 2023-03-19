@@ -28,11 +28,25 @@ class _CodeEntryComponentLogic {
           playerAddedModel.memoryGame.name,
         );
 
+        LocalStorage.setString(
+          Keys.CREATOR_USERNAME,
+          playerAddedModel.memoryGame.creator,
+        );
+
+        LocalStorage.setString(
+          Keys.GAMEPLAY_CODE,
+          code,
+        );
+
         context.router.push(
           GameplayRoute(
             memoryGameName: playerAddedModel.memoryGame.name,
+            creatorUsername: playerAddedModel.memoryGame.creator,
+            gameplayCode: code,
           ),
         );
+
+        DashboardContext.of(context)!.codeEntry.value = false;
       };
 
   VoidCallback onPressedRetry() => () {

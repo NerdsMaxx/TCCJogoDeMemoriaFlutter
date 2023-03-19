@@ -43,6 +43,41 @@ class Auth {
     throw CustomException('Deu algum erro!');
   }
 
+  Future<void> createLogin(
+    String name,
+    String username,
+    String email,
+    String password,
+    String type,
+  ) async {
+    Response response = await _api.post(
+      '',
+      body: {
+        'name': name,
+        'username': username,
+        'email': email,
+        'password': password,
+        'type': type,
+      },
+    );
+
+    dynamic json = jsonDecode(response.body);
+
+    if (json is Map<String, dynamic>) {
+      _User user = _User()
+        .._username = json['username']
+        .._email = json['email']
+        .._userType = UserType.getUserType(json['type']);
+
+      await LocalStorage.setObject(_User.USER_KEY, user.toJson());
+      await LocalStorage.setString(TOKEN_KEY, json['jwtToken']);
+
+      return;
+    }
+
+    throw CustomException('Deu algum erro!');
+  }
+
   String? get token => LocalStorage.getString(TOKEN_KEY);
 
   Future<void> clear() async {

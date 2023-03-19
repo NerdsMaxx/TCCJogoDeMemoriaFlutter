@@ -13,6 +13,14 @@ class SizeUtil {
 
     return width > minimum ? width * factor : minimum;
   }
+  
+  static double widthFactor(BuildContext context, double factor) {
+    if (factor > 1.0) {
+      throw CustomException('Não é permitido fator acima de 1.0!');
+    }
+
+    return MediaQuery.of(context).size.width * factor;
+  }
 
   static double height(BuildContext context, double minimum, double factor) {
     double height = MediaQuery.of(context).size.height;

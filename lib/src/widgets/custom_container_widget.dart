@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 
 class CustomContainerWidget extends StatelessWidget {
@@ -12,11 +13,12 @@ class CustomContainerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).canvasColor,
+        color: Colors.white,
         borderRadius: const BorderRadius.all(
           Radius.circular(12),
         ),
         border: Border.all(
+          color: const Color.fromARGB(255, 39, 45, 65),
           width: 8,
         ),
       ),

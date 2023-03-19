@@ -1,11 +1,15 @@
 part of 'card_component.dart';
 
 class _CardComponentLogic {
-  const _CardComponentLogic(this.memoryGameModel);
+  _CardComponentLogic(this.memoryGameModel);
 
   final MemoryGameModel memoryGameModel;
+  final GameplayService gameplayService = getIt<GameplayService>();
 
-  VoidCallback onPressedGameplay(BuildContext context) => () {
+  VoidCallback onPressedGameplay(BuildContext context) => () async {
+        final GameplayModel gameplay = await gameplayService.generateGameplay(memoryGameModel.name);
+        final PlayerAddedModel playerAdded = await gameplayService.enterInGameplay(gameplay.code);
+
         LocalStorage.setString(
           Keys.MEMORY_GAME_NAME,
           memoryGameModel.name,
@@ -16,10 +20,16 @@ class _CardComponentLogic {
           memoryGameModel.creator,
         );
 
+        LocalStorage.setString(
+          Keys.GAMEPLAY_CODE,
+          gameplay.code,
+        );
+
         context.router.push(
           GameplayRoute(
             memoryGameName: memoryGameModel.name,
             creatorUsername: memoryGameModel.creator,
+            gameplayCode: gameplay.code,
           ),
         );
       };

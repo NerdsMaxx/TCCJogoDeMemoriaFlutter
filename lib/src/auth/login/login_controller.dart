@@ -1,9 +1,9 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/auth/auth.dart';
+import 'package:memory_game_web/src/routes/routes.gr.dart';
 
 class LoginController {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -26,13 +26,21 @@ class LoginController {
     return _auth.isValid();
   }
 
-  onPressed(BuildContext context) {
+  VoidCallback onPressedLogin(BuildContext context) {
     return () async {
       if (formKey.currentState!.validate()) {
         if (await doLogin()) {
-          context.router.pushNamed('/dashboard');
+          context.router.push(const DashboardRoute());
         }
       }
+    };
+  }
+
+  VoidCallback onPressedCreateAccount(BuildContext context) {
+    return () {
+      context.router.push(
+        const CreateAccountRoute(),
+      );
     };
   }
 }

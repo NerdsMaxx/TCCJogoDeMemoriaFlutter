@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/auth/login/login_controller.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
+import 'package:memory_game_web/src/widgets/custom_text_field_form_widget.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -30,20 +31,20 @@ class _LoginPageState extends State<LoginPage> {
                     width: 500,
                     child: Column(
                       children: [
-                        TextFormField(
+                        CustomTextFieldFormWidget(
+                          hintText: 'Usuário',
                           validator: _controller.validatorUsernameOrEmail,
                           onChanged: (value) => _controller.username = value,
-                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         const SizedBox(
                           height: 30,
                         ),
-                        TextFormField(
+                        CustomTextFieldFormWidget(
+                          hintText: 'Senha',
                           validator: _controller.validatorPassword,
                           obscureText: true,
                           autocorrect: false,
                           onChanged: (value) => _controller.password = value,
-                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                       ],
                     ),
@@ -52,13 +53,20 @@ class _LoginPageState extends State<LoginPage> {
                     height: 26,
                   ),
                   ElevatedButton(
-                    onPressed: _controller.onPressed(context),
+                    onPressed: _controller.onPressedLogin(context),
                     child: const Text('Logar'),
-                  )
+                  ),
+                  const SizedBox(
+                    height: 26,
+                  ),
                 ],
               ),
             ),
-          )
+          ),
+          ElevatedButton(
+            onPressed: _controller.onPressedCreateAccount(context),
+            child: const Text('Cadastrar a conta'),
+          ),
         ],
       ),
     );

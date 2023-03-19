@@ -11,43 +11,44 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i7;
-import 'package:flutter/material.dart' as _i8;
+import 'package:auto_route/auto_route.dart' as _i8;
+import 'package:flutter/material.dart' as _i9;
 
+import '../auth/create_account/create_account_page.dart' as _i7;
 import '../auth/login/login_page.dart' as _i2;
 import '../features/cards_editing/pages/cards_adding/cards_adding_page.dart'
     as _i5;
 import '../features/cards_editing/pages/cards_editing/cards_editing_page.dart'
     as _i4;
 import '../features/dashboard/pages/dashboard/dashboard_page.dart' as _i3;
-import '../features/gameplay/pages/gameplay/gameplay_page.dart' as _i6;
-import 'guard/auth_guard.dart' as _i9;
+import '../features/gameplay/pages/main_page.dart' as _i6;
+import 'guard/auth_guard.dart' as _i10;
 import 'router_observer/initial_route.dart' as _i1;
 
-class AppRouter extends _i7.RootStackRouter {
+class AppRouter extends _i8.RootStackRouter {
   AppRouter({
-    _i8.GlobalKey<_i8.NavigatorState>? navigatorKey,
+    _i9.GlobalKey<_i9.NavigatorState>? navigatorKey,
     required this.authGuard,
   }) : super(navigatorKey);
 
-  final _i9.AuthGuard authGuard;
+  final _i10.AuthGuard authGuard;
 
   @override
-  final Map<String, _i7.PageFactory> pagesMap = {
+  final Map<String, _i8.PageFactory> pagesMap = {
     InitialRoute.name: (routeData) {
-      return _i7.MaterialPageX<dynamic>(
+      return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i1.InitialRoute(),
       );
     },
     LoginRoute.name: (routeData) {
-      return _i7.MaterialPageX<dynamic>(
+      return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i2.LoginPage(),
       );
     },
     DashboardRoute.name: (routeData) {
-      return _i7.MaterialPageX<dynamic>(
+      return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i3.DashboardPage(),
       );
@@ -55,7 +56,7 @@ class AppRouter extends _i7.RootStackRouter {
     CardsEditingRoute.name: (routeData) {
       final args = routeData.argsAs<CardsEditingRouteArgs>(
           orElse: () => const CardsEditingRouteArgs());
-      return _i7.MaterialPageX<dynamic>(
+      return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i4.CardsEditingPage(
           key: args.key,
@@ -65,7 +66,7 @@ class AppRouter extends _i7.RootStackRouter {
       );
     },
     CardAddingRoute.name: (routeData) {
-      return _i7.MaterialPageX<dynamic>(
+      return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i5.CardsAddingPage(),
       );
@@ -73,53 +74,64 @@ class AppRouter extends _i7.RootStackRouter {
     GameplayRoute.name: (routeData) {
       final args = routeData.argsAs<GameplayRouteArgs>(
           orElse: () => const GameplayRouteArgs());
-      return _i7.MaterialPageX<dynamic>(
+      return _i8.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i6.GameplayPage(
+        child: _i6.MainPage(
           key: args.key,
           memoryGameName: args.memoryGameName,
           creatorUsername: args.creatorUsername,
+          gameplayCode: args.gameplayCode,
         ),
+      );
+    },
+    CreateAccountRoute.name: (routeData) {
+      return _i8.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i7.CreateAccount(),
       );
     },
   };
 
   @override
-  List<_i7.RouteConfig> get routes => [
-        _i7.RouteConfig(
+  List<_i8.RouteConfig> get routes => [
+        _i8.RouteConfig(
           InitialRoute.name,
           path: '/',
         ),
-        _i7.RouteConfig(
+        _i8.RouteConfig(
           LoginRoute.name,
           path: '/login',
         ),
-        _i7.RouteConfig(
+        _i8.RouteConfig(
           DashboardRoute.name,
           path: '/dashboard',
           guards: [authGuard],
         ),
-        _i7.RouteConfig(
+        _i8.RouteConfig(
           CardsEditingRoute.name,
           path: '/dashboard/cards-editing',
           guards: [authGuard],
         ),
-        _i7.RouteConfig(
+        _i8.RouteConfig(
           CardAddingRoute.name,
           path: '/dashboard/cards-adding',
           guards: [authGuard],
         ),
-        _i7.RouteConfig(
+        _i8.RouteConfig(
           GameplayRoute.name,
           path: '/dashboard/gameplay',
           guards: [authGuard],
+        ),
+        _i8.RouteConfig(
+          CreateAccountRoute.name,
+          path: '/create',
         ),
       ];
 }
 
 /// generated route for
 /// [_i1.InitialRoute]
-class InitialRoute extends _i7.PageRouteInfo<void> {
+class InitialRoute extends _i8.PageRouteInfo<void> {
   const InitialRoute()
       : super(
           InitialRoute.name,
@@ -131,7 +143,7 @@ class InitialRoute extends _i7.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.LoginPage]
-class LoginRoute extends _i7.PageRouteInfo<void> {
+class LoginRoute extends _i8.PageRouteInfo<void> {
   const LoginRoute()
       : super(
           LoginRoute.name,
@@ -143,7 +155,7 @@ class LoginRoute extends _i7.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i3.DashboardPage]
-class DashboardRoute extends _i7.PageRouteInfo<void> {
+class DashboardRoute extends _i8.PageRouteInfo<void> {
   const DashboardRoute()
       : super(
           DashboardRoute.name,
@@ -155,9 +167,9 @@ class DashboardRoute extends _i7.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i4.CardsEditingPage]
-class CardsEditingRoute extends _i7.PageRouteInfo<CardsEditingRouteArgs> {
+class CardsEditingRoute extends _i8.PageRouteInfo<CardsEditingRouteArgs> {
   CardsEditingRoute({
-    _i8.Key? key,
+    _i9.Key? key,
     String? memoryGameName,
     bool isAdding = false,
   }) : super(
@@ -180,7 +192,7 @@ class CardsEditingRouteArgs {
     this.isAdding = false,
   });
 
-  final _i8.Key? key;
+  final _i9.Key? key;
 
   final String? memoryGameName;
 
@@ -194,7 +206,7 @@ class CardsEditingRouteArgs {
 
 /// generated route for
 /// [_i5.CardsAddingPage]
-class CardAddingRoute extends _i7.PageRouteInfo<void> {
+class CardAddingRoute extends _i8.PageRouteInfo<void> {
   const CardAddingRoute()
       : super(
           CardAddingRoute.name,
@@ -205,12 +217,13 @@ class CardAddingRoute extends _i7.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.GameplayPage]
-class GameplayRoute extends _i7.PageRouteInfo<GameplayRouteArgs> {
+/// [_i6.MainPage]
+class GameplayRoute extends _i8.PageRouteInfo<GameplayRouteArgs> {
   GameplayRoute({
-    _i8.Key? key,
+    _i9.Key? key,
     String? memoryGameName,
     String? creatorUsername,
+    String? gameplayCode,
   }) : super(
           GameplayRoute.name,
           path: '/dashboard/gameplay',
@@ -218,6 +231,7 @@ class GameplayRoute extends _i7.PageRouteInfo<GameplayRouteArgs> {
             key: key,
             memoryGameName: memoryGameName,
             creatorUsername: creatorUsername,
+            gameplayCode: gameplayCode,
           ),
         );
 
@@ -229,16 +243,31 @@ class GameplayRouteArgs {
     this.key,
     this.memoryGameName,
     this.creatorUsername,
+    this.gameplayCode,
   });
 
-  final _i8.Key? key;
+  final _i9.Key? key;
 
   final String? memoryGameName;
 
   final String? creatorUsername;
 
+  final String? gameplayCode;
+
   @override
   String toString() {
-    return 'GameplayRouteArgs{key: $key, memoryGameName: $memoryGameName, creatorUsername: $creatorUsername}';
+    return 'GameplayRouteArgs{key: $key, memoryGameName: $memoryGameName, creatorUsername: $creatorUsername, gameplayCode: $gameplayCode}';
   }
+}
+
+/// generated route for
+/// [_i7.CreateAccount]
+class CreateAccountRoute extends _i8.PageRouteInfo<void> {
+  const CreateAccountRoute()
+      : super(
+          CreateAccountRoute.name,
+          path: '/create',
+        );
+
+  static const String name = 'CreateAccountRoute';
 }

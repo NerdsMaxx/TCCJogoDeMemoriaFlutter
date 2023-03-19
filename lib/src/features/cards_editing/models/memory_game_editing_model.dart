@@ -4,12 +4,16 @@ import 'package:memory_game_web/src/features/cards_editing/models/card_editing_m
 class MemoryGameEditingModel {
   MemoryGameEditingModel.fromMemoryGameModel(MemoryGameModel memoryGameModel) {
     name = memoryGameModel.name;
+
     cardList = memoryGameModel.cardList!
         .map((cardModel) => CardEditingModel.fromModel(cardModel))
         .toList();
     cardList.addAll(cardList.map((card) => card.otherCard).toList());
+
+    subjectList = memoryGameModel.subjectList;
   }
 
   late final String name;
   late final List<CardEditingModel> cardList;
+  late final List<String> subjectList;
 }

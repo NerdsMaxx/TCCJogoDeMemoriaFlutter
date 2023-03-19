@@ -11,7 +11,7 @@ class MemoryGameFieldComponent extends StatefulWidget {
 }
 
 class _MemoryGameFieldComponentState extends State<MemoryGameFieldComponent> {
-  final _MemoryGameFieldComponentLogic logic = _MemoryGameFieldComponentLogic();
+  late final _MemoryGameFieldComponentLogic logic = _MemoryGameFieldComponentLogic(context);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class _MemoryGameFieldComponentState extends State<MemoryGameFieldComponent> {
               decoration: const InputDecoration(
                 hintText: 'Nome do jogo de memória',
               ),
-              initialValue: MemoryGameEditingContext.of(context)!.memoryGameName,
+              initialValue: logic.memoryGameName,
               onChanged: logic.onChangedMemoryGameName(context),
               style: Theme.of(context).textTheme.headlineSmall,
             ),
@@ -33,7 +33,7 @@ class _MemoryGameFieldComponentState extends State<MemoryGameFieldComponent> {
               decoration: const InputDecoration(
                 hintText: 'Matérias',
               ),
-              initialValue: logic.subject,
+              initialValue: logic.subjects,
               onChanged: logic.onChangedSubject(context),
               style: Theme.of(context).textTheme.headlineSmall,
             ),

@@ -36,6 +36,7 @@ class _CodeGeneratorComponentState extends State<CodeGeneratorComponent> {
               onLoading: (context) => const CircularProgressIndicator(),
               onData: (context, code) => SelectableText(
                 code.code,
+                style: Theme.of(context).textTheme.displaySmall,
               ),
               onError: (context, valueError) => SelectableText(
                 valueError.toString(),

@@ -8,11 +8,11 @@ class PlayerScoreModel {
   final int score;
 
   @JsonKey(name: 'cardSet')
-  final List<CardScoreModel> cardScoreModelList;
+  final List<CardScoreModel> cardScoreList;
 
   const PlayerScoreModel({
     required this.score,
-    required this.cardScoreModelList,
+    required this.cardScoreList,
   });
 
   factory PlayerScoreModel.fromJson(Map<String, dynamic> json) => _$PlayerScoreModelFromJson(json);

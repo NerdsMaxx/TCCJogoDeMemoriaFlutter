@@ -9,7 +9,7 @@ part of 'player_score_model.dart';
 PlayerScoreModel _$PlayerScoreModelFromJson(Map<String, dynamic> json) =>
     PlayerScoreModel(
       score: json['score'] as int,
-      cardScoreModelList: (json['cardSet'] as List<dynamic>)
+      cardScoreList: (json['cardSet'] as List<dynamic>)
           .map((e) => CardScoreModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -17,5 +17,5 @@ PlayerScoreModel _$PlayerScoreModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$PlayerScoreModelToJson(PlayerScoreModel instance) =>
     <String, dynamic>{
       'score': instance.score,
-      'cardSet': instance.cardScoreModelList,
+      'cardSet': instance.cardScoreList,
     };
