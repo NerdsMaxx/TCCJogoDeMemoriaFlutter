@@ -13,8 +13,7 @@
 				"--web-browser-flag",
 				"--disable-web-security",
 				"--web-port",
-				"4201",
-				"--profile"
+				"4201"
 				// "--web-renderer",
 				// "html"
 			]

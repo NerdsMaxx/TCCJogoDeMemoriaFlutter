@@ -81,8 +81,14 @@ class _CodeEntryComponentState extends State<CodeEntryComponent> {
                   onLoading: (context) => const CircularProgressIndicator(),
                   onData: (context, value) => Column(
                     children: [
-                      SelectableText(value.memoryGame.name),
-                      SelectableText('Do criador: ${value.memoryGame.creator}'),
+                      SelectableText(
+                        value.memoryGame.name,
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
+                      SelectableText(
+                        'Do criador: ${value.memoryGame.creator}',
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
                       ElevatedButton(
                         onPressed: logic.onPressedEnterInGameplay(context, value),
                         child: const Text('Jogar'),

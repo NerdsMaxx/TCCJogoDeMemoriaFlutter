@@ -11,6 +11,7 @@ import 'package:memory_game_web/src/models/gameplay_model.dart';
 import 'package:memory_game_web/src/models/gameplay_result_model.dart';
 import 'package:memory_game_web/src/models/player_added_model.dart';
 import 'package:memory_game_web/src/models/player_score_model.dart';
+import 'package:memory_game_web/src/models/previous_gameplays_model.dart';
 
 @injectable
 class GameplayService extends Service {
@@ -85,6 +86,23 @@ class GameplayService extends Service {
 
     if (json is Map<String, dynamic>) {
       return CodesModel.fromJson(json);
+    }
+
+    throw CustomException('Não foi possível obter o resultado do jogo!');
+  }
+
+  Future<List<PreviousGameplaysModel>> getPreviousGameplays() async {
+    Response response = await http.get(
+      '$path/partidas-anteriores',
+      auth: auth,
+    );
+
+    dynamic json = jsonDecode(convert(response.body));
+
+    debugPrint(json.toString());
+
+    if (json is List) {
+      return json.map((e) => PreviousGameplaysModel.fromJson(e)).toList();
     }
 
     throw CustomException('Não foi possível obter o resultado do jogo!');

@@ -114,6 +114,7 @@ class AppRouter extends _i11.RootStackRouter {
         child: _i10.ScorePage(
           key: args.key,
           code: args.code,
+          isPlayer: args.isPlayer,
         ),
       );
     },
@@ -343,12 +344,14 @@ class ScoreRoute extends _i11.PageRouteInfo<ScoreRouteArgs> {
   ScoreRoute({
     _i12.Key? key,
     String? code,
+    bool isPlayer = false,
   }) : super(
           ScoreRoute.name,
           path: '/scores',
           args: ScoreRouteArgs(
             key: key,
             code: code,
+            isPlayer: isPlayer,
           ),
         );
 
@@ -359,14 +362,17 @@ class ScoreRouteArgs {
   const ScoreRouteArgs({
     this.key,
     this.code,
+    this.isPlayer = false,
   });
 
   final _i12.Key? key;
 
   final String? code;
 
+  final bool isPlayer;
+
   @override
   String toString() {
-    return 'ScoreRouteArgs{key: $key, code: $code}';
+    return 'ScoreRouteArgs{key: $key, code: $code, isPlayer: $isPlayer}';
   }
 }

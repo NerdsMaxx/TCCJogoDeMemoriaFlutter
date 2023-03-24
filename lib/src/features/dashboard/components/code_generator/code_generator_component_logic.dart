@@ -5,7 +5,7 @@ class _CodeGeneratorComponentLogic {
     memoryGame = DashboardContext.of(context)!.memoryGameModel!;
 
     futureCode = getIt<GameplayService>()
-        .generateGameplay(GameplayModel(memoryGame: memoryGame.name, creator: memoryGame.creator));
+        .generateGameplay(GameplayModel(memoryGame: memoryGame.name, creator: memoryGame.creator, alone: false));
   }
 
   late Future<GameplayModel> futureCode;
@@ -15,7 +15,7 @@ class _CodeGeneratorComponentLogic {
   VoidCallback onPressedCodeGenerator() {
     return () {
       futureCode = getIt<GameplayService>().generateGameplay(
-          GameplayModel(memoryGame: memoryGame.name, creator: memoryGame.creator));
+          GameplayModel(memoryGame: memoryGame.name, creator: memoryGame.creator, alone: false));
       reload.value = !reload.value;
     };
   }

@@ -10,26 +10,26 @@ class _FinishGameplayComponentLogic {
 
       final Set<int> hashCodeSet = {};
 
-      final List<CardScoreModel> cardScoreList = cardGameplayList
-          .where((cardGameplay) {
-            if (hashCodeSet.contains(cardGameplay.hashCode)) {
-              return false;
-            }
+      // final List<CardScoreModel> cardScoreList = cardGameplayList
+      //     .where((cardGameplay) {
+      //       if (hashCodeSet.contains(cardGameplay.hashCode)) {
+      //         return false;
+      //       }
 
-            hashCodeSet.addAll([cardGameplay.hashCode, cardGameplay.otherCard.hashCode]);
-            return true;
-          })
-          .map(
-            (cardGameplay) => CardScoreModel(
-              id: cardGameplay.originalId,
-              winner: cardGameplay.winner,
-            ),
-          )
-          .toList();
+      //       hashCodeSet.addAll([cardGameplay.hashCode, cardGameplay.otherCard.hashCode]);
+      //       return true;
+      //     })
+      //     .map(
+      //       (cardGameplay) => CardScoreModel(
+      //         id: cardGameplay.originalId,
+      //         winner: cardGameplay.winner,
+      //       ),
+      //     )
+      //     .toList();
 
       final PlayerScoreModel playerScore = PlayerScoreModel(
         score: MemoryGameGameplayContext.of(context)!.getScoreValue(),
-        cardScoreList: cardScoreList,
+        //cardScoreList: cardScoreList,
       );
 
       final String code = MemoryGameGameplayContext.of(context)!.code ??

@@ -43,6 +43,23 @@ class TitleComponent extends StatelessWidget {
                   icon: Icons.sensor_door_outlined,
                 ),
                 Visibility(
+                  visible: getIt<Auth>().isPlayer(),
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      CircleButtonWidget(
+                        tooltip: 'Olhar histórico de outras jogadas',
+                        onPressed: () {
+                          context.router.push(ScoreRoute(isPlayer: true));
+                        },
+                        icon: Icons.data_thresholding_outlined,
+                      ),
+                    ],
+                  ),
+                ),
+                Visibility(
                   visible: getIt<Auth>().isCreator(),
                   child: Row(
                     children: [

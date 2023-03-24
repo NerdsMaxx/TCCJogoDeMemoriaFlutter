@@ -7,12 +7,12 @@ part 'player_score_model.g.dart';
 class PlayerScoreModel {
   final int score;
 
-  @JsonKey(name: 'cardSet')
-  final List<CardScoreModel> cardScoreList;
+  // @JsonKey(name: 'cardSet')
+  // final List<CardScoreModel> cardScoreList;
 
   const PlayerScoreModel({
     required this.score,
-    required this.cardScoreList,
+    //required this.cardScoreList,
   });
 
   factory PlayerScoreModel.fromJson(Map<String, dynamic> json) => _$PlayerScoreModelFromJson(json);

@@ -1,17 +1,25 @@
 part of 'score_page.dart';
 
 class _ScorePageLogic {
-  _ScorePageLogic(String? code) {
-    this.code = code ?? LocalStorage.getString(Keys.GAMEPLAY_CODE)!;
+  _ScorePageLogic(String? code, this.isPlayer) {
+    this.code = code ?? LocalStorage.getString(Keys.GAMEPLAY_CODE);
+
+    if (isPlayer) {
+      futureGameplayResult = gameplayService.getPreviousGameplays();
+    } else {
+      futureGameplayResult = gameplayService.getGameplayScores(code!);
+    }
   }
 
+  final bool isPlayer;
+
   final GameplayService gameplayService = getIt<GameplayService>();
-  late final String code;
-  late Future<GameplayResultModel> futureGameplayResult = gameplayService.getGameplayScores(code);
+  late final String? code;
+  late Future<Object> futureGameplayResult;
 
   VoidCallback onPressedReload(BuildContext context) {
     return () async {
-      futureGameplayResult = gameplayService.getGameplayScores(code);
+      futureGameplayResult = gameplayService.getGameplayScores(code!);
     };
   }
 

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_context.dart';
-import 'package:memory_game_web/src/services/memory_game_service.dart';
+import 'package:memory_game_web/src/features/dashboard/view_model/search_view_model.dart';
 import 'package:memory_game_web/src/utils/size_util.dart';
 import 'package:memory_game_web/src/widgets/custom_text_field_form_widget.dart';
-
-part 'search_component_logic.dart';
 
 class SearchComponent extends StatefulWidget {
   const SearchComponent({super.key});
@@ -15,7 +11,7 @@ class SearchComponent extends StatefulWidget {
 }
 
 class _SearchComponentState extends State<SearchComponent> {
-  late final _SearchComponentLogic logic = _SearchComponentLogic();
+  late final SearchViewModel viewModel = SearchViewModel(context: context);
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +24,7 @@ class _SearchComponentState extends State<SearchComponent> {
             width: 300,
             child: CustomTextFieldFormWidget(
               hintText: 'Pesquisa',
-              onChanged: logic.onChangedSearch(context),
+              onChanged: viewModel.onChangedSearch,
             ),
           ),
         ],

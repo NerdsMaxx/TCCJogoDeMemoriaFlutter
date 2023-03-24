@@ -61,7 +61,7 @@ class MainDashboardComponent extends StatelessWidget {
                   runSpacing: 30,
                   children: [
                     for (MemoryGameModel memoryGameModel in data)
-                      CardComponent(memoryGameModel: memoryGameModel)
+                      CardComponent(memoryGame: memoryGameModel)
                   ],
                 ),
               ),
