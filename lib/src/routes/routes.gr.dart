@@ -11,54 +11,70 @@
 // ignore_for_file: type=lint
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i8;
-import 'package:flutter/material.dart' as _i9;
+import 'package:auto_route/auto_route.dart' as _i11;
+import 'package:flutter/material.dart' as _i12;
 
-import '../auth/create_account/create_account_page.dart' as _i7;
+import '../auth/change_password/change_password_page.dart' as _i4;
+import '../auth/create_account/create_account_page.dart' as _i3;
 import '../auth/login/login_page.dart' as _i2;
 import '../features/cards_editing/pages/cards_adding/cards_adding_page.dart'
-    as _i5;
+    as _i7;
 import '../features/cards_editing/pages/cards_editing/cards_editing_page.dart'
-    as _i4;
-import '../features/dashboard/pages/dashboard/dashboard_page.dart' as _i3;
-import '../features/gameplay/pages/main_page.dart' as _i6;
-import 'guard/auth_guard.dart' as _i10;
+    as _i6;
+import '../features/dashboard/pages/dashboard/dashboard_page.dart' as _i5;
+import '../features/gameplay/pages/gameplay/gameplay_page.dart' as _i8;
+import '../features/gameplay_management/pages/gameplay_management_page.dart'
+    as _i9;
+import '../features/scores/score_page.dart' as _i10;
+import 'guard/auth_guard.dart' as _i13;
 import 'router_observer/initial_route.dart' as _i1;
 
-class AppRouter extends _i8.RootStackRouter {
+class AppRouter extends _i11.RootStackRouter {
   AppRouter({
-    _i9.GlobalKey<_i9.NavigatorState>? navigatorKey,
+    _i12.GlobalKey<_i12.NavigatorState>? navigatorKey,
     required this.authGuard,
   }) : super(navigatorKey);
 
-  final _i10.AuthGuard authGuard;
+  final _i13.AuthGuard authGuard;
 
   @override
-  final Map<String, _i8.PageFactory> pagesMap = {
+  final Map<String, _i11.PageFactory> pagesMap = {
     InitialRoute.name: (routeData) {
-      return _i8.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i1.InitialRoute(),
       );
     },
     LoginRoute.name: (routeData) {
-      return _i8.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: const _i2.LoginPage(),
       );
     },
-    DashboardRoute.name: (routeData) {
-      return _i8.MaterialPageX<dynamic>(
+    CreateAccountRoute.name: (routeData) {
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i3.DashboardPage(),
+        child: const _i3.CreateAccount(),
+      );
+    },
+    ChangePasswordRoute.name: (routeData) {
+      return _i11.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i4.ChangePasswordPage(),
+      );
+    },
+    DashboardRoute.name: (routeData) {
+      return _i11.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: const _i5.DashboardPage(),
       );
     },
     CardsEditingRoute.name: (routeData) {
       final args = routeData.argsAs<CardsEditingRouteArgs>(
           orElse: () => const CardsEditingRouteArgs());
-      return _i8.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i4.CardsEditingPage(
+        child: _i6.CardsEditingPage(
           key: args.key,
           memoryGameName: args.memoryGameName,
           isAdding: args.isAdding,
@@ -66,17 +82,17 @@ class AppRouter extends _i8.RootStackRouter {
       );
     },
     CardAddingRoute.name: (routeData) {
-      return _i8.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i5.CardsAddingPage(),
+        child: const _i7.CardsAddingPage(),
       );
     },
     GameplayRoute.name: (routeData) {
       final args = routeData.argsAs<GameplayRouteArgs>(
           orElse: () => const GameplayRouteArgs());
-      return _i8.MaterialPageX<dynamic>(
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i6.MainPage(
+        child: _i8.GameplayPage(
           key: args.key,
           memoryGameName: args.memoryGameName,
           creatorUsername: args.creatorUsername,
@@ -84,54 +100,79 @@ class AppRouter extends _i8.RootStackRouter {
         ),
       );
     },
-    CreateAccountRoute.name: (routeData) {
-      return _i8.MaterialPageX<dynamic>(
+    GameplayManagementRoute.name: (routeData) {
+      return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i7.CreateAccount(),
+        child: const _i9.GameplayManagementPage(),
+      );
+    },
+    ScoreRoute.name: (routeData) {
+      final args = routeData.argsAs<ScoreRouteArgs>(
+          orElse: () => const ScoreRouteArgs());
+      return _i11.MaterialPageX<dynamic>(
+        routeData: routeData,
+        child: _i10.ScorePage(
+          key: args.key,
+          code: args.code,
+        ),
       );
     },
   };
 
   @override
-  List<_i8.RouteConfig> get routes => [
-        _i8.RouteConfig(
+  List<_i11.RouteConfig> get routes => [
+        _i11.RouteConfig(
           InitialRoute.name,
           path: '/',
         ),
-        _i8.RouteConfig(
+        _i11.RouteConfig(
           LoginRoute.name,
           path: '/login',
         ),
-        _i8.RouteConfig(
+        _i11.RouteConfig(
+          CreateAccountRoute.name,
+          path: '/create',
+        ),
+        _i11.RouteConfig(
+          ChangePasswordRoute.name,
+          path: '/change-password',
+        ),
+        _i11.RouteConfig(
           DashboardRoute.name,
           path: '/dashboard',
           guards: [authGuard],
         ),
-        _i8.RouteConfig(
+        _i11.RouteConfig(
           CardsEditingRoute.name,
           path: '/dashboard/cards-editing',
           guards: [authGuard],
         ),
-        _i8.RouteConfig(
+        _i11.RouteConfig(
           CardAddingRoute.name,
           path: '/dashboard/cards-adding',
           guards: [authGuard],
         ),
-        _i8.RouteConfig(
+        _i11.RouteConfig(
           GameplayRoute.name,
           path: '/dashboard/gameplay',
           guards: [authGuard],
         ),
-        _i8.RouteConfig(
-          CreateAccountRoute.name,
-          path: '/create',
+        _i11.RouteConfig(
+          GameplayManagementRoute.name,
+          path: '/codes',
+          guards: [authGuard],
+        ),
+        _i11.RouteConfig(
+          ScoreRoute.name,
+          path: '/scores',
+          guards: [authGuard],
         ),
       ];
 }
 
 /// generated route for
 /// [_i1.InitialRoute]
-class InitialRoute extends _i8.PageRouteInfo<void> {
+class InitialRoute extends _i11.PageRouteInfo<void> {
   const InitialRoute()
       : super(
           InitialRoute.name,
@@ -143,7 +184,7 @@ class InitialRoute extends _i8.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i2.LoginPage]
-class LoginRoute extends _i8.PageRouteInfo<void> {
+class LoginRoute extends _i11.PageRouteInfo<void> {
   const LoginRoute()
       : super(
           LoginRoute.name,
@@ -154,8 +195,32 @@ class LoginRoute extends _i8.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i3.DashboardPage]
-class DashboardRoute extends _i8.PageRouteInfo<void> {
+/// [_i3.CreateAccount]
+class CreateAccountRoute extends _i11.PageRouteInfo<void> {
+  const CreateAccountRoute()
+      : super(
+          CreateAccountRoute.name,
+          path: '/create',
+        );
+
+  static const String name = 'CreateAccountRoute';
+}
+
+/// generated route for
+/// [_i4.ChangePasswordPage]
+class ChangePasswordRoute extends _i11.PageRouteInfo<void> {
+  const ChangePasswordRoute()
+      : super(
+          ChangePasswordRoute.name,
+          path: '/change-password',
+        );
+
+  static const String name = 'ChangePasswordRoute';
+}
+
+/// generated route for
+/// [_i5.DashboardPage]
+class DashboardRoute extends _i11.PageRouteInfo<void> {
   const DashboardRoute()
       : super(
           DashboardRoute.name,
@@ -166,10 +231,10 @@ class DashboardRoute extends _i8.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i4.CardsEditingPage]
-class CardsEditingRoute extends _i8.PageRouteInfo<CardsEditingRouteArgs> {
+/// [_i6.CardsEditingPage]
+class CardsEditingRoute extends _i11.PageRouteInfo<CardsEditingRouteArgs> {
   CardsEditingRoute({
-    _i9.Key? key,
+    _i12.Key? key,
     String? memoryGameName,
     bool isAdding = false,
   }) : super(
@@ -192,7 +257,7 @@ class CardsEditingRouteArgs {
     this.isAdding = false,
   });
 
-  final _i9.Key? key;
+  final _i12.Key? key;
 
   final String? memoryGameName;
 
@@ -205,8 +270,8 @@ class CardsEditingRouteArgs {
 }
 
 /// generated route for
-/// [_i5.CardsAddingPage]
-class CardAddingRoute extends _i8.PageRouteInfo<void> {
+/// [_i7.CardsAddingPage]
+class CardAddingRoute extends _i11.PageRouteInfo<void> {
   const CardAddingRoute()
       : super(
           CardAddingRoute.name,
@@ -217,10 +282,10 @@ class CardAddingRoute extends _i8.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.MainPage]
-class GameplayRoute extends _i8.PageRouteInfo<GameplayRouteArgs> {
+/// [_i8.GameplayPage]
+class GameplayRoute extends _i11.PageRouteInfo<GameplayRouteArgs> {
   GameplayRoute({
-    _i9.Key? key,
+    _i12.Key? key,
     String? memoryGameName,
     String? creatorUsername,
     String? gameplayCode,
@@ -246,7 +311,7 @@ class GameplayRouteArgs {
     this.gameplayCode,
   });
 
-  final _i9.Key? key;
+  final _i12.Key? key;
 
   final String? memoryGameName;
 
@@ -261,13 +326,47 @@ class GameplayRouteArgs {
 }
 
 /// generated route for
-/// [_i7.CreateAccount]
-class CreateAccountRoute extends _i8.PageRouteInfo<void> {
-  const CreateAccountRoute()
+/// [_i9.GameplayManagementPage]
+class GameplayManagementRoute extends _i11.PageRouteInfo<void> {
+  const GameplayManagementRoute()
       : super(
-          CreateAccountRoute.name,
-          path: '/create',
+          GameplayManagementRoute.name,
+          path: '/codes',
         );
 
-  static const String name = 'CreateAccountRoute';
+  static const String name = 'GameplayManagementRoute';
+}
+
+/// generated route for
+/// [_i10.ScorePage]
+class ScoreRoute extends _i11.PageRouteInfo<ScoreRouteArgs> {
+  ScoreRoute({
+    _i12.Key? key,
+    String? code,
+  }) : super(
+          ScoreRoute.name,
+          path: '/scores',
+          args: ScoreRouteArgs(
+            key: key,
+            code: code,
+          ),
+        );
+
+  static const String name = 'ScoreRoute';
+}
+
+class ScoreRouteArgs {
+  const ScoreRouteArgs({
+    this.key,
+    this.code,
+  });
+
+  final _i12.Key? key;
+
+  final String? code;
+
+  @override
+  String toString() {
+    return 'ScoreRouteArgs{key: $key, code: $code}';
+  }
 }

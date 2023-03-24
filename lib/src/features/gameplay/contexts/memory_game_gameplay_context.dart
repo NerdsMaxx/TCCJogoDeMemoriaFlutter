@@ -7,6 +7,7 @@ class MemoryGameGameplayContext extends InheritedWidget {
   MemoryGameGameplayContext({
     super.key,
     required this.child,
+    this.code,
     this.card1,
     this.card2,
   }) : super(
@@ -26,9 +27,11 @@ class MemoryGameGameplayContext extends InheritedWidget {
 
   final ValueNotifier<bool> finishGameplay = ValueNotifier(false);
 
-  late Future<GameplayResultModel> futureGameplayResult;
+  // late Future<GameplayResultModel> futureGameplayResult;
 
-  final ValueNotifier<bool> showScores = ValueNotifier(false);
+  // final ValueNotifier<bool> showScores = ValueNotifier(false);
+
+  final String? code;
 
   @override
   bool updateShouldNotify(MemoryGameGameplayContext oldWidget) => false;

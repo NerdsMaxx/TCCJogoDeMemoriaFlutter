@@ -57,15 +57,32 @@ class _LoginPageState extends State<LoginPage> {
                     child: const Text('Logar'),
                   ),
                   const SizedBox(
-                    height: 26,
+                    height: 85,
                   ),
                 ],
               ),
             ),
           ),
-          ElevatedButton(
+          TextButton(
             onPressed: _controller.onPressedCreateAccount(context),
-            child: const Text('Cadastrar a conta'),
+            child: const Text(
+              'Não tem conta? Cadastre a sua conta agora.',
+              style: TextStyle(
+                fontSize: 22,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          TextButton(
+            onPressed: _controller.onPressedChangePassword(context),
+            child: const Text(
+              'Esqueceu a senha? Altere a senha.',
+              style: TextStyle(
+                fontSize: 22,
+              ),
+            ),
           ),
         ],
       ),

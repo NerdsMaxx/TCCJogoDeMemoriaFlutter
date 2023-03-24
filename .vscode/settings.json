@@ -7,7 +7,7 @@
 		"**/.DS_Store": true,
 		"**/Thumbs.db": true,
 		"**/*.g.dart": true,
-		"**/injection.config.dart": true,
+		"**/injection.config.dart": false,
 		"**/*.gr.dart": true
 	}
 }

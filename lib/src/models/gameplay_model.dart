@@ -4,10 +4,16 @@ part 'gameplay_model.g.dart';
 
 @JsonSerializable()
 class GameplayModel {
-  final String code;
+  final String? memoryGame;
+  final String? creator;
+  final bool? alone;
+  final String? code;
 
   const GameplayModel({
-    required this.code,
+    this.memoryGame,
+    this.creator,
+    this.alone,
+    this.code,
   });
 
   factory GameplayModel.fromJson(Map<String, dynamic> json) => _$GameplayModelFromJson(json);

@@ -12,6 +12,7 @@ import 'package:memory_game_web/src/routes/routes.gr.dart';
 import 'package:memory_game_web/src/services/gameplay_service.dart';
 import 'package:memory_game_web/src/widgets/custom_container_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
+import 'package:memory_game_web/src/widgets/custom_text_field_form_widget.dart';
 
 part 'code_entry_component_logic.dart';
 
@@ -43,12 +44,16 @@ class _CodeEntryComponentState extends State<CodeEntryComponent> {
                     children: [
                       SizedBox(
                         width: 420,
-                        child: TextFormField(
+                        child: CustomTextFieldFormWidget(
+                          hintText: 'Digite o código',
                           initialValue: logic.code,
                           autofocus: true,
                           onChanged: (value) => logic.code = value,
                           maxLength: 4,
                           validator: logic.validatorCode,
+                          style: const TextStyle(
+                            fontSize: 22,
+                          ),
                         ),
                       ),
                       const SizedBox(

@@ -24,14 +24,12 @@ class CardsEditingComponent extends StatelessWidget {
               children: [
                 CardEditingComponent(
                   cardEditing: logic.cardEditing1,
-                  isFirst: logic.cardEditing1 is CardAddingModel,
                 ),
                 const SizedBox(
                   width: 20,
                 ),
                 CardEditingComponent(
                   cardEditing: logic.cardEditing2,
-                  isFirst: logic.cardEditing2 is CardAddingModel,
                 ),
               ],
             ),

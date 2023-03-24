@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/auth/auth.dart';
 
@@ -8,10 +9,11 @@ class AuthGuard extends AutoRouteGuard {
     final Auth auth = getIt<Auth>();
 
     if (auth.isValid()) {
+      debugPrint(router.currentPath);
+
       if (auth.isNotCreator() &&
           (router.currentPath == '/dashboard/cards-editing' ||
               router.currentPath == '/dashboard/cards-adding')) {
-        router.pushNamed('/dashboard');
         return;
       }
 
@@ -19,7 +21,5 @@ class AuthGuard extends AutoRouteGuard {
     } else {
       router.pushNamed('/');
     }
-
-    
   }
 }

@@ -1,13 +1,17 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/auth/auth.dart';
+import 'package:memory_game_web/src/routes/routes.gr.dart';
 
 class AppBarWidget extends StatelessWidget {
   const AppBarWidget({
     super.key,
+    this.back = false,
     this.body,
   });
 
+  final bool back;
   final Widget? body;
 
   @override
@@ -30,7 +34,7 @@ class AppBarWidget extends StatelessWidget {
             ),
           ],
         ),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: back,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -59,20 +63,40 @@ class _ProfileState extends State<_Profile> {
           padding: const EdgeInsets.all(0),
           enabled: false,
           child: SizedBox(
-            width: 400,
+            width: 445,
             child: Card(
-              child: Column(
-                children: [
-                  SelectableText(
-                    'Username: ${auth.username}',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  SelectableText(
-                    'Email: ${auth.email}',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SelectableText(
+                      auth.username!,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    SelectableText(
+                      auth.email!,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    SelectableText(
+                      auth.type!,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
               ),
+            ),
+          ),
+        ),
+        PopupMenuItem(
+          child: GestureDetector(
+            child: Row(
+              children: const [
+                Expanded(child: Text('Sair')),
+              ],
+            ),
+            onTap: () => context.router.push(
+              const InitialRoute(),
             ),
           ),
         ),

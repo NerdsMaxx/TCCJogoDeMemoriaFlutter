@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
 import 'package:memory_game_web/src/api/http_impl.dart';
+import 'package:memory_game_web/src/auth/models/new_account_model.dart';
 import 'package:memory_game_web/src/enums/user_type_enum.dart';
 import 'package:memory_game_web/src/exceptions/custom_exception.dart';
 import 'package:memory_game_web/src/interfaces/http_interface.dart';
@@ -14,11 +15,11 @@ part 'user.dart';
 class Auth {
   static const String TOKEN_KEY = 'token';
 
-  final HttpInterface _api;
-  Auth(@Named.from(HttpImpl) this._api);
+  final HttpInterface _http;
+  Auth(@Named.from(HttpImpl) this._http);
 
   Future<void> login(String username, String password) async {
-    Response response = await _api.post(
+    Response response = await _http.post(
       'login',
       body: {
         'username': username,
@@ -43,39 +44,23 @@ class Auth {
     throw CustomException('Deu algum erro!');
   }
 
-  Future<void> createLogin(
-    String name,
-    String username,
-    String email,
-    String password,
-    String type,
+  Future<void> createAccount(
+    NewAccountModel newAccount
   ) async {
-    Response response = await _api.post(
-      '',
+    _http.post(
+      'usuario',
+      body: newAccount.toJson(),
+    );
+  }
+
+  Future<void> changePassword(String username, String newPassword) async {
+    _http.put(
+      'usuario/mudar-senha',
       body: {
-        'name': name,
         'username': username,
-        'email': email,
-        'password': password,
-        'type': type,
+        'newPassword': newPassword,
       },
     );
-
-    dynamic json = jsonDecode(response.body);
-
-    if (json is Map<String, dynamic>) {
-      _User user = _User()
-        .._username = json['username']
-        .._email = json['email']
-        .._userType = UserType.getUserType(json['type']);
-
-      await LocalStorage.setObject(_User.USER_KEY, user.toJson());
-      await LocalStorage.setString(TOKEN_KEY, json['jwtToken']);
-
-      return;
-    }
-
-    throw CustomException('Deu algum erro!');
   }
 
   String? get token => LocalStorage.getString(TOKEN_KEY);
@@ -93,6 +78,8 @@ class Auth {
   String? get username => _user?._username;
 
   String? get email => _user?._email;
+
+  String? get type => _user?._userType?.type;
 
   bool isCreator() {
     return _user?._userType == UserType.creator;

@@ -4,8 +4,6 @@ import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
 import 'package:memory_game_web/src/abstract_classes/service_abs.dart';
 import 'package:memory_game_web/src/api/http_impl.dart';
-import 'package:memory_game_web/src/auth/auth.dart';
-import 'package:memory_game_web/src/interfaces/http_interface.dart';
 import 'package:memory_game_web/src/models/memory_game_model.dart';
 import 'package:memory_game_web/src/exceptions/custom_exception.dart';
 
@@ -16,9 +14,27 @@ class MemoryGameService extends Service {
   static const String path = 'jogo-de-memoria';
 
   Future<List<MemoryGameModel>> getAllMemoryGame() async {
-    Response response = await http.get(path, auth: auth);
+    Response response = await http.get(
+      path,
+      auth: auth,
+    );
+    
     dynamic json = jsonDecode(convert(response.body));
-    json = json['content'];
+
+    if (json is List) {
+      return json.map((memoryGame) => MemoryGameModel.fromJson(memoryGame)).toList();
+    }
+
+    throw CustomException('Não foi possível obter os jogos de memória.');
+  }
+
+  Future<List<MemoryGameModel>> getAllMemoryGameBySearch(String search) async {
+    Response response = await http.get(
+      '$path/pesquisar/$search',
+      auth: auth,
+    );
+
+    dynamic json = jsonDecode(convert(response.body));
 
     if (json is List) {
       return json.map((memoryGame) => MemoryGameModel.fromJson(memoryGame)).toList();

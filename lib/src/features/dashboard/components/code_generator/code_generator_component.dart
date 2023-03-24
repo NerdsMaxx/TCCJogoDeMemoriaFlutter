@@ -34,8 +34,8 @@ class _CodeGeneratorComponentState extends State<CodeGeneratorComponent> {
                 CustomFutureBuilderWidget<GameplayModel, GameplayModel, Object>(
               future: logic.futureCode,
               onLoading: (context) => const CircularProgressIndicator(),
-              onData: (context, code) => SelectableText(
-                code.code,
+              onData: (context, gameplay) => SelectableText(
+                gameplay.code!,
                 style: Theme.of(context).textTheme.displaySmall,
               ),
               onError: (context, valueError) => SelectableText(

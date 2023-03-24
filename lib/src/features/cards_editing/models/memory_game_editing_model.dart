@@ -2,15 +2,15 @@ import 'package:memory_game_web/src/models/memory_game_model.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/card_editing_model.dart';
 
 class MemoryGameEditingModel {
-  MemoryGameEditingModel.fromMemoryGameModel(MemoryGameModel memoryGameModel) {
-    name = memoryGameModel.name;
+  MemoryGameEditingModel.fromMemoryGameModel(MemoryGameModel memoryGame) {
+    name = memoryGame.name;
 
-    cardList = memoryGameModel.cardList!
+    cardList = memoryGame.cardList!
         .map((cardModel) => CardEditingModel.fromModel(cardModel))
         .toList();
     cardList.addAll(cardList.map((card) => card.otherCard).toList());
 
-    subjectList = memoryGameModel.subjectList;
+    subjectList = memoryGame.subjectList!;
   }
 
   late final String name;

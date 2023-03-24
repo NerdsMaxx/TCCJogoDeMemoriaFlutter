@@ -29,6 +29,9 @@ class _MemoryGameFieldComponentState extends State<MemoryGameFieldComponent> {
               onChanged: logic.onChangedMemoryGameName(context),
               style: Theme.of(context).textTheme.headlineSmall,
             ),
+            const SizedBox(
+              height: 20,
+            ),
             TextFormField(
               decoration: const InputDecoration(
                 hintText: 'Matérias',

@@ -40,53 +40,61 @@ class _GameplayPageState extends State<GameplayPage> {
   @override
   Widget build(BuildContext context) {
     return AppBarWidget(
-      body: Center(
-        child: Column(
-          children: [
-            const PlayerScoreComponent(),
-            const SizedBox(
-              height: 50,
-            ),
-            CustomFutureBuilderWidget<MemoryGameModel, MemoryGameGameplayModel, Object>(
-              future: logic.futureMemoryGameModel,
-              transformData: (data) => MemoryGameGameplayModel.fromModel(data),
-              onLoading: (context) => Row(
-                mainAxisSize: MainAxisSize.min,
+      back: true,
+      body: MemoryGameGameplayContext(
+        code: widget.gameplayCode ?? LocalStorage.getString(Keys.GAMEPLAY_CODE)!,
+        child: Builder(
+          builder: (context) {
+            return Center(
+              child: Column(
                 children: [
-                  const CircularProgressIndicator(),
+                  const PlayerScoreComponent(),
                   const SizedBox(
-                    width: 40,
+                    height: 50,
                   ),
-                  SelectableText(
-                    'Carregando',
-                    style: Theme.of(context).textTheme.displayMedium,
+                  CustomFutureBuilderWidget<MemoryGameModel, MemoryGameGameplayModel, Object>(
+                    future: logic.futureMemoryGameModel,
+                    transformData: (data) => MemoryGameGameplayModel.fromModel(data),
+                    onLoading: (context) => Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const CircularProgressIndicator(),
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        SelectableText(
+                          'Carregando',
+                          style: Theme.of(context).textTheme.displayMedium,
+                        ),
+                      ],
+                    ),
+                    onData: (context, value) {
+                      MemoryGameGameplayContext.of(context)!.cardGameplayList.addAll(value.cardList);
+      
+                      return ValueListenableBuilder2Widget(
+                        valueListenable1: MemoryGameGameplayContext.of(context)!.showGameplayCard,
+                        valueListenable2: MemoryGameGameplayContext.of(context)!.finishGameplay,
+                        builder: (context, showCardsGameplay, finishGameplay) => Stack(
+                          children: [
+                            ShowCardsComponent(), //não pode ser constante, pois senão não vai atualizar
+                            Visibility(
+                              visible: showCardsGameplay,
+                              child: const CardsGameplayComponent(),
+                            ),
+                            Visibility(
+                              visible: finishGameplay,
+                              child: const FinishGameplayComponent(),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    onError: (context, error) => SelectableText(error.toString()),
                   ),
                 ],
               ),
-              onData: (context, value) {
-                MemoryGameGameplayContext.of(context)!.cardGameplayList.addAll(value.cardList);
-
-                return ValueListenableBuilder2Widget(
-                  valueListenable1: MemoryGameGameplayContext.of(context)!.showGameplayCard,
-                  valueListenable2: MemoryGameGameplayContext.of(context)!.finishGameplay,
-                  builder: (context, showCardsGameplay, finishGameplay) => Stack(
-                    children: [
-                      ShowCardsComponent(), //não pode ser constante, pois senão não vai atualizar
-                      Visibility(
-                        visible: showCardsGameplay,
-                        child: const CardsGameplayComponent(),
-                      ),
-                      Visibility(
-                        visible: finishGameplay,
-                        child: const FinishGameplayComponent(),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              onError: (context, error) => SelectableText(error.toString()),
-            ),
-          ],
+            );
+          }
         ),
       ),
     );

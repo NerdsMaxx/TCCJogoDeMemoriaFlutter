@@ -32,9 +32,10 @@ class _ScorePageState extends State<ScorePage> {
   @override
   Widget build(BuildContext context) {
     return AppBarWidget(
+      back: true,
       body: Center(
         child: CustomFutureBuilderWidget<GameplayResultModel, GameplayResultModel, Object>(
-          future: MemoryGameGameplayContext.of(context)!.futureGameplayResult,
+          future: logic.futureGameplayResult,
           onLoading: (context) => const SizedBox.shrink(),
           onData: (context, value) => Column(
             children: [
@@ -52,21 +53,28 @@ class _ScorePageState extends State<ScorePage> {
                 ),
                 child: ListView.builder(
                   itemCount: value.playerResultList.length,
-                  itemBuilder: (context, index) => CustomContainerWidget(
-                    child: ListTile(
-                      title: SelectableText(
-                        '${value.playerResultList[index].score} pontos',
-                        style: Theme.of(context).textTheme.headlineMedium,
+                  itemBuilder: (context, index) => Column(
+                    children: [
+                      CustomContainerWidget(
+                        child: ListTile(
+                          title: SelectableText(
+                            '${value.playerResultList[index].score} pontos',
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          subtitle: SelectableText(
+                            value.playerResultList[index].player,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          trailing: const Icon(
+                            Icons.play_circle_outline_rounded,
+                            size: 46,
+                          ),
+                        ),
                       ),
-                      subtitle: SelectableText(
-                        value.playerResultList[index].player,
-                        style: Theme.of(context).textTheme.headlineMedium,
+                      const SizedBox(
+                        height: 20,
                       ),
-                      trailing: const Icon(
-                        Icons.play_circle_outline_rounded,
-                        size: 46,
-                      ),
-                    ),
+                    ],
                   ),
                 ),
               ),

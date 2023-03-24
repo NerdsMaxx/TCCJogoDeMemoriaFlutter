@@ -43,4 +43,12 @@ class LoginController {
       );
     };
   }
+
+  VoidCallback onPressedChangePassword(BuildContext context) {
+    return () {
+      context.router.push(
+        const ChangePasswordRoute(),
+      );
+    };
+  }
 }

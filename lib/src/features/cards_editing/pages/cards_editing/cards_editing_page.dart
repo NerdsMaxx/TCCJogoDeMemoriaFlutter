@@ -36,6 +36,7 @@ class _CardsEditingPageState extends State<CardsEditingPage> {
   @override
   Widget build(BuildContext context) {
     return AppBarWidget(
+      back: true,
       body: MemoryGameEditingContext(
         isNew: false,
         child: Center(

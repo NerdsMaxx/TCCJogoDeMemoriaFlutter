@@ -7,11 +7,11 @@ class _ScorePageLogic {
 
   final GameplayService gameplayService = getIt<GameplayService>();
   late final String code;
+  late Future<GameplayResultModel> futureGameplayResult = gameplayService.getGameplayScores(code);
 
   VoidCallback onPressedReload(BuildContext context) {
     return () async {
-      MemoryGameGameplayContext.of(context)!.futureGameplayResult =
-          gameplayService.getGameplayScores(code);
+      futureGameplayResult = gameplayService.getGameplayScores(code);
     };
   }
 

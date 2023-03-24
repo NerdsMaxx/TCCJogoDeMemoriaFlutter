@@ -17,16 +17,27 @@ class SavedMemoryGameComponent extends StatelessWidget {
       child: CustomContainerWidget(
         child: Column(
           children: [
-            const SelectableText('Jogo salvo!'),
+            SelectableText(
+              'Jogo salvo!',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
             SelectableText(
               MemoryGameEditingContext.of(context)!.memoryGameName,
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
             SelectableText(
               MemoryGameEditingContext.of(context)!.subjectList.join(', '),
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(
+              height: 20,
             ),
             ElevatedButton(
               onPressed: logic.onPressedCreateOtherMemoryGame(context),
               child: const Text('Criar outro jogo de memória'),
+            ),
+            const SizedBox(
+              height: 15,
             ),
             ElevatedButton(
               onPressed: logic.onPressedExitDashboard(context),

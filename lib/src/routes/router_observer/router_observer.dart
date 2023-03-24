@@ -6,22 +6,24 @@ import 'package:memory_game_web/src/auth/auth.dart';
 class RouterObserver extends AutoRouterObserver {
   @override
   void didPop(Route route, Route? previousRoute) {
-    if (previousRoute?.settings.name == 'InitialRoute') {
-      final Auth auth = getIt<Auth>();
+    
+    final Auth auth = getIt<Auth>();
 
+    if (previousRoute?.settings.name == 'InitialRoute') {
       if (auth.isValid()) {
         auth.clear();
       }
     }
+    
 
     super.didPop(route, previousRoute);
   }
 
   @override
   void didPush(Route route, Route? previousRoute) {
-    if (route.settings.name == 'InitialRoute') {
-      final Auth auth = getIt<Auth>();
+    final Auth auth = getIt<Auth>();
 
+    if (route.settings.name == 'InitialRoute') {
       if (auth.isValid()) {
         auth.clear();
       }

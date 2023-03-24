@@ -5,6 +5,7 @@ import 'package:memory_game_web/src/auth/auth.dart';
 import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_context.dart';
 import 'package:memory_game_web/src/routes/routes.gr.dart';
 import 'package:memory_game_web/src/widgets/circle_button_widget.dart';
+import 'package:memory_game_web/src/widgets/custom_text_field_form_widget.dart';
 
 part 'title_component_logic.dart';
 
@@ -45,6 +46,14 @@ class TitleComponent extends StatelessWidget {
                   visible: getIt<Auth>().isCreator(),
                   child: Row(
                     children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      CircleButtonWidget(
+                        tooltip: 'Acompanhar as partidas',
+                        onPressed: logic.onPressedGameplayManagement(context),
+                        icon: Icons.data_thresholding_outlined,
+                      ),
                       const SizedBox(
                         width: 20,
                       ),

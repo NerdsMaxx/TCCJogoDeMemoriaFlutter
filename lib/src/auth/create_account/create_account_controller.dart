@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/auth/auth.dart';
+import 'package:memory_game_web/src/auth/models/new_account_model.dart';
 import 'package:memory_game_web/src/routes/routes.gr.dart';
 
 class CreateAccountController {
@@ -15,6 +16,7 @@ class CreateAccountController {
   bool isCreator = false;
 
   List<bool> isSelected = [true, false];
+  final ValueNotifier<bool> changeToggleButton = ValueNotifier(false);
 
   final Auth _auth = getIt<Auth>();
 
@@ -35,19 +37,20 @@ class CreateAccountController {
       .build();
 
   void onPressedButton(int index) {
-    if (isSelected.where((selected) => selected).length > 1) {
-      for (int i = 0; i < isSelected.length; ++i) {
-        if (i != index) {
-          isSelected[index] = false;
-        }
+    for (int i = 0; i < isSelected.length; ++i) {
+      if (i != index) {
+        isSelected[i] = false;
       }
     }
+    isSelected[index] = true;
 
     if (index == 1) {
       isCreator = true;
     } else {
       isCreator = false;
     }
+
+    changeToggleButton.value = !changeToggleButton.value;
   }
 
   VoidCallback onPressedCreateAccount(BuildContext context) {
@@ -56,15 +59,19 @@ class CreateAccountController {
         return;
       }
 
-      await _auth.createLogin(
-        name,
-        username,
-        email,
-        password,
-        (isCreator) ? 'CRIADOR' : 'JOGADOR',
+      NewAccountModel newAccount = NewAccountModel(
+        name: name,
+        username: username,
+        email: email,
+        password: password,
+        type: (isCreator) ? 'CRIADOR' : 'JOGADOR',
       );
 
-      context.router.push(const LoginRoute());
+      await _auth.createAccount(newAccount);
+
+      if (context.mounted) {
+        context.router.popUntilRoot();
+      }
     };
   }
 }
