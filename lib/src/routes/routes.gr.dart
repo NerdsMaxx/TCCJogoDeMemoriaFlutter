@@ -21,7 +21,7 @@ import '../features/cards_editing/pages/cards_adding/cards_adding_page.dart'
     as _i7;
 import '../features/cards_editing/pages/cards_editing/cards_editing_page.dart'
     as _i6;
-import '../features/dashboard/pages/dashboard/dashboard_page.dart' as _i5;
+import '../features/dashboard/pages/dashboard_page.dart' as _i5;
 import '../features/gameplay/pages/gameplay/gameplay_page.dart' as _i8;
 import '../features/gameplay_management/pages/gameplay_management_page.dart'
     as _i9;

@@ -5,7 +5,7 @@ import 'package:memory_game_web/src/auth/create_account/create_account_page.dart
 import 'package:memory_game_web/src/auth/login/login_page.dart';
 import 'package:memory_game_web/src/features/cards_editing/pages/cards_adding/cards_adding_page.dart';
 import 'package:memory_game_web/src/features/cards_editing/pages/cards_editing/cards_editing_page.dart';
-import 'package:memory_game_web/src/features/dashboard/pages/dashboard/dashboard_page.dart';
+import 'package:memory_game_web/src/features/dashboard/pages/dashboard_page.dart';
 import 'package:memory_game_web/src/features/gameplay/pages/gameplay/gameplay_page.dart';
 import 'package:memory_game_web/src/features/gameplay_management/pages/gameplay_management_page.dart';
 import 'package:memory_game_web/src/features/scores/score_page.dart';

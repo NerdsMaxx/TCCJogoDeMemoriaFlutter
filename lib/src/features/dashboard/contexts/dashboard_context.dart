@@ -26,6 +26,12 @@ class DashboardContext extends InheritedWidget {
 
   void setMemoryGame(MemoryGameModel memoryGameModel) => this.memoryGameModel = memoryGameModel;
 
+  void dispose() {
+    codeEntry.dispose();
+    codeGenerator.dispose();
+    reloadMemoryGameList.dispose();
+  }
+
   static DashboardContext? of(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<DashboardContext>();
   }

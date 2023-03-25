@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/features/dashboard/components/code_entry/code_entry_component.dart';
-import 'package:memory_game_web/src/features/dashboard/components/code_generator/code_generator_component.dart';
-import 'package:memory_game_web/src/features/dashboard/components/main_dashboard/main_dashboard_component.dart';
+import 'package:memory_game_web/src/features/dashboard/components/code_entry_component.dart';
+import 'package:memory_game_web/src/features/dashboard/components/code_generator_component.dart';
+import 'package:memory_game_web/src/features/dashboard/components/main_dashboard_component.dart';
 import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_context.dart';
-import 'package:memory_game_web/src/features/gameplay/contexts/memory_game_gameplay_context.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/value_listenable_builder_2_widget.dart';
-
-part 'dashboard_page_logic.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -17,6 +14,12 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  
+  @override
+  void dispose() {
+    DashboardContext.of(context)!.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

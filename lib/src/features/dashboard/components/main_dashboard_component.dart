@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/features/dashboard/components/search/search_component.dart';
+import 'package:memory_game_web/src/features/dashboard/components/search_component.dart';
 import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_context.dart';
-import 'package:memory_game_web/src/models/gameplay_model.dart';
+import 'package:memory_game_web/src/features/dashboard/view_model/main_dashboard_view_model.dart';
 import 'package:memory_game_web/src/models/memory_game_model.dart';
-import 'package:memory_game_web/src/features/dashboard/components/card_component/card_component.dart';
-import 'package:memory_game_web/src/features/dashboard/components/title/title_component.dart';
-import 'package:memory_game_web/src/services/memory_game_service.dart';
+import 'package:memory_game_web/src/features/dashboard/components/card_component.dart';
+import 'package:memory_game_web/src/features/dashboard/components/title_component.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
-
-part 'main_dashboard_component_logic.dart';
 
 class MainDashboardComponent extends StatelessWidget {
   const MainDashboardComponent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final _MainDashboardComponentLogic logic = _MainDashboardComponentLogic(context);
+    final MainDashboardViewModel viewModel = MainDashboardViewModel(context);
 
     return Column(
       children: [

@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/injection.dart';
+import 'package:memory_game_web/src/features/dashboard/view_model/code_generator_view_model.dart';
 import 'package:memory_game_web/src/models/gameplay_model.dart';
-import 'package:memory_game_web/src/models/memory_game_model.dart';
-import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_context.dart';
-
-import 'package:memory_game_web/src/services/gameplay_service.dart';
 import 'package:memory_game_web/src/widgets/custom_container_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
-
-part 'code_generator_component_logic.dart';
 
 class CodeGeneratorComponent extends StatefulWidget {
   const CodeGeneratorComponent({
@@ -20,7 +14,13 @@ class CodeGeneratorComponent extends StatefulWidget {
 }
 
 class _CodeGeneratorComponentState extends State<CodeGeneratorComponent> {
-  late final _CodeGeneratorComponentLogic logic = _CodeGeneratorComponentLogic(context);
+  late final CodeGeneratorViewModel viewModel = CodeGeneratorViewModel(context);
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +29,10 @@ class _CodeGeneratorComponentState extends State<CodeGeneratorComponent> {
           child: Column(
         children: [
           ValueListenableBuilder(
-            valueListenable: logic.reload,
+            valueListenable: viewModel.reload,
             builder: (context, _, __) =>
                 CustomFutureBuilderWidget<GameplayModel, GameplayModel, Object>(
-              future: logic.futureCode,
+              future: viewModel.futureCode,
               onLoading: (context) => const CircularProgressIndicator(),
               onData: (context, gameplay) => SelectableText(
                 gameplay.code!,
@@ -47,14 +47,14 @@ class _CodeGeneratorComponentState extends State<CodeGeneratorComponent> {
             height: 20,
           ),
           ElevatedButton(
-            onPressed: logic.onPressedCodeGenerator(),
+            onPressed: viewModel.onPressedCodeGenerator,
             child: const Text('Gerar outro código'),
           ),
           const SizedBox(
             height: 10,
           ),
           ElevatedButton(
-            onPressed: logic.onPressedExit(context),
+            onPressed: viewModel.onPressedExit,
             child: const Text('Sair'),
           ),
         ],

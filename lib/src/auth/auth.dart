@@ -54,7 +54,7 @@ class Auth {
   }
 
   Future<void> changePassword(String username, String newPassword) async {
-    _http.put(
+    _http.post(
       'usuario/mudar-senha',
       body: {
         'username': username,

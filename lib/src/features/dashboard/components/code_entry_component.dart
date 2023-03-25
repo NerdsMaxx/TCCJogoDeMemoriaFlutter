@@ -1,20 +1,9 @@
-import 'dart:convert';
-
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:form_validator/form_validator.dart';
-import 'package:memory_game_web/injection.dart';
+import 'package:memory_game_web/src/features/dashboard/view_model/code_entry_view_model.dart';
 import 'package:memory_game_web/src/models/player_added_model.dart';
-import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_context.dart';
-import 'package:memory_game_web/src/local_storage/keys.dart';
-import 'package:memory_game_web/src/local_storage/local_storage.dart';
-import 'package:memory_game_web/src/routes/routes.gr.dart';
-import 'package:memory_game_web/src/services/gameplay_service.dart';
 import 'package:memory_game_web/src/widgets/custom_container_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_text_field_form_widget.dart';
-
-part 'code_entry_component_logic.dart';
 
 class CodeEntryComponent extends StatefulWidget {
   const CodeEntryComponent({
@@ -26,31 +15,37 @@ class CodeEntryComponent extends StatefulWidget {
 }
 
 class _CodeEntryComponentState extends State<CodeEntryComponent> {
-  final _CodeEntryComponentLogic logic = _CodeEntryComponentLogic();
+  late final CodeEntryViewModel viewModel = CodeEntryViewModel(context);
+
+  @override
+  void dispose() {
+    viewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: CustomContainerWidget(
         child: ValueListenableBuilder(
-          valueListenable: logic.searchCode,
+          valueListenable: viewModel.searchCode,
           builder: (context, searchCode, _) => Column(
             children: [
               Visibility(
                 visible: !searchCode,
                 child: Form(
-                  key: logic.formKey,
+                  key: viewModel.formKey,
                   child: Column(
                     children: [
                       SizedBox(
                         width: 420,
                         child: CustomTextFieldFormWidget(
                           hintText: 'Digite o código',
-                          initialValue: logic.code,
+                          initialValue: viewModel.code,
                           autofocus: true,
-                          onChanged: (value) => logic.code = value,
+                          onChanged: (value) => viewModel.code = value,
                           maxLength: 4,
-                          validator: logic.validatorCode,
+                          validator: viewModel.validatorCode,
                           style: const TextStyle(
                             fontSize: 22,
                           ),
@@ -60,14 +55,14 @@ class _CodeEntryComponentState extends State<CodeEntryComponent> {
                         height: 20,
                       ),
                       ElevatedButton(
-                        onPressed: logic.onPressedSearchCode(context),
+                        onPressed: viewModel.onPressedSearchCode,
                         child: const Text('Procurar'),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
                       ElevatedButton(
-                        onPressed: logic.onPressedExit(context),
+                        onPressed: viewModel.onPressedExit,
                         child: const Text('Sair'),
                       ),
                     ],
@@ -77,7 +72,7 @@ class _CodeEntryComponentState extends State<CodeEntryComponent> {
               Visibility(
                 visible: searchCode,
                 child: CustomFutureBuilderWidget<PlayerAddedModel, PlayerAddedModel, Object>(
-                  future: logic.futurePlayerAddedModel,
+                  future: viewModel.futurePlayerAddedModel,
                   onLoading: (context) => const CircularProgressIndicator(),
                   onData: (context, value) => Column(
                     children: [
@@ -90,7 +85,7 @@ class _CodeEntryComponentState extends State<CodeEntryComponent> {
                         style: Theme.of(context).textTheme.headlineLarge,
                       ),
                       ElevatedButton(
-                        onPressed: logic.onPressedEnterInGameplay(context, value),
+                        onPressed: viewModel.onPressedEnterInGameplay(value),
                         child: const Text('Jogar'),
                       ),
                     ],
@@ -101,7 +96,7 @@ class _CodeEntryComponentState extends State<CodeEntryComponent> {
                         valueError.toString(),
                       ),
                       ElevatedButton(
-                        onPressed: logic.onPressedRetry(),
+                        onPressed: viewModel.onPressedRetry,
                         child: Text(valueError.toString()),
                       ),
                     ],

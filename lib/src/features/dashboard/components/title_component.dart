@@ -1,13 +1,8 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/auth/auth.dart';
-import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_context.dart';
-import 'package:memory_game_web/src/routes/routes.gr.dart';
+import 'package:memory_game_web/src/features/dashboard/view_model/title_view_model.dart';
 import 'package:memory_game_web/src/widgets/circle_button_widget.dart';
-import 'package:memory_game_web/src/widgets/custom_text_field_form_widget.dart';
-
-part 'title_component_logic.dart';
 
 class TitleComponent extends StatelessWidget {
   const TitleComponent({
@@ -16,7 +11,7 @@ class TitleComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _TitleComponentLogic logic = _TitleComponentLogic();
+    final TitleViewModel viewModel = TitleViewModel(context);
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -39,25 +34,18 @@ class TitleComponent extends StatelessWidget {
               children: [
                 CircleButtonWidget(
                   tooltip: 'Entrar pelo código',
-                  onPressed: logic.onPressedCodeEntry(context),
+                  onPressed: viewModel.onPressedCodeEntry,
                   icon: Icons.sensor_door_outlined,
                 ),
-                Visibility(
-                  visible: getIt<Auth>().isPlayer(),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      CircleButtonWidget(
-                        tooltip: 'Olhar histórico de outras jogadas',
-                        onPressed: () {
-                          context.router.push(ScoreRoute(isPlayer: true));
-                        },
-                        icon: Icons.data_thresholding_outlined,
-                      ),
-                    ],
-                  ),
+                const SizedBox(
+                  width: 20,
+                ),
+                CircleButtonWidget(
+                  tooltip: 'Olhar histórico de outras jogadas',
+                  onPressed: () {
+                   
+                  },
+                  icon: Icons.history_sharp,
                 ),
                 Visibility(
                   visible: getIt<Auth>().isCreator(),
@@ -68,7 +56,7 @@ class TitleComponent extends StatelessWidget {
                       ),
                       CircleButtonWidget(
                         tooltip: 'Acompanhar as partidas',
-                        onPressed: logic.onPressedGameplayManagement(context),
+                        onPressed: viewModel.onPressedGameplayManagement,
                         icon: Icons.data_thresholding_outlined,
                       ),
                       const SizedBox(
@@ -76,7 +64,7 @@ class TitleComponent extends StatelessWidget {
                       ),
                       CircleButtonWidget(
                         tooltip: 'Criar um jogo de memória',
-                        onPressed: logic.onPressedAdding(context),
+                        onPressed: viewModel.onPressedAdding,
                         icon: Icons.add,
                       ),
                     ],
