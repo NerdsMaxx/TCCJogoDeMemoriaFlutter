@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/features/cards_editing/components/card_editing/card_editing_component.dart';
-import 'package:memory_game_web/src/features/cards_editing/context/memory_game_editing_context.dart';
-import 'package:memory_game_web/src/features/cards_editing/models/card_adding_model.dart';
-import 'package:memory_game_web/src/features/cards_editing/models/card_editing_model.dart';
+import 'package:memory_game_web/src/features/cards_editing/components/card_editing_component.dart';
+import 'package:memory_game_web/src/features/cards_editing/view_model/cards_editing_view_model.dart';
 import 'package:memory_game_web/src/widgets/custom_container_widget.dart';
-
-part 'cards_editing_component_logic.dart';
 
 class CardsEditingComponent extends StatelessWidget {
   const CardsEditingComponent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final _CardsEditingComponentLogic logic = _CardsEditingComponentLogic(context);
+    final CardsEditingViewModel viewModel = CardsEditingViewModel(context);
 
     return Center(
       child: CustomContainerWidget(
@@ -23,13 +19,13 @@ class CardsEditingComponent extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 CardEditingComponent(
-                  cardEditing: logic.cardEditing1,
+                  cardEditing: viewModel.cardEditing1,
                 ),
                 const SizedBox(
                   width: 20,
                 ),
                 CardEditingComponent(
-                  cardEditing: logic.cardEditing2,
+                  cardEditing: viewModel.cardEditing2,
                 ),
               ],
             ),
@@ -37,7 +33,7 @@ class CardsEditingComponent extends StatelessWidget {
               height: 32,
             ),
             ElevatedButton(
-              onPressed: logic.onPressedApplyChange(context),
+              onPressed: viewModel.onPressedApplyChange,
               child: const Text('Aplicar alteração'),
             ),
           ],

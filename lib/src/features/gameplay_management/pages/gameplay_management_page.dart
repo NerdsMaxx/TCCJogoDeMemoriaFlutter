@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/models/codes_model.dart';
+import 'package:memory_game_web/src/models/gameplay_result_model.dart';
 import 'package:memory_game_web/src/routes/routes.gr.dart';
 import 'package:memory_game_web/src/services/gameplay_service.dart';
 import 'package:memory_game_web/src/utils/size_util.dart';

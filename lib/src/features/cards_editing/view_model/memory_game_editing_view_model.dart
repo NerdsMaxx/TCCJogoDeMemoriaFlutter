@@ -1,25 +1,23 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
-import 'package:form_validator/form_validator.dart';
+import 'package:memory_game_web/injection.dart';
+import 'package:memory_game_web/src/features/cards_editing/context/memory_game_editing_context.dart';
+import 'package:memory_game_web/src/features/cards_editing/models/memory_game_editing_model.dart';
+import 'package:memory_game_web/src/local_storage/keys.dart';
+import 'package:memory_game_web/src/local_storage/local_storage.dart';
+import 'package:memory_game_web/src/models/memory_game_model.dart';
+import 'package:memory_game_web/src/services/memory_game_service.dart';
 
 class MemoryGameEditingViewModel {
-  static late final MemoryGameEditingViewModel instance;
-  
-  static dispose() {
-    instance.formKeyCardEditing.currentState!.dispose();
+  MemoryGameEditingViewModel(this.context, String? memoryGameName) {
+    memoryGameEditingContext = MemoryGameEditingContext.of(context)!;
+    this.memoryGameName = memoryGameName ?? LocalStorage.getString(Keys.MEMORY_GAME_NAME)!;
+    futureMemoryGameModel = getIt<MemoryGameService>().getMemoryGame(this.memoryGameName);
   }
-
-  MemoryGameEditingViewModel(this.context) {
-    instance = this;
-  }
-
-  
 
   final BuildContext context;
+  late final MemoryGameEditingContext memoryGameEditingContext;
 
-  final GlobalKey<FormState> formKeyCardEditing = GlobalKey<FormState>();
-  final validatorContent = ValidationBuilder(requiredMessage: 'É obrigatório escrever um conteúdo!')
-      .minLength(1, 'Deve ter no mínimo um caracter')
-      .build();
+  late final String memoryGameName;
+  late final Future<MemoryGameModel> futureMemoryGameModel;
+  late final MemoryGameEditingModel memoryGameEditingModel;
 }

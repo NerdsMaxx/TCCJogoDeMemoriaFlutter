@@ -3,10 +3,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:memory_game_web/src/auth/change_password/change_password_page.dart';
 import 'package:memory_game_web/src/auth/create_account/create_account_page.dart';
 import 'package:memory_game_web/src/auth/login/login_page.dart';
-import 'package:memory_game_web/src/features/cards_editing/pages/cards_adding/cards_adding_page.dart';
-import 'package:memory_game_web/src/features/cards_editing/pages/cards_editing/cards_editing_page.dart';
+import 'package:memory_game_web/src/features/cards_editing/pages/memory_game_adding_page.dart';
+import 'package:memory_game_web/src/features/cards_editing/pages/memory_game_editing_page.dart';
 import 'package:memory_game_web/src/features/dashboard/pages/dashboard_page.dart';
-import 'package:memory_game_web/src/features/gameplay/pages/gameplay/gameplay_page.dart';
+import 'package:memory_game_web/src/features/gameplay/pages/gameplay_page.dart';
 import 'package:memory_game_web/src/features/gameplay_management/pages/gameplay_management_page.dart';
 import 'package:memory_game_web/src/features/scores/score_page.dart';
 
@@ -43,13 +43,13 @@ import 'guard/auth_guard.dart';
       guards: [AuthGuard],
     ),
     AutoRoute(
-      page: CardsEditingPage,
+      page: MemoryGameEditingPage,
       name: 'CardsEditingRoute',
       path: '/dashboard/cards-editing',
       guards: [AuthGuard],
     ),
     AutoRoute(
-      page: CardsAddingPage,
+      page: MemoryGameAddingPage,
       name: 'CardAddingRoute',
       path: '/dashboard/cards-adding',
       guards: [AuthGuard],

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/features/gameplay/contexts/memory_game_gameplay_context.dart';
 import 'package:memory_game_web/src/features/gameplay/models/card_gameplay_model.dart';
+import 'package:memory_game_web/src/features/gameplay/view_model/card_view_model.dart';
 import 'package:memory_game_web/src/widgets/card_widget.dart';
 
-part 'card_component_logic.dart';
 
 class CardComponent extends StatefulWidget {
   const CardComponent({
@@ -19,18 +19,18 @@ class CardComponent extends StatefulWidget {
 
 class _CardComponentState extends State<CardComponent> {
 
-  late final _CardComponentLogic logic = _CardComponentLogic(widget.card);
+  late final CardViewModel viewModel = CardViewModel(context, widget.card);
 
   @override
   Widget build(BuildContext context) {
     return CardWidget(
       key: Key(widget.card.id),
       child: ValueListenableBuilder(
-        valueListenable: logic.card.isTurned,
+        valueListenable: viewModel.card.isTurned,
         builder: (context, value, _) => TextButton(
-          onPressed: logic.onPressedCard(context),
+          onPressed: viewModel.onPressedCard,
           child: Text(
-            (value) ? logic.card.content : '?',
+            (value) ? viewModel.card.content : '?',
             style: Theme.of(context).textTheme.headlineLarge,
           ),
         )

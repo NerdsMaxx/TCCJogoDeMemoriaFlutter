@@ -17,14 +17,11 @@ import 'package:flutter/material.dart' as _i12;
 import '../auth/change_password/change_password_page.dart' as _i4;
 import '../auth/create_account/create_account_page.dart' as _i3;
 import '../auth/login/login_page.dart' as _i2;
-import '../features/cards_editing/pages/cards_adding/cards_adding_page.dart'
-    as _i7;
-import '../features/cards_editing/pages/cards_editing/cards_editing_page.dart'
-    as _i6;
+import '../features/cards_editing/pages/memory_game_adding_page.dart' as _i7;
+import '../features/cards_editing/pages/memory_game_editing_page.dart' as _i6;
 import '../features/dashboard/pages/dashboard_page.dart' as _i5;
-import '../features/gameplay/pages/gameplay/gameplay_page.dart' as _i8;
-import '../features/gameplay_management/pages/gameplay_management_page.dart'
-    as _i9;
+import '../features/gameplay/pages/gameplay_page.dart' as _i8;
+import '../features/gameplay_management/pages/gameplay_management_page.dart' as _i9;
 import '../features/scores/score_page.dart' as _i10;
 import 'guard/auth_guard.dart' as _i13;
 import 'router_observer/initial_route.dart' as _i1;
@@ -70,11 +67,11 @@ class AppRouter extends _i11.RootStackRouter {
       );
     },
     CardsEditingRoute.name: (routeData) {
-      final args = routeData.argsAs<CardsEditingRouteArgs>(
-          orElse: () => const CardsEditingRouteArgs());
+      final args =
+          routeData.argsAs<CardsEditingRouteArgs>(orElse: () => const CardsEditingRouteArgs());
       return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: _i6.CardsEditingPage(
+        child: _i6.MemoryGameEditingPage(
           key: args.key,
           memoryGameName: args.memoryGameName,
           isAdding: args.isAdding,
@@ -84,12 +81,11 @@ class AppRouter extends _i11.RootStackRouter {
     CardAddingRoute.name: (routeData) {
       return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const _i7.CardsAddingPage(),
+        child: const _i7.MemoryGameAddingPage(),
       );
     },
     GameplayRoute.name: (routeData) {
-      final args = routeData.argsAs<GameplayRouteArgs>(
-          orElse: () => const GameplayRouteArgs());
+      final args = routeData.argsAs<GameplayRouteArgs>(orElse: () => const GameplayRouteArgs());
       return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i8.GameplayPage(
@@ -107,8 +103,7 @@ class AppRouter extends _i11.RootStackRouter {
       );
     },
     ScoreRoute.name: (routeData) {
-      final args = routeData.argsAs<ScoreRouteArgs>(
-          orElse: () => const ScoreRouteArgs());
+      final args = routeData.argsAs<ScoreRouteArgs>(orElse: () => const ScoreRouteArgs());
       return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i10.ScorePage(
@@ -232,7 +227,7 @@ class DashboardRoute extends _i11.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i6.CardsEditingPage]
+/// [_i6.MemoryGameEditingPage]
 class CardsEditingRoute extends _i11.PageRouteInfo<CardsEditingRouteArgs> {
   CardsEditingRoute({
     _i12.Key? key,
@@ -271,7 +266,7 @@ class CardsEditingRouteArgs {
 }
 
 /// generated route for
-/// [_i7.CardsAddingPage]
+/// [_i7.MemoryGameAddingPage]
 class CardAddingRoute extends _i11.PageRouteInfo<void> {
   const CardAddingRoute()
       : super(

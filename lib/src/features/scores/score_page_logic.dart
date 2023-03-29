@@ -1,7 +1,6 @@
-part of 'score_page.dart';
 
-class _ScorePageLogic {
-  _ScorePageLogic(String? code, this.isPlayer) {
+class ScoreViewModel<T> {
+  ScoreViewModel(String? code, this.isPlayer) {
     this.code = code ?? LocalStorage.getString(Keys.GAMEPLAY_CODE);
 
     if (isPlayer) {

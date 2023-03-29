@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/features/gameplay/components/finish_gameplay/finish_gameplay_component.dart';
+import 'package:memory_game_web/src/features/gameplay/components/finish_gameplay_component.dart';
+import 'package:memory_game_web/src/features/gameplay/view_model/gameplay_view_model.dart';
 import 'package:memory_game_web/src/models/memory_game_model.dart';
-import 'package:memory_game_web/src/features/gameplay/components/card_gameplay/cards_gameplay_component.dart';
+import 'package:memory_game_web/src/features/gameplay/components/cards_gameplay_component.dart';
 import 'package:memory_game_web/src/features/gameplay/components/player_score_component.dart';
 import 'package:memory_game_web/src/features/gameplay/contexts/memory_game_gameplay_context.dart';
-import 'package:memory_game_web/src/features/gameplay/models/card_gameplay_model.dart';
 import 'package:memory_game_web/src/features/gameplay/models/memory_game_gameplay_model.dart';
 import 'package:memory_game_web/src/local_storage/keys.dart';
 import 'package:memory_game_web/src/local_storage/local_storage.dart';
-import 'package:memory_game_web/src/services/memory_game_service.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
 import 'package:memory_game_web/src/features/gameplay/components/show_cards_component.dart';
 import 'package:memory_game_web/src/widgets/value_listenable_builder_2_widget.dart';
-
-part 'gameplay_page_logic.dart';
 
 class GameplayPage extends StatefulWidget {
   const GameplayPage({
@@ -34,8 +30,8 @@ class GameplayPage extends StatefulWidget {
 }
 
 class _GameplayPageState extends State<GameplayPage> {
-  late final _GameplayPageLogic logic =
-      _GameplayPageLogic(widget.memoryGameName, widget.creatorUsername);
+  late final GameplayViewModel viewModel =
+      GameplayViewModel(context, widget.memoryGameName, widget.creatorUsername);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +49,7 @@ class _GameplayPageState extends State<GameplayPage> {
                     height: 50,
                   ),
                   CustomFutureBuilderWidget<MemoryGameModel, MemoryGameGameplayModel, Object>(
-                    future: logic.futureMemoryGameModel,
+                    future: viewModel.futureMemoryGameModel,
                     transformData: (data) => MemoryGameGameplayModel.fromModel(data),
                     onLoading: (context) => Row(
                       mainAxisSize: MainAxisSize.min,
@@ -69,11 +65,11 @@ class _GameplayPageState extends State<GameplayPage> {
                       ],
                     ),
                     onData: (context, value) {
-                      MemoryGameGameplayContext.of(context)!.cardGameplayList.addAll(value.cardList);
+                      viewModel.memoryGameGameplayContext.cardGameplayList.addAll(value.cardList);
       
                       return ValueListenableBuilder2Widget(
-                        valueListenable1: MemoryGameGameplayContext.of(context)!.showGameplayCard,
-                        valueListenable2: MemoryGameGameplayContext.of(context)!.finishGameplay,
+                        valueListenable1: viewModel.memoryGameGameplayContext.showGameplayCard,
+                        valueListenable2: viewModel.memoryGameGameplayContext.finishGameplay,
                         builder: (context, showCardsGameplay, finishGameplay) => Stack(
                           children: [
                             ShowCardsComponent(), //não pode ser constante, pois senão não vai atualizar

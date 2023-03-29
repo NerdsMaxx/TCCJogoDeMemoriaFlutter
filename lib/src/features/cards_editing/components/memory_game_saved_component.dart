@@ -4,15 +4,11 @@ import 'package:memory_game_web/src/features/cards_editing/context/memory_game_e
 import 'package:memory_game_web/src/routes/routes.gr.dart';
 import 'package:memory_game_web/src/widgets/custom_container_widget.dart';
 
-part 'memory_game_saved_component_logic.dart';
-
 class SavedMemoryGameComponent extends StatelessWidget {
   const SavedMemoryGameComponent({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final _SavedMemoryGameComponentLogic logic = _SavedMemoryGameComponentLogic();
-
     return Center(
       child: CustomContainerWidget(
         child: Column(
@@ -33,14 +29,14 @@ class SavedMemoryGameComponent extends StatelessWidget {
               height: 20,
             ),
             ElevatedButton(
-              onPressed: logic.onPressedCreateOtherMemoryGame(context),
+              onPressed: () => context.router.push(const CardAddingRoute()),
               child: const Text('Criar outro jogo de memória'),
             ),
             const SizedBox(
               height: 15,
             ),
             ElevatedButton(
-              onPressed: logic.onPressedExitDashboard(context),
+              onPressed: () => context.router.push(const DashboardRoute()),
               child: const Text('Voltar para dashboard'),
             ),
           ],

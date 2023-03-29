@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/card_editing_model.dart';
+import 'package:memory_game_web/src/features/cards_editing/view_model/card_editing_view_model.dart';
 import 'package:memory_game_web/src/widgets/card_widget.dart';
 
-part 'card_editing_component_logic.dart';
-
 class CardEditingComponent extends StatefulWidget {
-  CardEditingComponent({
+  const CardEditingComponent({
     super.key,
     required this.cardEditing,
   });
@@ -18,13 +17,13 @@ class CardEditingComponent extends StatefulWidget {
 }
 
 class _CardEditingComponentState extends State<CardEditingComponent> {
-  final _CardEditingComponentLogic logic = _CardEditingComponentLogic();
+  late final CardEditingViewModel viewModel = CardEditingViewModel();
 
   @override
   Widget build(BuildContext context) {
     return CardWidget(
       child: Form(
-        key: logic.formKey,
+        key: viewModel.formKey,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -40,7 +39,7 @@ class _CardEditingComponentState extends State<CardEditingComponent> {
                 ),
                 maxLines: 6,
                 onChanged: ((value) => widget.cardEditing.content = value),
-                validator: logic.validatorContent,
+                validator: viewModel.validatorContent,
               ),
             ),
           ],

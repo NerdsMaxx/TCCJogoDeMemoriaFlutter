@@ -16,7 +16,7 @@ import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
 
 part 'score_page_logic.dart';
 
-class ScorePage extends StatefulWidget {
+class ScorePage<T> extends StatefulWidget {
   const ScorePage({
     super.key,
     this.code,
@@ -27,10 +27,10 @@ class ScorePage extends StatefulWidget {
   final bool isPlayer;
 
   @override
-  State<ScorePage> createState() => _ScorePageState();
+  State<ScorePage> createState() => _ScorePageState<T>();
 }
 
-class _ScorePageState extends State<ScorePage> {
+class _ScorePageState<T> extends State<ScorePage> {
   late final _ScorePageLogic logic = _ScorePageLogic(widget.code, widget.isPlayer);
 
   @override
@@ -38,7 +38,7 @@ class _ScorePageState extends State<ScorePage> {
     return AppBarWidget(
       back: true,
       body: Center(
-        child: CustomFutureBuilderWidget<Object, Object, Object>(
+        child: CustomFutureBuilderWidget<T, T, Object>(
           future: logic.futureGameplayResult,
           onLoading: (context) => const SizedBox.shrink(),
           onData: (context, value) => Column(

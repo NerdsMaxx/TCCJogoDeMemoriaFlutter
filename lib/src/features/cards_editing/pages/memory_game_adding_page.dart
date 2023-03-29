@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/features/cards_editing/components/cards_editing/cards_editing_component.dart';
-import 'package:memory_game_web/src/features/cards_editing/components/memory_game_field/memory_game_field_component.dart';
-import 'package:memory_game_web/src/features/cards_editing/components/memory_game_saved/memory_game_saved_component.dart';
-import 'package:memory_game_web/src/features/cards_editing/components/save_button/save_button_component.dart';
+import 'package:memory_game_web/src/features/cards_editing/components/cards_editing_component.dart';
+import 'package:memory_game_web/src/features/cards_editing/components/memory_game_field_component.dart';
+import 'package:memory_game_web/src/features/cards_editing/components/memory_game_saved_component.dart';
 import 'package:memory_game_web/src/features/cards_editing/context/memory_game_editing_context.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/show_cards_component.dart';
 import 'package:memory_game_web/src/widgets/value_listenable_builder_2_widget.dart';
 
-class CardsAddingPage extends StatefulWidget {
-  const CardsAddingPage({
+class MemoryGameAddingPage extends StatefulWidget {
+  const MemoryGameAddingPage({
     super.key,
   });
 
   @override
-  State<CardsAddingPage> createState() => _CardsAddingPageState();
+  State<MemoryGameAddingPage> createState() => _MemoryGameAddingPageState();
 }
 
-class _CardsAddingPageState extends State<CardsAddingPage> {
+class _MemoryGameAddingPageState extends State<MemoryGameAddingPage> {
   @override
   Widget build(BuildContext context) {
     return AppBarWidget(
@@ -32,12 +31,15 @@ class _CardsAddingPageState extends State<CardsAddingPage> {
               ),
               Builder(
                 builder: (context) {
+                  final MemoryGameEditingContext memoryGameEditingContext =
+                      MemoryGameEditingContext.of(context)!;
+
                   return Column(
                     children: [
-                      SaveButtonComponent(),
+                      const MemoryGameFieldComponent(),
                       ValueListenableBuilder2Widget(
-                        valueListenable1: MemoryGameEditingContext.of(context)!.showEditableCard,
-                        valueListenable2: MemoryGameEditingContext.of(context)!.showSavedMemoryGame,
+                        valueListenable1: memoryGameEditingContext.showEditableCard,
+                        valueListenable2: memoryGameEditingContext.showSavedMemoryGame,
                         builder: (context, showCardsEditing, showSavedMemoryGame) => Stack(
                           children: [
                             ShowCardsComponent(), //não pode ser constante, pois senão não vai atualizar

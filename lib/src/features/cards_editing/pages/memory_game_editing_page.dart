@@ -1,23 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/features/cards_editing/components/memory_game_saved/memory_game_saved_component.dart';
-import 'package:memory_game_web/src/features/cards_editing/components/save_button/save_button_component.dart';
+import 'package:memory_game_web/src/features/cards_editing/components/memory_game_field_component.dart';
+import 'package:memory_game_web/src/features/cards_editing/components/memory_game_saved_component.dart';
+import 'package:memory_game_web/src/features/cards_editing/view_model/memory_game_editing_view_model.dart';
 import 'package:memory_game_web/src/models/memory_game_model.dart';
-import 'package:memory_game_web/src/features/cards_editing/components/cards_editing/cards_editing_component.dart';
+import 'package:memory_game_web/src/features/cards_editing/components/cards_editing_component.dart';
 import 'package:memory_game_web/src/features/cards_editing/context/memory_game_editing_context.dart';
 import 'package:memory_game_web/src/features/cards_editing/models/memory_game_editing_model.dart';
-import 'package:memory_game_web/src/local_storage/keys.dart';
-import 'package:memory_game_web/src/local_storage/local_storage.dart';
-import 'package:memory_game_web/src/services/memory_game_service.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/show_cards_component.dart';
 import 'package:memory_game_web/src/widgets/value_listenable_builder_2_widget.dart';
 
-part 'cards_editing_logic.dart';
-
-class CardsEditingPage extends StatefulWidget {
-  const CardsEditingPage({
+class MemoryGameEditingPage extends StatefulWidget {
+  const MemoryGameEditingPage({
     super.key,
     this.memoryGameName,
     this.isAdding = false,
@@ -27,11 +22,12 @@ class CardsEditingPage extends StatefulWidget {
   final bool isAdding;
 
   @override
-  State<CardsEditingPage> createState() => _CardsEditingPageState();
+  State<MemoryGameEditingPage> createState() => _MemoryGameEditingPageState();
 }
 
-class _CardsEditingPageState extends State<CardsEditingPage> {
-  late final _CardsEditingLogic logic = _CardsEditingLogic(widget.memoryGameName);
+class _MemoryGameEditingPageState extends State<MemoryGameEditingPage> {
+  late final MemoryGameEditingViewModel viewModel =
+      MemoryGameEditingViewModel(context, widget.memoryGameName);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +43,7 @@ class _CardsEditingPageState extends State<CardsEditingPage> {
               ),
               Builder(builder: (context) {
                 return CustomFutureBuilderWidget<MemoryGameModel, MemoryGameEditingModel, Object>(
-                  future: logic.futureMemoryGameModel,
+                  future: viewModel.futureMemoryGameModel,
                   transformData: (data) => MemoryGameEditingModel.fromMemoryGameModel(data),
                   onLoading: (context) => Row(
                     mainAxisSize: MainAxisSize.min,
@@ -63,18 +59,18 @@ class _CardsEditingPageState extends State<CardsEditingPage> {
                     ],
                   ),
                   onData: (context, value) {
-                    MemoryGameEditingContext.of(context)!.oldMemoryGameName = value.name;
-                    MemoryGameEditingContext.of(context)!.cardEditingList.addAll(value.cardList);
-                    MemoryGameEditingContext.of(context)!.memoryGameName = value.name;
-                    MemoryGameEditingContext.of(context)!.subjectList = value.subjectList;
+                    viewModel.memoryGameEditingContext
+                      ..oldMemoryGameName = value.name
+                      ..cardEditingList.addAll(value.cardList)
+                      ..memoryGameName = value.name
+                      ..subjectList = value.subjectList;
 
                     return Column(
                       children: [
-                        SaveButtonComponent(),
+                        const MemoryGameFieldComponent(),
                         ValueListenableBuilder2Widget(
-                          valueListenable1: MemoryGameEditingContext.of(context)!.showEditableCard,
-                          valueListenable2:
-                              MemoryGameEditingContext.of(context)!.showSavedMemoryGame,
+                          valueListenable1: viewModel.memoryGameEditingContext.showEditableCard,
+                          valueListenable2: viewModel.memoryGameEditingContext.showSavedMemoryGame,
                           builder: (context, showCardsEditing, showSavedMemoryGame) => Stack(
                             children: [
                               ShowCardsComponent(), //não pode ser constante, pois senão não vai atualizar

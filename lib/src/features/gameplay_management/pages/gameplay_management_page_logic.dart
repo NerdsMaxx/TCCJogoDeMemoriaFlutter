@@ -20,7 +20,7 @@ class _GameplayManagementPageLogic {
 
   VoidCallback onPressedScore(BuildContext context, String code) {
     return () {
-      context.router.push(ScoreRoute(code: code));
+      context.router.push(ScoreRoute<GameplayResultModel>(code: code));
     };
   }
 }
