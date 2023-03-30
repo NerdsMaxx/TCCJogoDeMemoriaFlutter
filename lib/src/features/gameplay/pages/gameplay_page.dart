@@ -8,6 +8,7 @@ import 'package:memory_game_web/src/features/gameplay/contexts/memory_game_gamep
 import 'package:memory_game_web/src/features/gameplay/models/memory_game_gameplay_model.dart';
 import 'package:memory_game_web/src/local_storage/keys.dart';
 import 'package:memory_game_web/src/local_storage/local_storage.dart';
+import 'package:memory_game_web/src/models/player_added_model.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
 import 'package:memory_game_web/src/features/gameplay/components/show_cards_component.dart';
@@ -31,7 +32,7 @@ class GameplayPage extends StatefulWidget {
 
 class _GameplayPageState extends State<GameplayPage> {
   late final GameplayViewModel viewModel =
-      GameplayViewModel(context, widget.memoryGameName, widget.creatorUsername);
+      GameplayViewModel(context, widget.memoryGameName, widget.creatorUsername, widget.gameplayCode);
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +49,9 @@ class _GameplayPageState extends State<GameplayPage> {
                   const SizedBox(
                     height: 50,
                   ),
-                  CustomFutureBuilderWidget<MemoryGameModel, MemoryGameGameplayModel, Object>(
-                    future: viewModel.futureMemoryGameModel,
-                    transformData: (data) => MemoryGameGameplayModel.fromModel(data),
+                  CustomFutureBuilderWidget<PlayerAddedModel, MemoryGameGameplayModel, Object>(
+                    future: viewModel.futurePlayerAdded,
+                    transformData: (data) => MemoryGameGameplayModel.fromModel(data.memoryGame),
                     onLoading: (context) => Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

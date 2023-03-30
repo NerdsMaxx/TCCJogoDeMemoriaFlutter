@@ -79,7 +79,7 @@ class _ProfileState extends State<_Profile> {
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     SelectableText(
-                      auth.type!,
+                      auth.type!.toUpperCase(),
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ],

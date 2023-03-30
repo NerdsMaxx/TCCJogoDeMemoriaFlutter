@@ -6,15 +6,18 @@ import 'package:memory_game_web/src/features/gameplay/models/memory_game_gamepla
 import 'package:memory_game_web/src/local_storage/keys.dart';
 import 'package:memory_game_web/src/local_storage/local_storage.dart';
 import 'package:memory_game_web/src/models/memory_game_model.dart';
+import 'package:memory_game_web/src/models/player_added_model.dart';
 import 'package:memory_game_web/src/services/memory_game_service.dart';
 
 class GameplayViewModel {
-  GameplayViewModel(this.context, String? memoryGameName, String? creatorUsername) {
-    this.memoryGameName = memoryGameName ?? LocalStorage.getString(Keys.MEMORY_GAME_NAME)!;
-    this.creatorUsername = creatorUsername ?? LocalStorage.getString(Keys.CREATOR_USERNAME)!;
+  GameplayViewModel(this.context, String? memoryGameName, String? creatorUsername, String? code) {
+    // this.memoryGameName = memoryGameName ?? LocalStorage.getString(Keys.MEMORY_GAME_NAME)!;
+    // this.creatorUsername = creatorUsername ?? LocalStorage.getString(Keys.CREATOR_USERNAME)!;
 
-    futureMemoryGameModel =
-        getIt<MemoryGameService>().getMemoryGame(this.memoryGameName, this.creatorUsername);
+    // futureMemoryGameModel =
+    //     getIt<MemoryGameService>().getMemoryGame(this.memoryGameName, this.creatorUsername);
+
+    this.code = code ?? LocalStorage.getString(Keys.GAMEPLAY_CODE)!;
 
     memoryGameGameplayContext = MemoryGameGameplayContext.of(context)!;
   }
@@ -24,7 +27,9 @@ class GameplayViewModel {
 
   late final String memoryGameName;
   late final String creatorUsername;
-  late final Future<MemoryGameModel> futureMemoryGameModel;
+  late final String code;
+  late final Future<PlayerAddedModel> futurePlayerAdded;
+  //late final Future<MemoryGameModel> futureMemoryGameModel;
   late final MemoryGameGameplayModel memoryGameGameplayModel;
   final List<CardGameplayModel> cardGameplayList = [];
 }

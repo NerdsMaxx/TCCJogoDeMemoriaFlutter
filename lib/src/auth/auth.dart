@@ -30,10 +30,7 @@ class Auth {
     dynamic json = jsonDecode(response.body);
 
     if (json is Map<String, dynamic>) {
-      _User user = _User()
-        .._username = json['username']
-        .._email = json['email']
-        .._userType = UserType.getUserType(json['type']);
+      _User user = _User.fromJson(json)!;
 
       await LocalStorage.setObject(_User.USER_KEY, user.toJson());
       await LocalStorage.setString(TOKEN_KEY, json['jwtToken']);
@@ -44,9 +41,7 @@ class Auth {
     throw CustomException('Deu algum erro!');
   }
 
-  Future<void> createAccount(
-    NewAccountModel newAccount
-  ) async {
+  Future<void> createAccount(NewAccountModel newAccount) async {
     _http.post(
       'usuario',
       body: newAccount.toJson(),
@@ -79,10 +74,10 @@ class Auth {
 
   String? get email => _user?._email;
 
-  String? get type => _user?._userType?.type;
+  String? get type => _user?._userType?.map((type) => type.type).join(',');
 
   bool isCreator() {
-    return _user?._userType == UserType.creator;
+    return _user!._userType!.contains(UserType.creator);
   }
 
   bool isNotCreator() {
@@ -90,7 +85,7 @@ class Auth {
   }
 
   bool isPlayer() {
-    return _user?._userType == UserType.player;
+    return _user!._userType!.contains(UserType.player);
   }
 
   bool isNotPlayer() {

@@ -3,7 +3,7 @@ part of 'auth.dart';
 class _User {
   String? _username;
   String? _email;
-  UserType? _userType;
+  List<UserType>? _userType;
 
   static const String USER_KEY = 'user';
 
@@ -22,10 +22,20 @@ class _User {
   }
 
   Map<String, dynamic> toJson() {
+    List<String> types = [];
+
+    if (_userType!.contains(UserType.creator)) {
+      types.add('CRIADOR');
+    }
+
+    if (_userType!.contains(UserType.player)) {
+      types.add('JOGADOR');
+    }
+
     return {
       'username': _username,
       'email': _email,
-      'type': _userType!.type,
+      'type': types.join(','),
     };
   }
 
@@ -33,7 +43,7 @@ class _User {
     _User user = _User()
       .._username = json['username']
       .._email = json['email']
-      .._userType = UserType.getUserType(json['type']);
+      .._userType = (json['type'] as List).map((type) => UserType.getUserType(type)!).toList();
 
     if (user._username != null && user._email != null && user._userType != null) {
       return user;

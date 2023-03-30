@@ -1,22 +1,13 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/auth/auth.dart';
-import 'package:memory_game_web/src/features/gameplay/contexts/memory_game_gameplay_context.dart';
-import 'package:memory_game_web/src/local_storage/keys.dart';
-import 'package:memory_game_web/src/local_storage/local_storage.dart';
+import 'package:memory_game_web/src/features/scores/score_view_model.dart';
 import 'package:memory_game_web/src/models/gameplay_result_model.dart';
 import 'package:memory_game_web/src/models/previous_gameplays_model.dart';
-import 'package:memory_game_web/src/routes/routes.gr.dart';
-import 'package:memory_game_web/src/services/gameplay_service.dart';
 import 'package:memory_game_web/src/utils/size_util.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_container_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
 
-part 'score_page_logic.dart';
-
-class ScorePage<T> extends StatefulWidget {
+class ScorePage extends StatefulWidget {
   const ScorePage({
     super.key,
     this.code,
@@ -27,19 +18,19 @@ class ScorePage<T> extends StatefulWidget {
   final bool isPlayer;
 
   @override
-  State<ScorePage> createState() => _ScorePageState<T>();
+  State<ScorePage> createState() => _ScorePageState();
 }
 
-class _ScorePageState<T> extends State<ScorePage> {
-  late final _ScorePageLogic logic = _ScorePageLogic(widget.code, widget.isPlayer);
+class _ScorePageState extends State<ScorePage> {
+  late final ScoreViewModel viewModel = ScoreViewModel(context, widget.isPlayer, widget.code);
 
   @override
   Widget build(BuildContext context) {
     return AppBarWidget(
       back: true,
       body: Center(
-        child: CustomFutureBuilderWidget<T, T, Object>(
-          future: logic.futureGameplayResult,
+        child: CustomFutureBuilderWidget<Object, Object, Object>(
+          future: viewModel.futureGameplayResult,
           onLoading: (context) => const SizedBox.shrink(),
           onData: (context, value) => Column(
             children: [
@@ -60,14 +51,23 @@ class _ScorePageState<T> extends State<ScorePage> {
                   List<int> scores = [];
                   List<String> usernames = [];
 
-                  if (value is GameplayResultModel) {
-                    length = value.playerResultList.length;
-                    scores = value.playerResultList.map((e) => e.score).toList();
-                    usernames = value.playerResultList.map((e) => e.player).toList();
-                  } else if (value is List<PreviousGameplaysModel>) {
-                    length = value.length;
-                    scores = value.map((e) => e.score).toList();
-                    usernames = value.map((e) => e.creator).toList();
+                  if (widget.isPlayer) {
+                    final List<PreviousGameplaysModel> previousGameplayList =
+                        value as List<PreviousGameplaysModel>;
+
+                    length = previousGameplayList.length;
+                    scores = previousGameplayList
+                        .map((previousGameplay) => previousGameplay.score)
+                        .toList();
+                    usernames = previousGameplayList
+                        .map((previousGameplay) => previousGameplay.creator)
+                        .toList();
+                  } else {
+                    final GameplayResultModel gameplayResult = value as GameplayResultModel;
+
+                    length = gameplayResult.playerResultList.length;
+                    scores = gameplayResult.playerResultList.map((playerResult) => playerResult.score).toList();
+                    usernames = gameplayResult.playerResultList.map((playerResult) => playerResult.player).toList();
                   }
 
                   return ListView.builder(
@@ -112,7 +112,7 @@ class _ScorePageState<T> extends State<ScorePage> {
                 child: Column(
                   children: [
                     ElevatedButton(
-                      onPressed: logic.onPressedReload(context),
+                      onPressed: viewModel.onPressedReload(context),
                       child: const Text('Recarregar'),
                     ),
                     const SizedBox(
@@ -122,7 +122,7 @@ class _ScorePageState<T> extends State<ScorePage> {
                 ),
               ),
               ElevatedButton(
-                onPressed: logic.onPressedBackToDashboard(context),
+                onPressed: viewModel.onPressedBackToDashboard(context),
                 child: const Text('Voltar para dashboard'),
               ),
             ],

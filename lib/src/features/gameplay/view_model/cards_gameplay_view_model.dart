@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/features/gameplay/contexts/memory_game_gameplay_context.dart';
 import 'package:memory_game_web/src/features/gameplay/models/card_gameplay_model.dart';
+import 'package:memory_game_web/src/widgets/custom_snack_bar_widget.dart';
 
 class CardsGameplayViewModel {
   CardsGameplayViewModel(this.context) {
@@ -19,7 +20,14 @@ class CardsGameplayViewModel {
       return;
     }
 
-    memoryGameGameplayContext.itsRight();
+    bool right = memoryGameGameplayContext.itsRight();
+    
+    ScaffoldMessenger.of(context).clearSnackBars();
+    if(right) {     
+      ScaffoldMessenger.of(context).showSnackBar(CustomSnackBarWidget.forSucess('Parábens! As cartas estão certas!'));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(CustomSnackBarWidget.forError('Errou! As cartas estão erradas!'));
+    }
   }
 
   void onPressedItsWrong() {
@@ -27,6 +35,13 @@ class CardsGameplayViewModel {
       return;
     }
 
-    MemoryGameGameplayContext.of(context)!.itsWrong();
+    bool wrong = MemoryGameGameplayContext.of(context)!.itsWrong();
+
+    ScaffoldMessenger.of(context).clearSnackBars();
+    if(wrong) {     
+      ScaffoldMessenger.of(context).showSnackBar(CustomSnackBarWidget.forSucess('Parábens! As cartas estão erradas!'));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(CustomSnackBarWidget.forError('Errou! As cartas estão certas!'));
+    }
   }
 }

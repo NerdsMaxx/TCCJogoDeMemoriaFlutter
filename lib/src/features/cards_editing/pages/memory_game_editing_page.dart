@@ -9,6 +9,7 @@ import 'package:memory_game_web/src/features/cards_editing/models/memory_game_ed
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/show_cards_component.dart';
+import 'package:memory_game_web/src/widgets/custom_snack_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/value_listenable_builder_2_widget.dart';
 
 class MemoryGameEditingPage extends StatefulWidget {
@@ -88,7 +89,13 @@ class _MemoryGameEditingPageState extends State<MemoryGameEditingPage> {
                       ],
                     );
                   },
-                  onError: (context, error) => SelectableText(error.toString()),
+                  onError: (context, error) {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(CustomSnackBarWidget.forError(error.toString()));
+
+                    return const SizedBox.shrink();
+                  },
                 );
               }),
             ],

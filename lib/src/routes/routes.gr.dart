@@ -21,7 +21,7 @@ import '../features/cards_editing/pages/memory_game_adding_page.dart' as _i7;
 import '../features/cards_editing/pages/memory_game_editing_page.dart' as _i6;
 import '../features/dashboard/pages/dashboard_page.dart' as _i5;
 import '../features/gameplay/pages/gameplay_page.dart' as _i8;
-import '../features/gameplay_management/pages/gameplay_management_page.dart' as _i9;
+import '../features/gameplay_management/gameplay_management_page.dart' as _i9;
 import '../features/scores/score_page.dart' as _i10;
 import 'guard/auth_guard.dart' as _i13;
 import 'router_observer/initial_route.dart' as _i1;
@@ -67,8 +67,8 @@ class AppRouter extends _i11.RootStackRouter {
       );
     },
     CardsEditingRoute.name: (routeData) {
-      final args =
-          routeData.argsAs<CardsEditingRouteArgs>(orElse: () => const CardsEditingRouteArgs());
+      final args = routeData.argsAs<CardsEditingRouteArgs>(
+          orElse: () => const CardsEditingRouteArgs());
       return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i6.MemoryGameEditingPage(
@@ -85,7 +85,8 @@ class AppRouter extends _i11.RootStackRouter {
       );
     },
     GameplayRoute.name: (routeData) {
-      final args = routeData.argsAs<GameplayRouteArgs>(orElse: () => const GameplayRouteArgs());
+      final args = routeData.argsAs<GameplayRouteArgs>(
+          orElse: () => const GameplayRouteArgs());
       return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i8.GameplayPage(
@@ -103,7 +104,8 @@ class AppRouter extends _i11.RootStackRouter {
       );
     },
     ScoreRoute.name: (routeData) {
-      final args = routeData.argsAs<ScoreRouteArgs>(orElse: () => const ScoreRouteArgs());
+      final args = routeData.argsAs<ScoreRouteArgs>(
+          orElse: () => const ScoreRouteArgs());
       return _i11.MaterialPageX<dynamic>(
         routeData: routeData,
         child: _i10.ScorePage(
@@ -160,7 +162,7 @@ class AppRouter extends _i11.RootStackRouter {
         ),
         _i11.RouteConfig(
           ScoreRoute.name,
-          path: '/scores',
+          path: '/scores_creator',
           guards: [authGuard],
         ),
       ];
@@ -342,7 +344,7 @@ class ScoreRoute extends _i11.PageRouteInfo<ScoreRouteArgs> {
     bool isPlayer = false,
   }) : super(
           ScoreRoute.name,
-          path: '/scores',
+          path: '/scores_creator',
           args: ScoreRouteArgs(
             key: key,
             code: code,

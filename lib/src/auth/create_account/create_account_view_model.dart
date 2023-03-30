@@ -6,7 +6,7 @@ import 'package:memory_game_web/src/auth/auth.dart';
 import 'package:memory_game_web/src/auth/models/new_account_model.dart';
 import 'package:memory_game_web/src/routes/routes.gr.dart';
 
-class CreateAccountController {
+class CreateAccountViewModel {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   String name = '';
@@ -14,6 +14,7 @@ class CreateAccountController {
   String email = '';
   String password = '';
   bool isCreator = false;
+  bool isPlayer = false;
 
   List<bool> isSelected = [true, false];
   final ValueNotifier<bool> changeToggleButton = ValueNotifier(false);
@@ -37,17 +38,14 @@ class CreateAccountController {
       .build();
 
   void onPressedButton(int index) {
-    for (int i = 0; i < isSelected.length; ++i) {
-      if (i != index) {
-        isSelected[i] = false;
-      }
-    }
     isSelected[index] = true;
+
+    if (index == 0) {
+      isPlayer = true;
+    }
 
     if (index == 1) {
       isCreator = true;
-    } else {
-      isCreator = false;
     }
 
     changeToggleButton.value = !changeToggleButton.value;
@@ -59,12 +57,21 @@ class CreateAccountController {
         return;
       }
 
+      List<String> types = [];
+      if(isPlayer) {
+        types.add('JOGADOR');
+      }
+
+      if(isCreator) {
+        types.add('CRIADOR');
+      }
+
       NewAccountModel newAccount = NewAccountModel(
         name: name,
         username: username,
         email: email,
         password: password,
-        type: (isCreator) ? 'CRIADOR' : 'JOGADOR',
+        types: types,
       );
 
       await _auth.createAccount(newAccount);

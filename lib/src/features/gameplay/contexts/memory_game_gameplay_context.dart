@@ -76,7 +76,7 @@ class MemoryGameGameplayContext extends InheritedWidget {
     }
   }
 
-  void itsRight() {
+  bool itsRight() {
     bool right = card1 != null && card2 != null && card1!.otherCard == card2!;
 
     if (right) {
@@ -91,9 +91,11 @@ class MemoryGameGameplayContext extends InheritedWidget {
 
     clearCard();
     verifiyIfFinish();
+
+    return right;
   }
 
-  void itsWrong() {
+  bool itsWrong() {
     bool wrong = card1 != null && card2 != null && card1!.otherCard != card2!;
 
     if (!wrong) {
@@ -105,5 +107,7 @@ class MemoryGameGameplayContext extends InheritedWidget {
 
     clearCard();
     verifiyIfFinish();
+
+    return wrong;
   }
 }

@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/models/codes_model.dart';
-import 'package:memory_game_web/src/models/gameplay_result_model.dart';
 import 'package:memory_game_web/src/routes/routes.gr.dart';
 import 'package:memory_game_web/src/services/gameplay_service.dart';
 import 'package:memory_game_web/src/utils/size_util.dart';
@@ -17,13 +16,13 @@ class GameplayManagementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _GameplayManagementPageLogic logic = _GameplayManagementPageLogic();
+    final GameplayManagementViewModel viewModel = GameplayManagementViewModel(context);
 
     return AppBarWidget(
       back: true,
       body: Center(
         child: CustomFutureBuilderWidget<CodesModel, CodesModel, Object>(
-          future: logic.futureCodes,
+          future: viewModel.futureCodes,
           onLoading: (context) => Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -66,10 +65,7 @@ class GameplayManagementPage extends StatelessWidget {
                             style: Theme.of(context).textTheme.headlineMedium,
                           ),
                           trailing: ElevatedButton(
-                            onPressed: logic.onPressedScore(
-                              context,
-                              value.codes[index].code!,
-                            ),
+                            onPressed: viewModel.onPressedScore(value.codes[index].code!),
                             child: const Text('Acompanhar'),
                           ),
                         ),
@@ -85,14 +81,14 @@ class GameplayManagementPage extends StatelessWidget {
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: logic.onPressedReload,
+                onPressed: viewModel.onPressedReload,
                 child: const Text('Recarregar'),
               ),
               const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
-                onPressed: logic.onPressedBackToDashboard(context),
+                onPressed: viewModel.onPressedBackToDashboard,
                 child: const Text('Voltar para dashboard'),
               ),
             ],

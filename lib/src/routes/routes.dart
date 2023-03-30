@@ -7,8 +7,10 @@ import 'package:memory_game_web/src/features/cards_editing/pages/memory_game_add
 import 'package:memory_game_web/src/features/cards_editing/pages/memory_game_editing_page.dart';
 import 'package:memory_game_web/src/features/dashboard/pages/dashboard_page.dart';
 import 'package:memory_game_web/src/features/gameplay/pages/gameplay_page.dart';
-import 'package:memory_game_web/src/features/gameplay_management/pages/gameplay_management_page.dart';
+import 'package:memory_game_web/src/features/gameplay_management/gameplay_management_page.dart';
 import 'package:memory_game_web/src/features/scores/score_page.dart';
+import 'package:memory_game_web/src/models/gameplay_result_model.dart';
+import 'package:memory_game_web/src/models/previous_gameplays_model.dart';
 
 import 'package:memory_game_web/src/routes/router_observer/initial_route.dart';
 
@@ -69,7 +71,7 @@ import 'guard/auth_guard.dart';
     AutoRoute(
       page: ScorePage,
       name: 'ScoreRoute',
-      path: '/scores',
+      path: '/scores_creator',
       guards: [AuthGuard],
     )
   ],

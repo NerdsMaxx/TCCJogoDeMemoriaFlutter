@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/auth/create_account/create_account_controller.dart';
+import 'package:memory_game_web/src/auth/create_account/create_account_view_model.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_text_field_form_widget.dart';
 
@@ -11,7 +11,7 @@ class CreateAccount extends StatefulWidget {
 }
 
 class _CreateAccountState extends State<CreateAccount> {
-  final CreateAccountController controller = CreateAccountController();
+  final CreateAccountViewModel viewModel = CreateAccountViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +27,15 @@ class _CreateAccountState extends State<CreateAccount> {
               height: 45,
             ),
             Form(
-                key: controller.formKey,
+                key: viewModel.formKey,
                 child: SizedBox(
                   width: 500,
                   child: Column(
                     children: [
                       CustomTextFieldFormWidget(
                         hintText: 'Nome',
-                        validator: controller.validatorName,
-                        onChanged: (value) => controller.name = value,
+                        validator: viewModel.validatorName,
+                        onChanged: (value) => viewModel.name = value,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(
@@ -43,8 +43,8 @@ class _CreateAccountState extends State<CreateAccount> {
                       ),
                       CustomTextFieldFormWidget(
                         hintText: 'Usuário',
-                        validator: controller.validatorUsername,
-                        onChanged: (value) => controller.username = value,
+                        validator: viewModel.validatorUsername,
+                        onChanged: (value) => viewModel.username = value,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(
@@ -52,8 +52,8 @@ class _CreateAccountState extends State<CreateAccount> {
                       ),
                       CustomTextFieldFormWidget(
                         hintText: 'E-mail',
-                        validator: controller.validatorEmail,
-                        onChanged: (value) => controller.email = value,
+                        validator: viewModel.validatorEmail,
+                        onChanged: (value) => viewModel.email = value,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(
@@ -61,9 +61,9 @@ class _CreateAccountState extends State<CreateAccount> {
                       ),
                       CustomTextFieldFormWidget(
                         hintText: 'Senha',
-                        validator: controller.validatorPassword,
+                        validator: viewModel.validatorPassword,
                         autocorrect: false,
-                        onChanged: (value) => controller.password = value,
+                        onChanged: (value) => viewModel.password = value,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(
@@ -82,10 +82,10 @@ class _CreateAccountState extends State<CreateAccount> {
                               width: 20,
                             ),
                             ValueListenableBuilder(
-                              valueListenable: controller.changeToggleButton,
+                              valueListenable: viewModel.changeToggleButton,
                               builder: (context, _, __) => ToggleButtons(
-                                isSelected: controller.isSelected,
-                                onPressed: controller.onPressedButton,
+                                isSelected: viewModel.isSelected,
+                                onPressed: viewModel.onPressedButton,
                                 constraints: const BoxConstraints(
                                   minHeight: 40.0,
                                   minWidth: 100.0,
@@ -113,7 +113,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         height: 30,
                       ),
                       ElevatedButton(
-                        onPressed: controller.onPressedCreateAccount(context),
+                        onPressed: viewModel.onPressedCreateAccount(context),
                         child: const Text('Criar'),
                       ),
                     ],
