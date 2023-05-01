@@ -19,6 +19,14 @@ class LocalStorage {
     return _sharedPreferences.getString(key);
   }
 
+  static Future<void> setBool(String key, bool value) async {
+    await _sharedPreferences.setBool(key, value);
+  }
+
+  static bool? getBool(String key) {
+    return _sharedPreferences.getBool(key);
+  }
+
   static Future<void> setObject(String key, Object object) async {
     await _sharedPreferences.setString(key, jsonEncode(object));
   }

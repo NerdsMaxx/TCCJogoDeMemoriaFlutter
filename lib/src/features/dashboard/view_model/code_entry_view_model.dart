@@ -53,11 +53,17 @@ class CodeEntryViewModel {
         code,
       );
 
+      LocalStorage.setBool(
+        Keys.ALONE,
+        false,
+      );
+
       context.router.push(
         GameplayRoute(
-          memoryGameName: playerAddedModel.memoryGame.name,
-          creatorUsername: playerAddedModel.memoryGame.creator,
+          // memoryGameName: playerAddedModel.memoryGame.name,
+          // creatorUsername: playerAddedModel.memoryGame.creator,
           gameplayCode: code,
+          alone: false,
         ),
       );
 

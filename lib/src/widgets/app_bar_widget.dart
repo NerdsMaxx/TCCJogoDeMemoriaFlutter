@@ -52,7 +52,6 @@ class _Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<_Profile> {
-  final bool _showInfo = false;
   final Auth auth = getIt<Auth>();
 
   @override

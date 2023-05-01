@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/memory_game_field_component.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/memory_game_saved_component.dart';
@@ -9,9 +10,9 @@ import 'package:memory_game_web/src/features/cards_editing/models/memory_game_ed
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/show_cards_component.dart';
-import 'package:memory_game_web/src/widgets/custom_snack_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/value_listenable_builder_2_widget.dart';
 
+@RoutePage(name: 'CardsEditingRoute')
 class MemoryGameEditingPage extends StatefulWidget {
   const MemoryGameEditingPage({
     super.key,
@@ -27,8 +28,7 @@ class MemoryGameEditingPage extends StatefulWidget {
 }
 
 class _MemoryGameEditingPageState extends State<MemoryGameEditingPage> {
-  late final MemoryGameEditingViewModel viewModel =
-      MemoryGameEditingViewModel(context, widget.memoryGameName);
+  late final MemoryGameEditingViewModel viewModel;
 
   @override
   Widget build(BuildContext context) {
@@ -42,62 +42,60 @@ class _MemoryGameEditingPageState extends State<MemoryGameEditingPage> {
               const SizedBox(
                 height: 50,
               ),
-              Builder(builder: (context) {
-                return CustomFutureBuilderWidget<MemoryGameModel, MemoryGameEditingModel, Object>(
-                  future: viewModel.futureMemoryGameModel,
-                  transformData: (data) => MemoryGameEditingModel.fromMemoryGameModel(data),
-                  onLoading: (context) => Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const CircularProgressIndicator(),
-                      const SizedBox(
-                        width: 40,
-                      ),
-                      SelectableText(
-                        'Carregando',
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-                    ],
-                  ),
-                  onData: (context, value) {
-                    viewModel.memoryGameEditingContext
-                      ..oldMemoryGameName = value.name
-                      ..cardEditingList.addAll(value.cardList)
-                      ..memoryGameName = value.name
-                      ..subjectList = value.subjectList;
+              Builder(
+                builder: (context) {
+                  viewModel = MemoryGameEditingViewModel(context, widget.memoryGameName);
 
-                    return Column(
+                  return CustomFutureBuilderWidget<MemoryGameModel, MemoryGameEditingModel>(
+                    future: viewModel.futureMemoryGameModel,
+                    transformData: (data) => MemoryGameEditingModel.fromMemoryGameModel(data),
+                    onLoading: (context) => Row(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        const MemoryGameFieldComponent(),
-                        ValueListenableBuilder2Widget(
-                          valueListenable1: viewModel.memoryGameEditingContext.showEditableCard,
-                          valueListenable2: viewModel.memoryGameEditingContext.showSavedMemoryGame,
-                          builder: (context, showCardsEditing, showSavedMemoryGame) => Stack(
-                            children: [
-                              ShowCardsComponent(), //não pode ser constante, pois senão não vai atualizar
-                              Visibility(
-                                visible: !showSavedMemoryGame && showCardsEditing,
-                                child: const CardsEditingComponent(),
-                              ),
-                              Visibility(
-                                visible: showSavedMemoryGame,
-                                child: const SavedMemoryGameComponent(),
-                              ),
-                            ],
-                          ),
+                        const CircularProgressIndicator(),
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        SelectableText(
+                          'Carregando',
+                          style: Theme.of(context).textTheme.displayMedium,
                         ),
                       ],
-                    );
-                  },
-                  onError: (context, error) {
-                    ScaffoldMessenger.of(context).clearSnackBars();
-                    ScaffoldMessenger.of(context)
-                        .showSnackBar(CustomSnackBarWidget.forError(error.toString()));
+                    ),
+                    onData: (context, value) {
+                      viewModel.memoryGameEditingContext
+                        ..oldMemoryGameName = value.name
+                        ..cardEditingList.addAll(value.cardList)
+                        ..memoryGameName = value.name
+                        ..subjectList = value.subjectList;
 
-                    return const SizedBox.shrink();
-                  },
-                );
-              }),
+                      return Column(
+                        children: [
+                          const MemoryGameFieldComponent(),
+                          ValueListenableBuilder2Widget(
+                            valueListenable1: viewModel.memoryGameEditingContext.showEditableCard,
+                            valueListenable2:
+                                viewModel.memoryGameEditingContext.showSavedMemoryGame,
+                            builder: (context, showCardsEditing, showSavedMemoryGame) => Stack(
+                              children: [
+                                ShowCardsComponent(), //não pode ser constante, pois senão não vai atualizar
+                                Visibility(
+                                  visible: !showSavedMemoryGame && showCardsEditing,
+                                  child: const CardsEditingComponent(),
+                                ),
+                                Visibility(
+                                  visible: showSavedMemoryGame,
+                                  child: const SavedMemoryGameComponent(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
             ],
           ),
         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/features/gameplay/contexts/memory_game_gameplay_context.dart';
 import 'package:memory_game_web/src/features/gameplay/view_model/finish_gameplay_view_model.dart';
 import 'package:memory_game_web/src/widgets/custom_container_widget.dart';
 
@@ -19,7 +18,19 @@ class FinishGameplayComponent extends StatelessWidget {
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             SelectableText(
-              'Pontuação: ${MemoryGameGameplayContext.of(context)!.getScoreValue()}',
+              'Pontuação: ${viewModel.memoryGameGameplayContext.score}',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            SelectableText(
+              'Tentativas: ${viewModel.memoryGameGameplayContext.numberAttempts}',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            SelectableText(
+              'Opções certas: ${viewModel.memoryGameGameplayContext.numberRightOptions}',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            SelectableText(
+              'Opções erradas: ${viewModel.memoryGameGameplayContext.numberWrongOptions}',
               style: Theme.of(context).textTheme.headlineSmall,
             ),
             const SizedBox(

@@ -21,7 +21,6 @@ class _CardAddingComponentState extends State<CardAddingComponent> {
           TextButton(
             onPressed: () {
               MemoryGameEditingContext.of(context)!.setCard(CardAddingModel());
-              debugPrint('ola');
             },
             child: Text(
               '+',

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
 import 'package:memory_game_web/src/api/http_impl.dart';
@@ -8,6 +6,7 @@ import 'package:memory_game_web/src/enums/user_type_enum.dart';
 import 'package:memory_game_web/src/exceptions/custom_exception.dart';
 import 'package:memory_game_web/src/interfaces/http_interface.dart';
 import 'package:memory_game_web/src/local_storage/local_storage.dart';
+import 'package:memory_game_web/src/utils/json_util.dart';
 
 part 'user.dart';
 
@@ -27,7 +26,7 @@ class Auth {
       },
     );
 
-    dynamic json = jsonDecode(response.body);
+    dynamic json = JsonUtil.tryToDecodeJson(response.body);
 
     if (json is Map<String, dynamic>) {
       _User user = _User.fromJson(json)!;
@@ -36,9 +35,11 @@ class Auth {
       await LocalStorage.setString(TOKEN_KEY, json['jwtToken']);
 
       return;
+    } else if (json is String) {
+      throw CustomException(json);
     }
 
-    throw CustomException('Deu algum erro!');
+    throw CustomException.anyError();
   }
 
   Future<void> createAccount(NewAccountModel newAccount) async {

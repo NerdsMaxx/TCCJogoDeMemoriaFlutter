@@ -8,9 +8,12 @@ import 'package:memory_game_web/src/services/memory_game_service.dart';
 class SearchViewModel {
   SearchViewModel({
     required this.context,
-  });
+  }) {
+    dashboardContext = DashboardContext.of(context)!;
+  }
 
   final MemoryGameService memoryGameService = getIt<MemoryGameService>();
+  late final DashboardContext dashboardContext;
   final BuildContext context;
 
   String search = '';
@@ -21,14 +24,18 @@ class SearchViewModel {
 
     if (_timer == null) {
       _timer = Timer(const Duration(milliseconds: 20), () {
+        
+        final bool searchForCreator = DashboardContext.of(context)!.searchForCreator;
+        
         if (search.isEmpty) {
-          DashboardContext.of(context)!.futureMemoryGameList = memoryGameService.getAllMemoryGame();
+          dashboardContext.futureMemoryGameList =
+              memoryGameService.getAllMemoryGame(searchForCreator);
         } else {
-          DashboardContext.of(context)!.futureMemoryGameList =
-              memoryGameService.getAllMemoryGameBySearch(search);
+          dashboardContext.futureMemoryGameList = memoryGameService
+              .getAllMemoryGameBySearch(search, searchForCreator);
         }
 
-        DashboardContext.of(context)!.reloadSearch();
+        dashboardContext.reloadSearch();
 
         _timer = null;
       });

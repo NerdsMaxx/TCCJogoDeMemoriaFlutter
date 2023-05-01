@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/features/gameplay/models/card_gameplay_model.dart';
-import 'package:memory_game_web/src/models/gameplay_result_model.dart';
-import 'package:memory_game_web/src/models/player_result_model.dart';
 
 class MemoryGameGameplayContext extends InheritedWidget {
   MemoryGameGameplayContext({
     super.key,
     required this.child,
-    this.code,
+    required this.code,
+    required this.isTestingForCreator,
+    required this.alone,
     this.card1,
     this.card2,
   }) : super(
@@ -23,32 +23,25 @@ class MemoryGameGameplayContext extends InheritedWidget {
   final List<CardGameplayModel> cardGameplayList = [];
 
   final ValueNotifier<bool> showGameplayCard = ValueNotifier(false);
-  final ValueNotifier<int> score = ValueNotifier(0);
-
   final ValueNotifier<bool> finishGameplay = ValueNotifier(false);
 
-  // late Future<GameplayResultModel> futureGameplayResult;
-
-  // final ValueNotifier<bool> showScores = ValueNotifier(false);
-
   final String? code;
+  final bool isTestingForCreator;
+  final bool alone;
 
-  @override
-  bool updateShouldNotify(MemoryGameGameplayContext oldWidget) => false;
+  final ValueNotifier<bool> updateInformations = ValueNotifier(false);
 
-  static MemoryGameGameplayContext? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<MemoryGameGameplayContext>();
-  }
+  int _score = 0;
+  int _numberRightOptions = 0;
+  int _numberWrongOptions = 0;
+  int _numberAttempts = 0;
+  int _numberFounds = 0;
 
-  CardGameplayModel? getCard1() => card1;
-
-  CardGameplayModel? getCard2() => card2;
-
-  ValueNotifier<int> getScore() => score;
-
-  int getScoreValue() => score.value;
-
-  List<CardGameplayModel> getCardList() => cardGameplayList;
+  int get score => _score;
+  int get numberRightOptions => _numberRightOptions;
+  int get numberWrongOptions => _numberWrongOptions;
+  int get numberAttempts => _numberAttempts;
+  int get numberFounds => _numberFounds;
 
   void setCard(CardGameplayModel card) {
     if (card1 == null) {
@@ -77,18 +70,27 @@ class MemoryGameGameplayContext extends InheritedWidget {
   }
 
   bool itsRight() {
-    bool right = card1 != null && card2 != null && card1!.otherCard == card2!;
+    bool right = card1!.otherCard == card2!;
+    ++_numberAttempts;
 
     if (right) {
-      score.value += 1;
+      ++_numberRightOptions;
+
+      _score += 50;
+      ++_numberFounds;
+
       card1!.win();
       card2!.win();
     } else {
-      score.value -= 1;
+      ++_numberWrongOptions;
+
+      _score -= 30;
+
       card1!.turnCardOver();
       card2!.turnCardOver();
     }
 
+    updateInformations.value = !updateInformations.value;
     clearCard();
     verifiyIfFinish();
 
@@ -96,18 +98,31 @@ class MemoryGameGameplayContext extends InheritedWidget {
   }
 
   bool itsWrong() {
-    bool wrong = card1 != null && card2 != null && card1!.otherCard != card2!;
+    bool wrong = card1!.otherCard != card2!;
+    ++_numberAttempts;
 
-    if (!wrong) {
-      score.value -= 1;
+    if (wrong) {
+      ++_numberRightOptions;
+    } else {
+      ++_numberWrongOptions;
+
+      _score -= 25;
     }
 
     card1!.turnCardOver();
     card2!.turnCardOver();
 
+    updateInformations.value = !updateInformations.value;
     clearCard();
     verifiyIfFinish();
 
     return wrong;
+  }
+
+  @override
+  bool updateShouldNotify(MemoryGameGameplayContext oldWidget) => false;
+
+  static MemoryGameGameplayContext? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MemoryGameGameplayContext>();
   }
 }

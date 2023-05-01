@@ -5,6 +5,8 @@ import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/auth/auth.dart';
 import 'package:memory_game_web/src/auth/models/new_account_model.dart';
 import 'package:memory_game_web/src/routes/routes.gr.dart';
+import 'package:memory_game_web/src/utils/snack_bar_util.dart';
+import 'package:memory_game_web/src/widgets/custom_snack_bar_widget.dart';
 
 class CreateAccountViewModel {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -14,7 +16,7 @@ class CreateAccountViewModel {
   String email = '';
   String password = '';
   bool isCreator = false;
-  bool isPlayer = false;
+  bool isPlayer = true;
 
   List<bool> isSelected = [true, false];
   final ValueNotifier<bool> changeToggleButton = ValueNotifier(false);
@@ -38,14 +40,14 @@ class CreateAccountViewModel {
       .build();
 
   void onPressedButton(int index) {
-    isSelected[index] = true;
+    isSelected[index] = !isSelected[index];
 
     if (index == 0) {
-      isPlayer = true;
+      isPlayer = !isPlayer;
     }
 
     if (index == 1) {
-      isCreator = true;
+      isCreator = !isCreator;
     }
 
     changeToggleButton.value = !changeToggleButton.value;
@@ -57,12 +59,23 @@ class CreateAccountViewModel {
         return;
       }
 
+      if (!isPlayer && !isCreator) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          SnackBarUtil.showSnackBar(
+            context,
+            CustomSnackBarWidget.forError('Deve selecionar um tipo!'),
+          );
+        });
+
+        return;
+      }
+
       List<String> types = [];
-      if(isPlayer) {
+      if (isPlayer) {
         types.add('JOGADOR');
       }
 
-      if(isCreator) {
+      if (isCreator) {
         types.add('CRIADOR');
       }
 
@@ -71,13 +84,13 @@ class CreateAccountViewModel {
         username: username,
         email: email,
         password: password,
-        types: types,
+        type: types,
       );
 
       await _auth.createAccount(newAccount);
 
       if (context.mounted) {
-        context.router.popUntilRoot();
+        context.router.push(const InitialRoute());
       }
     };
   }

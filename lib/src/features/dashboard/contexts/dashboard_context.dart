@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:memory_game_web/injection.dart';
+import 'package:memory_game_web/src/auth/auth.dart';
 import 'package:memory_game_web/src/models/memory_game_model.dart';
 
 class DashboardContext extends InheritedWidget {
@@ -7,9 +9,11 @@ class DashboardContext extends InheritedWidget {
     required super.child,
   });
 
+  bool _searchForCreator = getIt<Auth>().isCreator();
+
   final ValueNotifier<bool> codeEntry = ValueNotifier(false);
   final ValueNotifier<bool> codeGenerator = ValueNotifier(false);
-  MemoryGameModel? memoryGameModel;
+  MemoryGameModel? _memoryGame;
 
   late Future<List<MemoryGameModel>> futureMemoryGameList;
   final ValueNotifier<bool> reloadMemoryGameList = ValueNotifier(false);
@@ -24,7 +28,17 @@ class DashboardContext extends InheritedWidget {
 
   void reloadSearch() => reloadMemoryGameList.value = !reloadMemoryGameList.value;
 
-  void setMemoryGame(MemoryGameModel memoryGameModel) => this.memoryGameModel = memoryGameModel;
+  void changeSearchForCreator() => _searchForCreator = true;
+
+  void changeSearchForPlayer() => _searchForCreator = false;
+
+  bool get searchForCreator => _searchForCreator;
+
+  bool get searchForPlayer => !_searchForCreator;
+
+  set memoryGame(MemoryGameModel? memoryGame) => _memoryGame = memoryGame;
+
+  MemoryGameModel? get memoryGame => _memoryGame;
 
   void dispose() {
     codeEntry.dispose();

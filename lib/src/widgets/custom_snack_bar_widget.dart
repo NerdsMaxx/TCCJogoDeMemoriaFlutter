@@ -17,7 +17,7 @@ class CustomSnackBarWidget extends SnackBar {
               Expanded(
                 child: Text(
                   message,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 22),
                   maxLines: 2,
                 ),
               ),

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/auth/auth.dart';
 import 'package:memory_game_web/src/features/dashboard/view_model/title_view_model.dart';
 import 'package:memory_game_web/src/widgets/circle_button_widget.dart';
 
@@ -32,30 +30,82 @@ class TitleComponent extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                CircleButtonWidget(
-                  tooltip: 'Entrar pelo código',
-                  onPressed: viewModel.onPressedCodeEntry,
-                  icon: Icons.sensor_door_outlined,
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                CircleButtonWidget(
-                  tooltip: 'Olhar histórico de outras jogadas',
-                  onPressed: () {
-                   
-                  },
-                  icon: Icons.history_sharp,
-                ),
                 Visibility(
-                  visible: getIt<Auth>().isCreator(),
                   child: Row(
                     children: [
+                      Visibility(
+                        visible: viewModel.isPlayer && viewModel.isCreator,
+                        child: Row(
+                          children: [
+                            CircleButtonWidget(
+                              tooltip: 'Mostrar jogo de memória já jogados salvos',
+                              onPressed: viewModel.onPressedMemoryGamePlayer,
+                              icon: Icons.save,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Visibility(
+                        visible: viewModel.isPlayer && viewModel.isCreator,
+                        child: Row(
+                          children: [
+                            CircleButtonWidget(
+                              tooltip: 'Mostrar jogo de memória criados',
+                              onPressed: viewModel.onPressedMemoryGameCreator,
+                              icon: Icons.casino_rounded,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Visibility(
+                  visible: viewModel.isPlayer,
+                  child: Row(
+                    children: [
+                      CircleButtonWidget(
+                        tooltip: 'Entrar pelo código',
+                        onPressed: viewModel.onPressedCodeEntry,
+                        icon: Icons.sensor_door_outlined,
+                      ),
                       const SizedBox(
                         width: 20,
                       ),
                       CircleButtonWidget(
-                        tooltip: 'Acompanhar as partidas',
+                        tooltip: 'Olhar histórico de outras jogadas',
+                        onPressed: viewModel.onPressedHistoryGameplay,
+                        icon: Icons.history_sharp,
+                      ),
+                    ],
+                  ),
+                ),
+                Visibility(
+                  visible: viewModel.isPlayer && viewModel.isCreator,
+                  child: const SizedBox(
+                    width: 20,
+                  ),
+                ),
+                Visibility(
+                  visible: viewModel.isCreator,
+                  child: Row(
+                    children: [
+                      CircleButtonWidget(
+                        tooltip: 'Acompanhar as partidas atuais',
+                        onPressed: viewModel.onPressedGameplayManagement,
+                        icon: Icons.data_thresholding_outlined,
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      CircleButtonWidget(
+                        tooltip: 'Olhar histórico de outras partidas criadas',
                         onPressed: viewModel.onPressedGameplayManagement,
                         icon: Icons.data_thresholding_outlined,
                       ),

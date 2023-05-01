@@ -7,7 +7,7 @@ import 'package:memory_game_web/src/services/gameplay_service.dart';
 
 class CodeGeneratorViewModel {
   CodeGeneratorViewModel(this.context) {
-    memoryGame = DashboardContext.of(context)!.memoryGameModel!;
+    memoryGame = DashboardContext.of(context)!.memoryGame!;
 
     futureCode = getIt<GameplayService>().generateGameplay(
         GameplayModel(memoryGame: memoryGame.name, creator: memoryGame.creator, alone: false));

@@ -17,17 +17,15 @@ class EditableCardsWidget extends StatefulWidget {
 class _EditableCardsWidgetState extends State<EditableCardsWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          CardWidget(
-            child: Text(widget.card.content),
-          ),
-          CardWidget(
-            child: Text(widget.card.otherCard.content),
-          ),
-        ],
-      ),
+    return Row(
+      children: [
+        CardWidget(
+          child: Text(widget.card.content),
+        ),
+        CardWidget(
+          child: Text(widget.card.otherCard.content),
+        ),
+      ],
     );
   }
 }

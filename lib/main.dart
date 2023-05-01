@@ -1,12 +1,10 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/local_storage/local_storage.dart';
-import 'package:memory_game_web/src/routes/guard/auth_guard.dart';
 import 'package:memory_game_web/src/routes/router_observer/router_observer.dart';
-import 'package:memory_game_web/src/routes/routes.gr.dart';
+import 'package:memory_game_web/src/routes/routes.dart';
 import 'package:memory_game_web/src/themes/theme.dart';
 
 void main() {
@@ -20,7 +18,8 @@ void main() {
 class App extends StatelessWidget {
   App({super.key});
 
-  final _appRouter = AppRouter(authGuard: AuthGuard());
+  final AppRouter _appRouter = AppRouter();
+  final NavigatorObserver _observer = RouterObserver();
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +27,8 @@ class App extends StatelessWidget {
       title: 'Flutter Demo',
       theme: lightTheme,
       debugShowCheckedModeBanner: false,
-      routeInformationParser: _appRouter.defaultRouteParser(),
-      routerDelegate: AutoRouterDelegate(
-        _appRouter,
-        navigatorObservers: () => [
-          RouterObserver(),
-        ],
+      routerConfig: _appRouter.config(
+        navigatorObservers: () => [_observer],
       ),
     );
   }

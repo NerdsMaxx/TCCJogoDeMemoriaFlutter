@@ -71,7 +71,7 @@ class _CodeEntryComponentState extends State<CodeEntryComponent> {
               ),
               Visibility(
                 visible: searchCode,
-                child: CustomFutureBuilderWidget<PlayerAddedModel, PlayerAddedModel, Object>(
+                child: CustomFutureBuilderWidget<PlayerAddedModel, PlayerAddedModel>(
                   future: viewModel.futurePlayerAddedModel,
                   onLoading: (context) => const CircularProgressIndicator(),
                   onData: (context, value) => Column(

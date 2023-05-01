@@ -16,6 +16,10 @@ class CircleButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Tooltip(
       message: tooltip,
+      textStyle: const TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+      ),
       child: CircleAvatar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         child: IconButton(

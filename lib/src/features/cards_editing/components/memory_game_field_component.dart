@@ -14,51 +14,57 @@ class _MemoryGameFieldComponentState extends State<MemoryGameFieldComponent> {
 
   @override
   Widget build(BuildContext context) {
-    viewModel.updateContext(context);
-
-    return SizedBox(
-      width: 460,
-      child: Column(
-        children: [
-          Row(
+    return Column(
+      children: [
+        Form(
+          key: viewModel.formKey,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Column(
-                children: [
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'Nome do jogo de memória',
+              SizedBox(
+                width: 460,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Nome do jogo de memória',
+                      ),
+                      initialValue: viewModel.memoryGameName,
+                      onChanged: viewModel.onChangedMemoryGameName,
+                      validator: viewModel.validatorMemoryGameName,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    initialValue: viewModel.memoryGameName,
-                    onChanged: viewModel.onChangedMemoryGameName,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                      hintText: 'Matérias',
+                    const SizedBox(
+                      height: 20,
                     ),
-                    initialValue: viewModel.subjects,
-                    onChanged: viewModel.onChangedSubject,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  ),
-                ],
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        hintText: 'Matérias',
+                      ),
+                      initialValue: viewModel.subjects,
+                      onChanged: viewModel.onChangedSubject,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 width: 20,
               ),
-              ElevatedButton(
-                onPressed: viewModel.onPressedSave,
-                child: const Text('Salvar'),
+              SizedBox(
+                width: 120,
+                child: ElevatedButton(
+                  onPressed: viewModel.onPressedSave,
+                  child: const Text('Salvar'),
+                ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 40,
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(
+          height: 40,
+        ),
+      ],
     );
   }
 }

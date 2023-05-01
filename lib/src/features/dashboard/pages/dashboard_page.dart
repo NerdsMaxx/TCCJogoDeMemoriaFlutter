@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/features/dashboard/components/code_entry_component.dart';
 import 'package:memory_game_web/src/features/dashboard/components/code_generator_component.dart';
@@ -6,6 +7,7 @@ import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_contex
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/value_listenable_builder_2_widget.dart';
 
+@RoutePage(name: 'DashboardRoute')
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
 

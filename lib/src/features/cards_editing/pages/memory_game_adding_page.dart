@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/cards_editing_component.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/memory_game_field_component.dart';
@@ -7,6 +8,7 @@ import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/show_cards_component.dart';
 import 'package:memory_game_web/src/widgets/value_listenable_builder_2_widget.dart';
 
+@RoutePage(name: 'CardAddingRoute')
 class MemoryGameAddingPage extends StatefulWidget {
   const MemoryGameAddingPage({
     super.key,

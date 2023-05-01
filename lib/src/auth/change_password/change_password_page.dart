@@ -9,6 +9,7 @@ import 'package:memory_game_web/src/widgets/custom_text_field_form_widget.dart';
 
 part 'change_password_page_logic.dart';
 
+@RoutePage(name: 'ChangePasswordRoute')
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
 

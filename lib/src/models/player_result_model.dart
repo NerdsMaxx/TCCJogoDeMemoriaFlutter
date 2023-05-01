@@ -6,14 +6,16 @@ part 'player_result_model.g.dart';
 class PlayerResultModel {
   final String player;
   final int score;
-  // final int numberPairCardCorrect;
-  // final int numberPairCardWrong;
+  final int numberRightOptions;
+  final int numberWrongOptions;
+  final int numberAttempts;
 
   const PlayerResultModel({
     required this.player,
     required this.score,
-    // required this.numberPairCardCorrect,
-    // required this.numberPairCardWrong,
+    required this.numberRightOptions,
+    required this.numberWrongOptions,
+    required this.numberAttempts,
   });
 
   factory PlayerResultModel.fromJson(Map<String, dynamic> json) => _$PlayerResultModelFromJson(json);

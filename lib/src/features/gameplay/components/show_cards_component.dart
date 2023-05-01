@@ -11,7 +11,7 @@ class ShowCardsComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<CardGameplayModel> cardList = MemoryGameGameplayContext.of(context)!.getCardList();
+    final List<CardGameplayModel> cardList = MemoryGameGameplayContext.of(context)!.cardGameplayList;
 
     return Padding(
       padding: const EdgeInsets.only(

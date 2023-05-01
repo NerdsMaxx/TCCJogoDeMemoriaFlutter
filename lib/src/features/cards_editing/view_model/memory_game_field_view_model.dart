@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/auth/auth.dart';
 import 'package:memory_game_web/src/features/cards_editing/context/memory_game_editing_context.dart';
+import 'package:memory_game_web/src/models/card_model.dart';
 import 'package:memory_game_web/src/models/memory_game_model.dart';
 import 'package:memory_game_web/src/services/memory_game_service.dart';
+import 'package:memory_game_web/src/utils/snack_bar_util.dart';
+import 'package:memory_game_web/src/widgets/custom_snack_bar_widget.dart';
 
 class MemoryGameFieldViewModel {
   MemoryGameFieldViewModel(this.context) {
@@ -21,7 +25,12 @@ class MemoryGameFieldViewModel {
 
   final Auth auth = getIt<Auth>();
   final MemoryGameService memoryGameService = getIt<MemoryGameService>();
-  final formKeyMemoryGameNameAndSubjects = GlobalKey<FormState>();
+
+  final formKey = GlobalKey<FormState>();
+  final validatorMemoryGameName =
+      ValidationBuilder(requiredMessage: 'Deve escrever nome do jogo de memória')
+          .minLength(2, 'Deve ser escrito no mínimo dois caracteres')
+          .build();
 
   late String memoryGameName;
   late String subjects;
@@ -36,10 +45,43 @@ class MemoryGameFieldViewModel {
   }
 
   void onPressedSave() {
+    if (!formKey.currentState!.validate()) {
+      return;
+    }
+
+    if (memoryGameEditingContext.cardEditingList.isEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        SnackBarUtil.showSnackBar(
+          context,
+          CustomSnackBarWidget.forError('Não foram criadas as cartas.'),
+        );
+      });
+
+      return;
+    }
+
+    Set<int> hashCodeSet = {};
+
+    final List<CardModel> cardList = memoryGameEditingContext.cardEditingList
+        .where((cardEditing) {
+          if (hashCodeSet.contains(cardEditing.hashCode)) {
+            return false;
+          }
+
+          hashCodeSet.addAll([cardEditing.hashCode, cardEditing.otherCard.hashCode]);
+          return true;
+        })
+        .map((cardEditing) => CardModel(
+              firstContent: cardEditing.content,
+              secondContent: cardEditing.otherCard.content,
+            ))
+        .toList();
+
     final MemoryGameModel memoryGame = MemoryGameModel(
       name: MemoryGameEditingContext.of(context)!.memoryGameName,
       creator: auth.username!,
       subjectList: MemoryGameEditingContext.of(context)!.subjectList,
+      cardList: cardList,
     );
 
     if (memoryGameEditingContext.isNew) {

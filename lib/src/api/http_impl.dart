@@ -4,10 +4,11 @@ import 'dart:io' show HttpHeaders;
 import 'package:http/http.dart' show Response;
 import 'package:http/http.dart' as http show get, post, put;
 import 'package:injectable/injectable.dart';
+import 'package:memory_game_web/src/api/url_api.dart';
+import 'package:memory_game_web/src/auth/auth.dart';
 import 'package:memory_game_web/src/interfaces/http_interface.dart';
 
-import '../api/url_api.dart';
-import '../auth/auth.dart';
+
 
 @named
 @Injectable(as: HttpInterface)

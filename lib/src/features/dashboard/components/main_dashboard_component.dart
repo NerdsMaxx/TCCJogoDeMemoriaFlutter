@@ -30,7 +30,7 @@ class MainDashboardComponent extends StatelessWidget {
         ValueListenableBuilder(
           valueListenable: DashboardContext.of(context)!.reloadMemoryGameList,
           builder: (_, __, ___) =>
-              CustomFutureBuilderWidget<List<MemoryGameModel>, List<MemoryGameModel>, Object>(
+              CustomFutureBuilderWidget<List<MemoryGameModel>, List<MemoryGameModel>>(
             future: DashboardContext.of(context)!.futureMemoryGameList,
             onLoading: (context) => Row(
               mainAxisSize: MainAxisSize.min,
@@ -52,17 +52,32 @@ class MainDashboardComponent extends StatelessWidget {
               ),
               child: Align(
                 alignment: Alignment.topLeft,
-                child: Wrap(
-                  spacing: 30,
-                  runSpacing: 30,
+                child: Column(
                   children: [
-                    for (MemoryGameModel memoryGameModel in data)
-                      CardComponent(memoryGame: memoryGameModel)
+                    Visibility(
+                      visible: data.isNotEmpty,
+                      child: Wrap(
+                        spacing: 30,
+                        runSpacing: 30,
+                        children: [
+                          for (MemoryGameModel memoryGameModel in data)
+                            CardComponent(memoryGame: memoryGameModel)
+                        ],
+                      ),
+                    ),
+                    Visibility(
+                      visible: data.isEmpty,
+                      child: Center(
+                        child: SelectableText(
+                          'Crie seu jogo de memória agora : ) !',
+                          style: Theme.of(context).textTheme.displayMedium,
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
             ),
-            onError: (context, error) => SelectableText(error.toString()),
           ),
         ),
       ],

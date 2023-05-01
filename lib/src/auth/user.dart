@@ -42,9 +42,21 @@ class _User {
   static _User? fromJson(Map<String, dynamic> json) {
     _User user = _User()
       .._username = json['username']
-      .._email = json['email']
-      .._userType = (json['type'] as List).map((type) => UserType.getUserType(type)!).toList();
+      .._email = json['email'];
 
+    dynamic jsonType = json['type'];
+    
+    List<String> types = [];
+    if (jsonType is List<dynamic>) {
+      types = jsonType.cast<String>();
+    } else if (jsonType is String) {
+      types = jsonType.split(',');
+    }
+    
+    if(types.isNotEmpty) {
+      user._userType = types.map((e) => UserType.getUserType(e)!).toList();
+    }
+    
     if (user._username != null && user._email != null && user._userType != null) {
       return user;
     }

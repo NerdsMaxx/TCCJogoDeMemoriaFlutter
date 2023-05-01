@@ -12,7 +12,7 @@ NewAccountModel _$NewAccountModelFromJson(Map<String, dynamic> json) =>
       username: json['username'] as String,
       email: json['email'] as String,
       password: json['password'] as String,
-      types: (json['types'] as List<dynamic>).map((e) => e as String).toList(),
+      type: (json['type'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$NewAccountModelToJson(NewAccountModel instance) =>
@@ -21,5 +21,5 @@ Map<String, dynamic> _$NewAccountModelToJson(NewAccountModel instance) =>
       'username': instance.username,
       'email': instance.email,
       'password': instance.password,
-      'types': instance.types,
+      'type': instance.type,
     };

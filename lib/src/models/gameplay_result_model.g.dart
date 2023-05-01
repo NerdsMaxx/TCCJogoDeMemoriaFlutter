@@ -13,7 +13,7 @@ GameplayResultModel _$GameplayResultModelFromJson(Map<String, dynamic> json) =>
       playerResultList: (json['playerSet'] as List<dynamic>)
           .map((e) => PlayerResultModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      allFinished: json['allFinished'] as bool,
+      noPlayers: json['noPlayers'] as bool,
     );
 
 Map<String, dynamic> _$GameplayResultModelToJson(
@@ -21,6 +21,6 @@ Map<String, dynamic> _$GameplayResultModelToJson(
     <String, dynamic>{
       'memoryGame': instance.memoryGame,
       'creator': instance.creator,
-      'allFinished': instance.allFinished,
+      'noPlayers': instance.noPlayers,
       'playerSet': instance.playerResultList,
     };

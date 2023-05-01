@@ -9,10 +9,16 @@ import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_container_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
 
-part 'gameplay_management_page_logic.dart';
+part 'gameplay_management_view_model.dart';
 
+@RoutePage(name: 'GameplayManagementRoute')
 class GameplayManagementPage extends StatelessWidget {
-  const GameplayManagementPage({super.key});
+  const GameplayManagementPage({
+    super.key,
+    required this.currentGameplays,
+  });
+
+  final bool currentGameplays;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +27,7 @@ class GameplayManagementPage extends StatelessWidget {
     return AppBarWidget(
       back: true,
       body: Center(
-        child: CustomFutureBuilderWidget<CodesModel, CodesModel, Object>(
+        child: CustomFutureBuilderWidget<Object, Object>(
           future: viewModel.futureCodes,
           onLoading: (context) => Row(
             mainAxisSize: MainAxisSize.min,
@@ -39,7 +45,7 @@ class GameplayManagementPage extends StatelessWidget {
           onData: (context, value) => Column(
             children: [
               SelectableText(
-                'Códigos',
+                'Partidas ' + ((currentGameplays) ? 'atuais' : ''),
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(
@@ -93,7 +99,6 @@ class GameplayManagementPage extends StatelessWidget {
               ),
             ],
           ),
-          onError: (context, error) => SelectableText(error.toString()),
         ),
       ),
     );

@@ -9,15 +9,32 @@ class PlayerScoreComponent extends StatefulWidget {
 }
 
 class _PlayerScoreComponentState extends State<PlayerScoreComponent> {
+  late final MemoryGameGameplayContext memoryGameGameplayContext =
+      MemoryGameGameplayContext.of(context)!;
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: MemoryGameGameplayContext.of(context)!.getScore(),
-      builder: (context, value, _) => Row(
+      valueListenable: memoryGameGameplayContext.updateInformations,
+      builder: (context, _, __) => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SelectableText(
-            'Pontuação: $value',
+            'Pontuação: ${memoryGameGameplayContext.score}',
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
+          const SizedBox(
+            width: 40,
+          ),
+          SelectableText(
+            'Tentativas: ${memoryGameGameplayContext.numberAttempts}',
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
+          const SizedBox(
+            width: 40,
+          ),
+          SelectableText(
+            'Encontrados: ${memoryGameGameplayContext.numberFounds}',
             style: Theme.of(context).textTheme.headlineLarge,
           ),
         ],

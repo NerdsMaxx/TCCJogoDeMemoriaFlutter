@@ -7,26 +7,24 @@ import 'package:memory_game_web/src/routes/routes.gr.dart';
 import 'package:memory_game_web/src/services/gameplay_service.dart';
 
 class ScoreViewModel {
-  ScoreViewModel(this.context, this.isPlayer, String? code) {
+  ScoreViewModel(this.context, this.isPlayer, String? code, bool? alone) {
     this.code = code ?? LocalStorage.getString(Keys.GAMEPLAY_CODE);
+    this.alone = alone ?? LocalStorage.getBool(Keys.ALONE)!;
 
-    if (isPlayer) {
-      futureGameplayResult = gameplayService.getPreviousGameplays();
-    } else {
-      futureGameplayResult = gameplayService.getGameplayScores(code!);
-    }
+    _getGameplayScoreOrPreviousGameplays();
   }
 
   final BuildContext context;
   final bool isPlayer;
+  late final bool alone;
 
   final GameplayService gameplayService = getIt<GameplayService>();
   late final String? code;
-  late Future<Object> futureGameplayResult;
+  late Future<Object> futureResult;
 
   VoidCallback onPressedReload(BuildContext context) {
     return () async {
-      futureGameplayResult = gameplayService.getGameplayScores(code!);
+      await _getGameplayScoreOrPreviousGameplays();
     };
   }
 
@@ -34,5 +32,13 @@ class ScoreViewModel {
     return () {
       context.router.push(const DashboardRoute());
     };
+  }
+
+  Future<void> _getGameplayScoreOrPreviousGameplays() async {
+    if (isPlayer) {
+      futureResult = gameplayService.getPreviousGameplaysByPlayer();
+    } else {
+      futureResult = gameplayService.getGameplayScores(code!);
+    }
   }
 }

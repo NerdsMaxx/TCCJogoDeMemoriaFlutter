@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/auth/create_account/create_account_view_model.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_text_field_form_widget.dart';
 
+@RoutePage(name: 'CreateAccountRoute')
 class CreateAccount extends StatefulWidget {
   const CreateAccount({super.key});
 
@@ -63,6 +65,7 @@ class _CreateAccountState extends State<CreateAccount> {
                         hintText: 'Senha',
                         validator: viewModel.validatorPassword,
                         autocorrect: false,
+                        obscureText: true,
                         onChanged: (value) => viewModel.password = value,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),

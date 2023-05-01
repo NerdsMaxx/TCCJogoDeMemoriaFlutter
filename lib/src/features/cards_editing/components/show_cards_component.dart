@@ -19,11 +19,7 @@ class ShowCardsComponent extends StatelessWidget {
         )
         .toList()
       ..add(CardAddingComponent());
-
-    cardComponentList.forEach(
-      (element) => debugPrint(element.hashCode.toString()),
-    );
-
+      
     return Padding(
       padding: const EdgeInsets.only(
         left: 50,

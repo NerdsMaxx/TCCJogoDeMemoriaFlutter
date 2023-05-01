@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/auth/login/login_controller.dart';
+import 'package:memory_game_web/src/auth/login/login_view_model.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_text_field_form_widget.dart';
 
+@RoutePage(name: 'LoginRoute')
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -11,7 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final LoginController _controller = LoginController();
+  final LoginViewModel viewModel = LoginViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
             height: 100,
           ),
           Form(
-            key: _controller.formKey,
+            key: viewModel.formKey,
             child: Align(
               alignment: Alignment.center,
               child: Column(
@@ -33,18 +35,18 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         CustomTextFieldFormWidget(
                           hintText: 'Usuário',
-                          validator: _controller.validatorUsernameOrEmail,
-                          onChanged: (value) => _controller.username = value,
+                          validator: viewModel.validatorUsername,
+                          onChanged: (value) => viewModel.username = value,
                         ),
                         const SizedBox(
                           height: 30,
                         ),
                         CustomTextFieldFormWidget(
                           hintText: 'Senha',
-                          validator: _controller.validatorPassword,
+                          validator: viewModel.validatorPassword,
                           obscureText: true,
                           autocorrect: false,
-                          onChanged: (value) => _controller.password = value,
+                          onChanged: (value) => viewModel.password = value,
                         ),
                       ],
                     ),
@@ -53,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 26,
                   ),
                   ElevatedButton(
-                    onPressed: _controller.onPressedLogin(context),
+                    onPressed: viewModel.onPressedLogin(context),
                     child: const Text('Logar'),
                   ),
                   const SizedBox(
@@ -64,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           TextButton(
-            onPressed: _controller.onPressedCreateAccount(context),
+            onPressed: viewModel.onPressedCreateAccount(context),
             child: const Text(
               'Não tem conta? Cadastre a sua conta agora.',
               style: TextStyle(
@@ -76,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
             height: 20,
           ),
           TextButton(
-            onPressed: _controller.onPressedChangePassword(context),
+            onPressed: viewModel.onPressedChangePassword(context),
             child: const Text(
               'Esqueceu a senha? Altere a senha.',
               style: TextStyle(
@@ -89,3 +91,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

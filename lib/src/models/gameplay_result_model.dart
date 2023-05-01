@@ -7,7 +7,7 @@ part 'gameplay_result_model.g.dart';
 class GameplayResultModel {
   final String memoryGame;
   final String creator;
-  final bool allFinished;
+  final bool noPlayers;
 
   @JsonKey(name: 'playerSet')
   final List<PlayerResultModel> playerResultList;
@@ -16,7 +16,7 @@ class GameplayResultModel {
     required this.memoryGame,
     required this.creator,
     required this.playerResultList,
-    required this.allFinished,
+    required this.noPlayers,
   });
 
   factory GameplayResultModel.fromJson(Map<String, dynamic> json) =>

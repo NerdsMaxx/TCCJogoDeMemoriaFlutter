@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/auth/auth.dart';
 import 'package:memory_game_web/src/features/dashboard/view_model/card_view_model.dart';
 import 'package:memory_game_web/src/models/memory_game_model.dart';
 import 'package:memory_game_web/src/widgets/card_widget.dart';
@@ -68,33 +66,42 @@ class CardComponent extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircleButtonWidget(
-                    tooltip: 'Jogar',
-                    onPressed: viewModel.onPressedGameplay,
-                    icon: Icons.play_arrow,
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
                   Visibility(
-                    visible: getIt<Auth>().isCreator(),
+                    visible: viewModel.isPlayer && viewModel.searchForPlayer,
                     child: CircleButtonWidget(
-                      tooltip: 'Editar',
-                      onPressed: viewModel.onPressedEditing,
-                      icon: Icons.edit,
+                      tooltip: 'Jogar',
+                      onPressed: viewModel.onPressedGameplay(),
+                      icon: Icons.play_arrow,
                     ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
                   Visibility(
-                    visible: getIt<Auth>().isCreator(),
-                    child: CircleButtonWidget(
-                      tooltip: 'Gerar código',
-                      onPressed: viewModel.onPressedCodeGenerator,
-                      icon: Icons.refresh_outlined,
+                    visible: viewModel.isCreator && viewModel.searchForCreator,
+                    child: Row(
+                      children: [
+                         CircleButtonWidget(
+                          tooltip: (viewModel.isPlayer) ? 'Jogar' : 'Testar',
+                          onPressed: viewModel.onPressedGameplay(! viewModel.isPlayer),
+                          icon: Icons.play_arrow,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        CircleButtonWidget(
+                          tooltip: 'Editar',
+                          onPressed: viewModel.onPressedEditing,
+                          icon: Icons.edit,
+                        ),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        CircleButtonWidget(
+                          tooltip: 'Gerar código',
+                          onPressed: viewModel.onPressedCodeGenerator,
+                          icon: Icons.refresh_outlined,
+                        ),
+                      ],
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

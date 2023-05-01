@@ -2,14 +2,15 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/src/auth/login/login_page.dart';
 
-class InitialRoute extends StatefulWidget {
-  const InitialRoute({super.key});
+@RoutePage(name: 'InitialRoute')
+class InitialPage extends StatefulWidget {
+  const InitialPage({super.key});
 
   @override
-  State<InitialRoute> createState() => _InitialRouteState();
+  State<InitialPage> createState() => _InitialPageState();
 }
 
-class _InitialRouteState extends State<InitialRoute> with AutoRouteAware {
+class _InitialPageState extends State<InitialPage> with AutoRouteAware {
   AutoRouteObserver? _observer;
 
   @override

@@ -21,9 +21,9 @@ class _SearchComponentState extends State<SearchComponent> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SizedBox(
-            width: 300,
+            width: 600,
             child: CustomTextFieldFormWidget(
-              hintText: 'Pesquisa',
+              hintText: 'Pesquisar jogo de memória ou matéria',
               onChanged: viewModel.onChangedSearch,
             ),
           ),

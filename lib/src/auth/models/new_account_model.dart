@@ -8,14 +8,14 @@ class NewAccountModel {
   final String username;
   final String email;
   final String password;
-  final List<String> types;
+  final List<String> type;
 
   const NewAccountModel({
     required this.name,
     required this.username,
     required this.email,
     required this.password,
-    required this.types,
+    required this.type,
   });
 
   Map<String, dynamic> toJson() => _$NewAccountModelToJson(this);
