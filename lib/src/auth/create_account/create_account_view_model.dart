@@ -24,7 +24,7 @@ class CreateAccountViewModel {
   final Auth _auth = getIt<Auth>();
 
   final validatorName = ValidationBuilder(requiredMessage: 'Obrigatório colocar nome.')
-      .minLength(2, 'Nome tem que ter pelo menos dois caracteres')
+      .minLength(6, 'Nome tem que ter pelo menos 6 caracteres')
       .build();
 
   final validatorEmail = ValidationBuilder(requiredMessage: 'Obrigatório colocar e-mail.')
@@ -32,7 +32,7 @@ class CreateAccountViewModel {
       .build();
 
   final validatorUsername = ValidationBuilder(requiredMessage: 'É obrigatório preencher usuário.')
-      .minLength(5, 'Nome de usuário deve ser no mínimo 5 caracteres')
+      .minLength(6, 'Nome de usuário deve ser no mínimo 5 caracteres')
       .build();
 
   final validatorPassword = ValidationBuilder(requiredMessage: 'É obrigatório preencher a senha.')

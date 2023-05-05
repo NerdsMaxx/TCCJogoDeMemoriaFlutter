@@ -32,7 +32,9 @@ class TitleViewModel {
   }
 
   void onPressedGameplayManagement() {
-    context.router.push(const GameplayManagementRoute());
+    context.router.push(GameplayManagementRoute(
+      currentGameplays: true,
+    ));
   }
 
   void onPressedHistoryGameplay() {

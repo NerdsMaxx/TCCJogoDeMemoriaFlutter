@@ -7,7 +7,8 @@ import 'package:memory_game_web/src/routes/routes.gr.dart';
 import 'package:memory_game_web/src/services/gameplay_service.dart';
 
 class ScoreViewModel {
-  ScoreViewModel(this.context, this.isPlayer, String? code, bool? alone) {
+  ScoreViewModel(this.context, this.isPreviousGameplay, this.gameplayId,
+      String? code, bool? alone) {
     this.code = code ?? LocalStorage.getString(Keys.GAMEPLAY_CODE);
     this.alone = alone ?? LocalStorage.getBool(Keys.ALONE)!;
 
@@ -15,7 +16,8 @@ class ScoreViewModel {
   }
 
   final BuildContext context;
-  final bool isPlayer;
+  final bool isPreviousGameplay;
+  final int? gameplayId;
   late final bool alone;
 
   final GameplayService gameplayService = getIt<GameplayService>();
@@ -35,8 +37,12 @@ class ScoreViewModel {
   }
 
   Future<void> _getGameplayScoreOrPreviousGameplays() async {
-    if (isPlayer) {
-      futureResult = gameplayService.getPreviousGameplaysByPlayer();
+    if (isPreviousGameplay) {
+      if (gameplayId != null) {
+        futureResult = gameplayService.getScoresByGameplay(gameplayId!);
+      } else {
+        futureResult = gameplayService.getPreviousGameplaysByPlayer();
+      }
     } else {
       futureResult = gameplayService.getGameplayScores(code!);
     }

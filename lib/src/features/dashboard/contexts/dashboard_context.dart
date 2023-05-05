@@ -13,7 +13,7 @@ class DashboardContext extends InheritedWidget {
 
   final ValueNotifier<bool> codeEntry = ValueNotifier(false);
   final ValueNotifier<bool> codeGenerator = ValueNotifier(false);
-  MemoryGameModel? _memoryGame;
+  MemoryGameModel? memoryGame;
 
   late Future<List<MemoryGameModel>> futureMemoryGameList;
   final ValueNotifier<bool> reloadMemoryGameList = ValueNotifier(false);
@@ -35,10 +35,6 @@ class DashboardContext extends InheritedWidget {
   bool get searchForCreator => _searchForCreator;
 
   bool get searchForPlayer => !_searchForCreator;
-
-  set memoryGame(MemoryGameModel? memoryGame) => _memoryGame = memoryGame;
-
-  MemoryGameModel? get memoryGame => _memoryGame;
 
   void dispose() {
     codeEntry.dispose();

@@ -16,20 +16,22 @@ class ScorePage extends StatefulWidget {
     super.key,
     this.code,
     this.isPreviousGameplays = false,
+    this.gameplayId,
     this.alone,
   });
 
   final String? code;
   final bool isPreviousGameplays;
   final bool? alone;
+  final int? gameplayId;
 
   @override
   State<ScorePage> createState() => _ScorePageState();
 }
 
 class _ScorePageState extends State<ScorePage> {
-  late final ScoreViewModel viewModel =
-      ScoreViewModel(context, widget.isPreviousGameplays, widget.code, widget.alone);
+  late final ScoreViewModel viewModel = ScoreViewModel(context, widget.isPreviousGameplays,
+      widget.gameplayId, widget.code, widget.alone);
 
   @override
   Widget build(BuildContext context) {

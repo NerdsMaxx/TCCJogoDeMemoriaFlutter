@@ -2,8 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/models/codes_model.dart';
+import 'package:memory_game_web/src/models/previous_gameplays_creator_model.dart';
 import 'package:memory_game_web/src/routes/routes.gr.dart';
 import 'package:memory_game_web/src/services/gameplay_service.dart';
+import 'package:memory_game_web/src/utils/date_util.dart';
 import 'package:memory_game_web/src/utils/size_util.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_container_widget.dart';
@@ -22,13 +24,13 @@ class GameplayManagementPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GameplayManagementViewModel viewModel = GameplayManagementViewModel(context);
+    final GameplayManagementViewModel viewModel = GameplayManagementViewModel(context, currentGameplays);
 
     return AppBarWidget(
       back: true,
       body: Center(
         child: CustomFutureBuilderWidget<Object, Object>(
-          future: viewModel.futureCodes,
+          future: viewModel.future,
           onLoading: (context) => Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -45,7 +47,7 @@ class GameplayManagementPage extends StatelessWidget {
           onData: (context, value) => Column(
             children: [
               SelectableText(
-                'Partidas ' + ((currentGameplays) ? 'atuais' : ''),
+                'Partidas ' + ((viewModel.currentGameplays) ? 'atuais' : ''),
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(
@@ -56,32 +58,83 @@ class GameplayManagementPage extends StatelessWidget {
                   maxWidth: SizeUtil.widthFactor(context, 0.3),
                   maxHeight: SizeUtil.heightFactor(context, 0.7),
                 ),
-                child: ListView.builder(
-                  itemCount: value.codes.length,
-                  itemBuilder: (context, index) => Column(
-                    children: [
-                      CustomContainerWidget(
-                        child: ListTile(
-                          title: SelectableText(
-                            value.codes[index].code!,
-                            style: Theme.of(context).textTheme.headlineMedium,
+                child: Builder(builder: (context) {
+                  if (value is CodesModel) {
+                    return ListView.builder(
+                      itemCount: value.codes.length,
+                      itemBuilder: (context, index) => Column(
+                        children: [
+                          CustomContainerWidget(
+                            child: ListTile(
+                              title: SelectableText(
+                                value.codes[index].code!,
+                                style: Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              subtitle: SelectableText(
+                                value.codes[index].name,
+                                style: Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              trailing: ElevatedButton(
+                                onPressed: viewModel.onPressedScore(value.codes[index].code!),
+                                child: const Text('Acompanhar'),
+                              ),
+                            ),
                           ),
-                          subtitle: SelectableText(
-                            value.codes[index].name,
-                            style: Theme.of(context).textTheme.headlineMedium,
+                          const SizedBox(
+                            height: 20,
                           ),
-                          trailing: ElevatedButton(
-                            onPressed: viewModel.onPressedScore(value.codes[index].code!),
-                            child: const Text('Acompanhar'),
-                          ),
-                        ),
+                        ],
                       ),
-                      const SizedBox(
-                        height: 20,
+                    );
+                  } else if (value is List<PreviousGameplaysCreatorModel>) {
+                    return ListView.builder(
+                      itemCount: value.length,
+                      itemBuilder: (context, index) => Column(
+                        children: [
+                          CustomContainerWidget(
+                            child: ListTile(
+                              title: SelectableText(
+                                value[index].memoryGame,
+                                style: Theme.of(context).textTheme.headlineMedium,
+                              ),
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SelectableText(
+                                    'Código usado: ${value[index].usedCode}',
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
+                                  SelectableText(
+                                    'Quantidade de jogadores: ${value[index].numberPlayers}',
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
+                                  SelectableText(
+                                    'Data e hora que começou: ${DateUtil.formateToString(value[index].startTime)}',
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
+                                  SelectableText(
+                                    'Data e hora que último jogador terminou: ${DateUtil.formateToString(value[index].lastTime)}',
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
+                                ],
+                              ),
+                              trailing: ElevatedButton(
+                                onPressed: viewModel.onPressedPlayerHistory(value[index].gameplayId),
+                                child: const Text('Detalhes'),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
+                    );
+                  }
+
+                  return const SizedBox.shrink();
+                }),
               ),
               const SizedBox(
                 height: 20,

@@ -59,6 +59,7 @@ abstract class $AppRouter extends _i11.RootStackRouter {
           key: args.key,
           code: args.code,
           isPreviousGameplays: args.isPreviousGameplays,
+          gameplayId: args.gameplayId,
           alone: args.alone,
         ),
       );
@@ -183,6 +184,7 @@ class ScoreRoute extends _i11.PageRouteInfo<ScoreRouteArgs> {
     _i12.Key? key,
     String? code,
     bool isPreviousGameplays = false,
+    int? gameplayId,
     bool? alone,
     List<_i11.PageRouteInfo>? children,
   }) : super(
@@ -191,6 +193,7 @@ class ScoreRoute extends _i11.PageRouteInfo<ScoreRouteArgs> {
             key: key,
             code: code,
             isPreviousGameplays: isPreviousGameplays,
+            gameplayId: gameplayId,
             alone: alone,
           ),
           initialChildren: children,
@@ -207,6 +210,7 @@ class ScoreRouteArgs {
     this.key,
     this.code,
     this.isPreviousGameplays = false,
+    this.gameplayId,
     this.alone,
   });
 
@@ -216,11 +220,13 @@ class ScoreRouteArgs {
 
   final bool isPreviousGameplays;
 
+  final int? gameplayId;
+
   final bool? alone;
 
   @override
   String toString() {
-    return 'ScoreRouteArgs{key: $key, code: $code, isPreviousGameplays: $isPreviousGameplays, alone: $alone}';
+    return 'ScoreRouteArgs{key: $key, code: $code, isPreviousGameplays: $isPreviousGameplays, gameplayId: $gameplayId, alone: $alone}';
   }
 }
 

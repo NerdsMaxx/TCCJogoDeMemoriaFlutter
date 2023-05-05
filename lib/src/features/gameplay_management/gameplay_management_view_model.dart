@@ -1,17 +1,21 @@
 part of 'gameplay_management_page.dart';
 
 class GameplayManagementViewModel {
-  GameplayManagementViewModel(this.context) {
-    futureCodes = gameplayService.getCodes();
+  GameplayManagementViewModel(this.context, this.currentGameplays) {
+    if (currentGameplays) {
+      future = gameplayService.getCodes();
+    } else {
+      future = gameplayService.getPreviousGameplaysByCreator();
+    }
   }
 
   final BuildContext context;
-
+  final bool currentGameplays;
   final GameplayService gameplayService = getIt<GameplayService>();
-  late final Future<CodesModel> futureCodes;
+  late final Future<Object> future;
 
   void onPressedReload() {
-    futureCodes = gameplayService.getCodes();
+    future = gameplayService.getCodes();
   }
 
   void onPressedBackToDashboard() {
@@ -21,6 +25,12 @@ class GameplayManagementViewModel {
   VoidCallback onPressedScore(String code) {
     return () {
       context.router.push(ScoreRoute(code: code));
+    };
+  }
+
+  VoidCallback onPressedPlayerHistory(int gameplayId) {
+    return () {
+      context.router.push(ScoreRoute(gameplayId: gameplayId));
     };
   }
 }
