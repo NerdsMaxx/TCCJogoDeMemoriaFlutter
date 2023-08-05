@@ -1,13 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:form_validator/form_validator.dart';
-import 'package:memory_game_web/injection.dart';
-import 'package:memory_game_web/src/auth/auth.dart';
-import 'package:memory_game_web/src/routes/routes.gr.dart';
+import 'package:memory_game_web/src/auth/change_password/change_password_view_model.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_text_field_form_widget.dart';
-
-part 'change_password_page_logic.dart';
 
 @RoutePage(name: 'ChangePasswordRoute')
 class ChangePasswordPage extends StatefulWidget {
@@ -18,7 +13,7 @@ class ChangePasswordPage extends StatefulWidget {
 }
 
 class _ChangePasswordPageState extends State<ChangePasswordPage> {
-  final _ChangePasswordPageLogic logic = _ChangePasswordPageLogic();
+  final ChangePasswordViewModel viewModel = ChangePasswordViewModel();
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +29,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               height: 45,
             ),
             Form(
-                key: logic.formKey,
+                key: viewModel.formKey,
                 child: SizedBox(
                   width: 500,
                   child: Column(
                     children: [
                       CustomTextFieldFormWidget(
                         hintText: 'Usuário',
-                        validator: logic.validatorUsername,
-                        onChanged: (value) => logic.username = value,
+                        validator: viewModel.validatorUsername,
+                        onChanged: (value) => viewModel.username = value,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(
@@ -50,16 +45,28 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       ),
                       CustomTextFieldFormWidget(
                         hintText: 'Senha',
-                        validator: logic.validatorPassword,
+                        validator: viewModel.validatorPassword,
                         autocorrect: false,
-                        onChanged: (value) => logic.password = value,
+                        obscureText: true,
+                        onChanged: (value) => viewModel.password = value,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      CustomTextFieldFormWidget(
+                        hintText: 'Confirmação de senha',
+                        validator: viewModel.validatorPassword,
+                        autocorrect: false,
+                        obscureText: true,
+                        onChanged: (value) => viewModel.confirmPassword = value,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(
                         height: 30,
                       ),
                       ElevatedButton(
-                        onPressed: logic.onPressedChangePassword(context),
+                        onPressed: viewModel.onPressedChangePassword(context),
                         child: const Text('Alterar'),
                       ),
                     ],

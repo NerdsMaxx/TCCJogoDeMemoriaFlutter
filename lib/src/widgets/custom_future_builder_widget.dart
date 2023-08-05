@@ -10,6 +10,7 @@ class CustomFutureBuilderWidget<TF, TS> extends StatelessWidget {
     required this.onLoading,
     required this.onData,
     this.onError,
+    this.executeOnErrorExtraFunction,
     this.onDataNull,
     this.transformData,
     this.onlyCustomException = true,
@@ -19,8 +20,9 @@ class CustomFutureBuilderWidget<TF, TS> extends StatelessWidget {
 
   final Widget Function(BuildContext context) onLoading;
   final Widget Function(BuildContext context, TS value) onData;
-  final Widget Function(BuildContext context, dynamic valueError)? onError;
   final Widget Function(BuildContext context)? onDataNull;
+  final Widget Function(BuildContext context, dynamic valueError)? onError;
+  final VoidCallback? executeOnErrorExtraFunction;
   final TS Function(TF data)? transformData;
   final bool onlyCustomException;
 
@@ -35,10 +37,6 @@ class CustomFutureBuilderWidget<TF, TS> extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           dynamic error = snapshot.error;
-
-          if (onError != null) {
-            return onError!(context, error);
-          }
 
           if (onlyCustomException) {
             if (error is CustomException) {
@@ -60,6 +58,16 @@ class CustomFutureBuilderWidget<TF, TS> extends StatelessWidget {
                 ),
               );
             });
+          }
+
+          if (executeOnErrorExtraFunction != null) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              executeOnErrorExtraFunction!();
+            });
+          }
+
+          if (onError != null) {
+            return onError!(context, error);
           }
 
           return const SizedBox.shrink();

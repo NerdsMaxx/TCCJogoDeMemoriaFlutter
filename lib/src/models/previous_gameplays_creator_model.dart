@@ -7,17 +7,17 @@ class PreviousGameplaysCreatorModel {
   final int gameplayId;
   final String memoryGame;
   final String usedCode;
-  final int numberPlayers;
+  final int numbersPlayer;
   final DateTime startTime;
-  final DateTime lastTime;
+  final DateTime? lastTime;
 
   const PreviousGameplaysCreatorModel({
     required this.gameplayId,
     required this.memoryGame,
     required this.usedCode,
-    required this.numberPlayers,
+    required this.numbersPlayer,
     required this.startTime,
-    required this.lastTime,
+    this.lastTime,
   });
 
   factory PreviousGameplaysCreatorModel.fromJson(Map<String, dynamic> json) =>

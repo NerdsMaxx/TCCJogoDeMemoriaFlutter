@@ -23,9 +23,8 @@ class CardsGameplayViewModel {
 
     bool right = memoryGameGameplayContext.itsRight();
 
-    final CustomSnackBarWidget customSnackBarWidget = (right)
-        ? CustomSnackBarWidget.forSucess('Parábens! As cartas estão certas!')
-        : CustomSnackBarWidget.forError('Errou! As cartas estão erradas!');
+    final CustomSnackBarWidget customSnackBarWidget =
+        (right) ? CustomSnackBarWidget.forSucess('Ok!') : CustomSnackBarWidget.forError('Errado!');
 
     SnackBarUtil.showSnackBar(context, customSnackBarWidget);
   }
@@ -37,9 +36,8 @@ class CardsGameplayViewModel {
 
     bool wrong = memoryGameGameplayContext.itsWrong();
 
-    final CustomSnackBarWidget customSnackBarWidget = (wrong)
-        ? CustomSnackBarWidget.forSucess('Parábens! As cartas estão erradas!')
-        : CustomSnackBarWidget.forError('Errou! As cartas estão certas!');
+    final CustomSnackBarWidget customSnackBarWidget =
+        (wrong) ? CustomSnackBarWidget.forSucess('Ok!') : CustomSnackBarWidget.forError('Errado!');
 
     SnackBarUtil.showSnackBar(context, customSnackBarWidget);
   }

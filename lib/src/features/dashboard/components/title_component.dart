@@ -98,7 +98,7 @@ class TitleComponent extends StatelessWidget {
                     children: [
                       CircleButtonWidget(
                         tooltip: 'Acompanhar as partidas atuais',
-                        onPressed: viewModel.onPressedGameplayManagement,
+                        onPressed: viewModel.onPressedGameplayManagement(true),
                         icon: Icons.data_thresholding_outlined,
                       ),
                       const SizedBox(
@@ -106,8 +106,8 @@ class TitleComponent extends StatelessWidget {
                       ),
                       CircleButtonWidget(
                         tooltip: 'Olhar histórico de outras partidas criadas',
-                        onPressed: viewModel.onPressedGameplayManagement,
-                        icon: Icons.data_thresholding_outlined,
+                        onPressed: viewModel.onPressedGameplayManagement(),
+                        icon: Icons.analytics,
                       ),
                       const SizedBox(
                         width: 20,

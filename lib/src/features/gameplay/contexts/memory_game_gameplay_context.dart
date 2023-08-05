@@ -38,9 +38,13 @@ class MemoryGameGameplayContext extends InheritedWidget {
   int _numberFounds = 0;
 
   int get score => _score;
+
   int get numberRightOptions => _numberRightOptions;
+
   int get numberWrongOptions => _numberWrongOptions;
+
   int get numberAttempts => _numberAttempts;
+
   int get numberFounds => _numberFounds;
 
   void setCard(CardGameplayModel card) {
@@ -71,6 +75,7 @@ class MemoryGameGameplayContext extends InheritedWidget {
 
   bool itsRight() {
     bool right = card1!.otherCard == card2!;
+
     ++_numberAttempts;
 
     if (right) {
@@ -99,6 +104,7 @@ class MemoryGameGameplayContext extends InheritedWidget {
 
   bool itsWrong() {
     bool wrong = card1!.otherCard != card2!;
+
     ++_numberAttempts;
 
     if (wrong) {

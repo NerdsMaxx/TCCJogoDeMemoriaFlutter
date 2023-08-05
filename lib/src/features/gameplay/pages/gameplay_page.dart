@@ -1,17 +1,17 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:memory_game_web/src/features/gameplay/components/finish_gameplay_component.dart';
-import 'package:memory_game_web/src/features/gameplay/view_model/gameplay_view_model.dart';
-import 'package:memory_game_web/src/models/memory_game_model.dart';
 import 'package:memory_game_web/src/features/gameplay/components/cards_gameplay_component.dart';
+import 'package:memory_game_web/src/features/gameplay/components/finish_gameplay_component.dart';
 import 'package:memory_game_web/src/features/gameplay/components/player_score_component.dart';
+import 'package:memory_game_web/src/features/gameplay/components/show_cards_component.dart';
 import 'package:memory_game_web/src/features/gameplay/contexts/memory_game_gameplay_context.dart';
 import 'package:memory_game_web/src/features/gameplay/models/memory_game_gameplay_model.dart';
+import 'package:memory_game_web/src/features/gameplay/view_model/gameplay_view_model.dart';
 import 'package:memory_game_web/src/local_storage/keys.dart';
 import 'package:memory_game_web/src/local_storage/local_storage.dart';
+import 'package:memory_game_web/src/models/memory_game_model.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
-import 'package:memory_game_web/src/features/gameplay/components/show_cards_component.dart';
 import 'package:memory_game_web/src/widgets/value_listenable_builder_2_widget.dart';
 
 @RoutePage(name: 'GameplayRoute')
@@ -39,6 +39,12 @@ class _GameplayPageState extends State<GameplayPage> {
   late final GameplayViewModel viewModel;
 
   @override
+  void dispose() {
+    // viewModel.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AppBarWidget(
       back: true,
@@ -50,8 +56,8 @@ class _GameplayPageState extends State<GameplayPage> {
         child: Builder(builder: (context) {
           viewModel = GameplayViewModel(
             context,
-            widget.memoryGameName,
-            widget.creatorUsername,
+            widget.memoryGameName ?? LocalStorage.getString(Keys.MEMORY_GAME_NAME),
+            widget.creatorUsername ?? LocalStorage.getString(Keys.CREATOR_USERNAME),
           );
 
           return Center(
@@ -78,14 +84,16 @@ class _GameplayPageState extends State<GameplayPage> {
                     ],
                   ),
                   onData: (context, value) {
-                    viewModel.memoryGameGameplayContext.cardGameplayList.addAll(value.cardList);
+                    viewModel.memoryGameGameplayContext.cardGameplayList
+                        .addAll(value.cardList);
 
                     return ValueListenableBuilder2Widget(
                       valueListenable1: viewModel.memoryGameGameplayContext.showGameplayCard,
                       valueListenable2: viewModel.memoryGameGameplayContext.finishGameplay,
                       builder: (context, showCardsGameplay, finishGameplay) => Stack(
                         children: [
-                          ShowCardsComponent(), //não pode ser constante, pois senão não vai atualizar
+                          ShowCardsComponent(),
+                          //não pode ser constante, pois senão não vai atualizar
                           Visibility(
                             visible: showCardsGameplay,
                             child: const CardsGameplayComponent(),
@@ -98,6 +106,12 @@ class _GameplayPageState extends State<GameplayPage> {
                       ),
                     );
                   },
+                  onError: (context, error) => Center(
+                    child: SelectableText(
+                      error.toString(),
+                      style: Theme.of(context).textTheme.displayMedium,
+                    ),
+                  ),
                 ),
               ],
             ),

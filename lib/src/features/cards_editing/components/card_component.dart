@@ -28,10 +28,23 @@ class _CardComponentState extends State<CardComponent> {
             widget.card.content,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
-          CircleButtonWidget(
-            tooltip: 'Editar',
-            onPressed: () => MemoryGameEditingContext.of(context)!.setCard(widget.card),
-            icon: Icons.edit,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircleButtonWidget(
+                tooltip: 'Editar',
+                onPressed: () => MemoryGameEditingContext.of(context)!.setCard(widget.card),
+                icon: Icons.edit,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              CircleButtonWidget(
+                tooltip: 'Excluir',
+                onPressed: () => MemoryGameEditingContext.of(context)!.removeCard(widget.card),
+                icon: Icons.cancel,
+              ),
+            ],
           ),
         ],
       ),

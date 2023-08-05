@@ -15,13 +15,15 @@ class LoginViewModel {
 
   final Auth _auth = getIt<Auth>();
 
-  final validatorUsername = ValidationBuilder(requiredMessage: 'É obrigatório preencher usuário.')
-      .minLength(5, 'Nome de usuário deve ter no mínimo 5 caracteres')
-      .build();
+  final validatorUsername =
+      ValidationBuilder(requiredMessage: 'É obrigatório preencher usuário.')
+          .minLength(5, 'Nome de usuário deve ter no mínimo 5 caracteres')
+          .build();
 
-  final validatorPassword = ValidationBuilder(requiredMessage: 'É obrigatório preencher a senha.')
-      .minLength(6, 'Senha deve ter no mínimo 6 caracteres')
-      .build();
+  final validatorPassword =
+      ValidationBuilder(requiredMessage: 'É obrigatório preencher a senha.')
+          .minLength(6, 'Senha deve ter no mínimo 6 caracteres')
+          .build();
 
   Future<bool> doLogin() async {
     await _auth.login(username, password);
@@ -34,18 +36,23 @@ class LoginViewModel {
         try {
           await doLogin();
 
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            SnackBarUtil.showSnackBar(
+              context,
+              CustomSnackBarWidget.forSucess("Login feito com sucesso!"),
+            );
+          });
+
           if (context.mounted) {
             context.router.push(const DashboardRoute());
           }
-        } catch (e) {
-          if (e is CustomException) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              SnackBarUtil.showSnackBar(
-                context,
-                CustomSnackBarWidget.forError(e.message),
-              );
-            });
-          }
+        } on CustomException catch (customException) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            SnackBarUtil.showSnackBar(
+              context,
+              CustomSnackBarWidget.forError(customException.message),
+            );
+          });
         }
       }
     };

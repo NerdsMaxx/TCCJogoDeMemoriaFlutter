@@ -15,6 +15,7 @@ import 'package:memory_game_web/src/auth/change_password/change_password_page.da
 import 'package:memory_game_web/src/auth/create_account/create_account_page.dart'
     as _i9;
 import 'package:memory_game_web/src/auth/login/login_page.dart' as _i8;
+import 'package:memory_game_web/src/enums/score_type_enum.dart' as _i13;
 import 'package:memory_game_web/src/features/cards_editing/pages/memory_game_adding_page.dart'
     as _i5;
 import 'package:memory_game_web/src/features/cards_editing/pages/memory_game_editing_page.dart'
@@ -41,7 +42,8 @@ abstract class $AppRouter extends _i11.RootStackRouter {
       );
     },
     GameplayManagementRoute.name: (routeData) {
-      final args = routeData.argsAs<GameplayManagementRouteArgs>();
+      final args = routeData.argsAs<GameplayManagementRouteArgs>(
+          orElse: () => const GameplayManagementRouteArgs());
       return _i11.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i2.GameplayManagementPage(
@@ -58,9 +60,9 @@ abstract class $AppRouter extends _i11.RootStackRouter {
         child: _i3.ScorePage(
           key: args.key,
           code: args.code,
-          isPreviousGameplays: args.isPreviousGameplays,
           gameplayId: args.gameplayId,
           alone: args.alone,
+          scoreType: args.scoreType,
         ),
       );
     },
@@ -144,7 +146,7 @@ class GameplayManagementRoute
     extends _i11.PageRouteInfo<GameplayManagementRouteArgs> {
   GameplayManagementRoute({
     _i12.Key? key,
-    required bool currentGameplays,
+    bool? currentGameplays,
     List<_i11.PageRouteInfo>? children,
   }) : super(
           GameplayManagementRoute.name,
@@ -164,12 +166,12 @@ class GameplayManagementRoute
 class GameplayManagementRouteArgs {
   const GameplayManagementRouteArgs({
     this.key,
-    required this.currentGameplays,
+    this.currentGameplays,
   });
 
   final _i12.Key? key;
 
-  final bool currentGameplays;
+  final bool? currentGameplays;
 
   @override
   String toString() {
@@ -183,18 +185,18 @@ class ScoreRoute extends _i11.PageRouteInfo<ScoreRouteArgs> {
   ScoreRoute({
     _i12.Key? key,
     String? code,
-    bool isPreviousGameplays = false,
     int? gameplayId,
     bool? alone,
+    _i13.ScoreTypeEnum? scoreType,
     List<_i11.PageRouteInfo>? children,
   }) : super(
           ScoreRoute.name,
           args: ScoreRouteArgs(
             key: key,
             code: code,
-            isPreviousGameplays: isPreviousGameplays,
             gameplayId: gameplayId,
             alone: alone,
+            scoreType: scoreType,
           ),
           initialChildren: children,
         );
@@ -209,24 +211,24 @@ class ScoreRouteArgs {
   const ScoreRouteArgs({
     this.key,
     this.code,
-    this.isPreviousGameplays = false,
     this.gameplayId,
     this.alone,
+    this.scoreType,
   });
 
   final _i12.Key? key;
 
   final String? code;
 
-  final bool isPreviousGameplays;
-
   final int? gameplayId;
 
   final bool? alone;
 
+  final _i13.ScoreTypeEnum? scoreType;
+
   @override
   String toString() {
-    return 'ScoreRouteArgs{key: $key, code: $code, isPreviousGameplays: $isPreviousGameplays, gameplayId: $gameplayId, alone: $alone}';
+    return 'ScoreRouteArgs{key: $key, code: $code, gameplayId: $gameplayId, alone: $alone, scoreType: $scoreType}';
   }
 }
 

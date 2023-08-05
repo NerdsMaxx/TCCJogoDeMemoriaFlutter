@@ -7,10 +7,12 @@ import 'package:memory_game_web/src/services/memory_game_service.dart';
 
 class MainDashboardViewModel {
   MainDashboardViewModel(BuildContext context) {
-    DashboardContext.of(context)!.futureMemoryGameList =
+    dashboardContext = DashboardContext.of(context)!;
+    dashboardContext.futureMemoryGameList =
         memoryGameService.getAllMemoryGame(getIt<Auth>().isCreator());
   }
 
   final MemoryGameService memoryGameService = getIt<MemoryGameService>();
+  late final DashboardContext dashboardContext;
   late final Future<GameplayModel> futureGameplayModel;
 }

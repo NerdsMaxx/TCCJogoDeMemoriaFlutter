@@ -19,6 +19,14 @@ class LocalStorage {
     return _sharedPreferences.getString(key);
   }
 
+  static Future<void> setInt(String key, int value) async {
+    await _sharedPreferences.setInt(key, value);
+  }
+
+  static int? getInt(String key) {
+    return _sharedPreferences.getInt(key);
+  }
+
   static Future<void> setBool(String key, bool value) async {
     await _sharedPreferences.setBool(key, value);
   }
@@ -53,6 +61,10 @@ class LocalStorage {
 
   static Future<void> clearAll() async {
     await _sharedPreferences.clear();
+  }
+
+  static Future<void> clear(String key) async {
+    await _sharedPreferences.remove(key);
   }
 
   static bool containsKey(String key) => _sharedPreferences.containsKey(key);

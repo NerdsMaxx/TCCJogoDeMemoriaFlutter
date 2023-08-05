@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
+import 'package:memory_game_web/src/enums/score_type_enum.dart';
 import 'package:memory_game_web/src/features/gameplay/contexts/memory_game_gameplay_context.dart';
 import 'package:memory_game_web/src/local_storage/keys.dart';
 import 'package:memory_game_web/src/local_storage/local_storage.dart';
@@ -18,12 +19,9 @@ class FinishGameplayViewModel {
 
   final GameplayService gameplayService = getIt<GameplayService>();
 
-  void onPressedFinished() {
+  void onPressedFinished() async {
     if (memoryGameGameplayContext.isTestingForCreator) {
-      context.router.push(
-        const DashboardRoute(),
-      );
-
+      context.router.push(const DashboardRoute());
       return;
     }
 
@@ -34,18 +32,49 @@ class FinishGameplayViewModel {
       numberWrongOptions: memoryGameGameplayContext.numberWrongOptions,
     );
 
-    final String code =
-        memoryGameGameplayContext.code ?? LocalStorage.getString(Keys.GAMEPLAY_CODE)!;
+    final String code = memoryGameGameplayContext.code ??
+        LocalStorage.getString(Keys.GAMEPLAY_CODE)!;
 
-    gameplayService.finishGameplay(
+    final int gameplayId = await gameplayService.finishGameplay(
       code,
       playerScore,
+    );
+
+    final bool alone = memoryGameGameplayContext.alone;
+
+    if (!context.mounted) {
+      return;
+    }
+
+    LocalStorage.setBool(
+      Keys.ALONE,
+      alone,
+    );
+
+    if (alone) {
+      LocalStorage.clear(Keys.GAMEPLAY_ID);
+    } else {
+      LocalStorage.setInt(
+        Keys.GAMEPLAY_ID,
+        gameplayId,
+      );
+    }
+
+    LocalStorage.setInt(
+      Keys.SCORE_TYPE_ID,
+      (alone)
+          ? ScoreTypeEnum.onePlayerGameplay.id
+          : ScoreTypeEnum.currentGameplayByPlayer.id,
     );
 
     context.router.push(
       ScoreRoute(
         code: code,
-        alone: memoryGameGameplayContext.alone,
+        alone: alone,
+        gameplayId: gameplayId,
+        scoreType: (alone)
+            ? ScoreTypeEnum.onePlayerGameplay
+            : ScoreTypeEnum.currentGameplayByPlayer,
       ),
     );
   }

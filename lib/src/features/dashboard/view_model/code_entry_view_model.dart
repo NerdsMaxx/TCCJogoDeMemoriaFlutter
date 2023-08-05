@@ -10,9 +10,12 @@ import 'package:memory_game_web/src/routes/routes.gr.dart';
 import 'package:memory_game_web/src/services/gameplay_service.dart';
 
 class CodeEntryViewModel {
-  CodeEntryViewModel(this.context);
+  CodeEntryViewModel(this.context) {
+    dashboardContext = DashboardContext.of(context)!;
+  }
 
   final BuildContext context;
+  late final DashboardContext dashboardContext;
 
   late final GameplayService gameplayService = getIt<GameplayService>();
 
@@ -58,12 +61,18 @@ class CodeEntryViewModel {
         false,
       );
 
+      LocalStorage.setBool(
+        Keys.TESTING_FOR_CREATOR,
+        true,
+      );
+
       context.router.push(
         GameplayRoute(
-          // memoryGameName: playerAddedModel.memoryGame.name,
-          // creatorUsername: playerAddedModel.memoryGame.creator,
+          memoryGameName: playerAddedModel.memoryGame.name,
+          creatorUsername: playerAddedModel.memoryGame.creator,
           gameplayCode: code,
           alone: false,
+          isTestingForCreator: false,
         ),
       );
 
@@ -76,7 +85,7 @@ class CodeEntryViewModel {
   }
 
   void onPressedExit() {
-    DashboardContext.of(context)!.hideCodeEntry();
+    dashboardContext.hideCodeEntry();
   }
 
   void dispose() {

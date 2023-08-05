@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/auth/auth.dart';
+import 'package:memory_game_web/src/enums/score_type_enum.dart';
 import 'package:memory_game_web/src/features/dashboard/contexts/dashboard_context.dart';
 import 'package:memory_game_web/src/local_storage/keys.dart';
 import 'package:memory_game_web/src/local_storage/local_storage.dart';
@@ -31,32 +32,43 @@ class TitleViewModel {
     dashboardContext.showCodeEntry();
   }
 
-  void onPressedGameplayManagement() {
-    context.router.push(GameplayManagementRoute(
-      currentGameplays: true,
-    ));
+  VoidCallback onPressedGameplayManagement([currentGameplays = false]) {
+    LocalStorage.setBool(Keys.CURRENT_GAMEPLAYS, currentGameplays);
+
+    return () {
+      context.router.push(GameplayManagementRoute(
+        currentGameplays: currentGameplays,
+      ));
+    };
   }
 
   void onPressedHistoryGameplay() {
+    LocalStorage.setInt(
+      Keys.SCORE_TYPE_ID,
+      ScoreTypeEnum.previousGameplayByPlayer.id,
+    );
+
     LocalStorage.setBool(
       Keys.ALONE,
       false,
     );
 
     context.router.push(ScoreRoute(
-      isPreviousGameplays: true,
       alone: false,
+      scoreType: ScoreTypeEnum.previousGameplayByPlayer,
     ));
   }
 
   void onPressedMemoryGamePlayer() {
-    dashboardContext.futureMemoryGameList = memoryGameService.getAllMemoryGame();
+    dashboardContext.futureMemoryGameList =
+        memoryGameService.getAllMemoryGame();
     dashboardContext.changeSearchForPlayer();
     dashboardContext.reloadSearch();
   }
 
   void onPressedMemoryGameCreator() {
-    dashboardContext.futureMemoryGameList = memoryGameService.getAllMemoryGame(true);
+    dashboardContext.futureMemoryGameList =
+        memoryGameService.getAllMemoryGame(true);
     dashboardContext.changeSearchForCreator();
     dashboardContext.reloadSearch();
   }

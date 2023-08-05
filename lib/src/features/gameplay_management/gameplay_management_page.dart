@@ -1,6 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_game_web/injection.dart';
+import 'package:memory_game_web/src/enums/score_type_enum.dart';
+import 'package:memory_game_web/src/exceptions/custom_exception.dart';
+import 'package:memory_game_web/src/local_storage/keys.dart';
+import 'package:memory_game_web/src/local_storage/local_storage.dart';
 import 'package:memory_game_web/src/models/codes_model.dart';
 import 'package:memory_game_web/src/models/previous_gameplays_creator_model.dart';
 import 'package:memory_game_web/src/routes/routes.gr.dart';
@@ -17,20 +21,21 @@ part 'gameplay_management_view_model.dart';
 class GameplayManagementPage extends StatelessWidget {
   const GameplayManagementPage({
     super.key,
-    required this.currentGameplays,
+    this.currentGameplays,
   });
 
-  final bool currentGameplays;
+  final bool? currentGameplays;
 
   @override
   Widget build(BuildContext context) {
-    final GameplayManagementViewModel viewModel = GameplayManagementViewModel(context, currentGameplays);
+    final GameplayManagementViewModel viewModel =
+        GameplayManagementViewModel(context, currentGameplays);
 
     return AppBarWidget(
       back: true,
       body: Center(
         child: CustomFutureBuilderWidget<Object, Object>(
-          future: viewModel.future,
+          future: viewModel.future..then((value) => debugPrint('CHEGOU!')),
           onLoading: (context) => Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -47,7 +52,7 @@ class GameplayManagementPage extends StatelessWidget {
           onData: (context, value) => Column(
             children: [
               SelectableText(
-                'Partidas ' + ((viewModel.currentGameplays) ? 'atuais' : ''),
+                'Partidas ${(viewModel.currentGameplays) ? 'atuais' : 'anteriores'}',
                 style: Theme.of(context).textTheme.headlineLarge,
               ),
               const SizedBox(
@@ -55,11 +60,20 @@ class GameplayManagementPage extends StatelessWidget {
               ),
               ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxWidth: SizeUtil.widthFactor(context, 0.3),
+                  maxWidth: SizeUtil.widthFactor(context, 0.4),
                   maxHeight: SizeUtil.heightFactor(context, 0.7),
                 ),
                 child: Builder(builder: (context) {
                   if (value is CodesModel) {
+                    if (value.codes.isEmpty) {
+                      return Center(
+                        child: SelectableText(
+                          'Partidas atuais não encontradas!',
+                          style: Theme.of(context).textTheme.displayMedium,
+                        ),
+                      );
+                    }
+
                     return ListView.builder(
                       itemCount: value.codes.length,
                       itemBuilder: (context, index) => Column(
@@ -67,15 +81,16 @@ class GameplayManagementPage extends StatelessWidget {
                           CustomContainerWidget(
                             child: ListTile(
                               title: SelectableText(
-                                value.codes[index].code!,
+                                'Código: ${value.codes[index].code!}',
                                 style: Theme.of(context).textTheme.headlineMedium,
                               ),
                               subtitle: SelectableText(
-                                value.codes[index].name,
+                                'Jogo de memória: ${value.codes[index].name}',
                                 style: Theme.of(context).textTheme.headlineMedium,
                               ),
                               trailing: ElevatedButton(
-                                onPressed: viewModel.onPressedScore(value.codes[index].code!),
+                                onPressed:
+                                    viewModel.onPressedCurrentGameplays(value.codes[index].code!),
                                 child: const Text('Acompanhar'),
                               ),
                             ),
@@ -87,6 +102,15 @@ class GameplayManagementPage extends StatelessWidget {
                       ),
                     );
                   } else if (value is List<PreviousGameplaysCreatorModel>) {
+                    if (value.isEmpty) {
+                      return Center(
+                        child: SelectableText(
+                          'Partidas não encontradas!',
+                          style: Theme.of(context).textTheme.displayMedium,
+                        ),
+                      );
+                    }
+
                     return ListView.builder(
                       itemCount: value.length,
                       itemBuilder: (context, index) => Column(
@@ -106,21 +130,22 @@ class GameplayManagementPage extends StatelessWidget {
                                     style: Theme.of(context).textTheme.headlineMedium,
                                   ),
                                   SelectableText(
-                                    'Quantidade de jogadores: ${value[index].numberPlayers}',
+                                    'Quantidade de jogadores: ${value[index].numbersPlayer}',
                                     style: Theme.of(context).textTheme.headlineMedium,
                                   ),
                                   SelectableText(
-                                    'Data e hora que começou: ${DateUtil.formateToString(value[index].startTime)}',
+                                    'Data e hora que começou: ${DateUtil.formatToString(value[index].startTime)}',
                                     style: Theme.of(context).textTheme.headlineMedium,
                                   ),
                                   SelectableText(
-                                    'Data e hora que último jogador terminou: ${DateUtil.formateToString(value[index].lastTime)}',
+                                    'Data e hora que último jogador terminou: ${DateUtil.formatToString(value[index].lastTime)}',
                                     style: Theme.of(context).textTheme.headlineMedium,
                                   ),
                                 ],
                               ),
                               trailing: ElevatedButton(
-                                onPressed: viewModel.onPressedPlayerHistory(value[index].gameplayId),
+                                onPressed:
+                                    viewModel.onPressedPlayerHistory(value[index].gameplayId),
                                 child: const Text('Detalhes'),
                               ),
                             ),
@@ -133,15 +158,22 @@ class GameplayManagementPage extends StatelessWidget {
                     );
                   }
 
-                  return const SizedBox.shrink();
+                  throw CustomException.anyError();
                 }),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: viewModel.onPressedReload,
-                child: const Text('Recarregar'),
+              Visibility(
+                visible: viewModel.currentGameplays,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      onPressed: viewModel.onPressedReload,
+                      child: const Text('Recarregar'),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 20,
@@ -151,6 +183,12 @@ class GameplayManagementPage extends StatelessWidget {
                 child: const Text('Voltar para dashboard'),
               ),
             ],
+          ),
+          onError: (context, error) => Center(
+            child: SelectableText(
+              error.toString(),
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
           ),
         ),
       ),

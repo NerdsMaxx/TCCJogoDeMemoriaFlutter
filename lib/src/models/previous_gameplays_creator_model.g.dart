@@ -12,9 +12,11 @@ PreviousGameplaysCreatorModel _$PreviousGameplaysCreatorModelFromJson(
       gameplayId: json['gameplayId'] as int,
       memoryGame: json['memoryGame'] as String,
       usedCode: json['usedCode'] as String,
-      numberPlayers: json['numberPlayers'] as int,
+      numbersPlayer: json['numbersPlayer'] as int,
       startTime: DateTime.parse(json['startTime'] as String),
-      lastTime: DateTime.parse(json['lastTime'] as String),
+      lastTime: json['lastTime'] == null
+          ? null
+          : DateTime.parse(json['lastTime'] as String),
     );
 
 Map<String, dynamic> _$PreviousGameplaysCreatorModelToJson(
@@ -23,7 +25,7 @@ Map<String, dynamic> _$PreviousGameplaysCreatorModelToJson(
       'gameplayId': instance.gameplayId,
       'memoryGame': instance.memoryGame,
       'usedCode': instance.usedCode,
-      'numberPlayers': instance.numberPlayers,
+      'numbersPlayer': instance.numbersPlayer,
       'startTime': instance.startTime.toIso8601String(),
-      'lastTime': instance.lastTime.toIso8601String(),
+      'lastTime': instance.lastTime?.toIso8601String(),
     };

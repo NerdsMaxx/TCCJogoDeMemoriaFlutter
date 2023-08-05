@@ -13,11 +13,10 @@ class AuthGuard extends AutoRouteGuard {
       bool backToDashboard = auth.isNotCreator() &&
           (router.currentPath == '/dashboard/cards-editing' ||
               router.currentPath == '/dashboard/cards-adding');
-      
-      backToDashboard |= auth.isNotPlayer() && router.currentPath == '/dashboard/gameplay';
 
       if (backToDashboard) {
         router.push(const DashboardRoute());
+        return;
       }
 
       resolver.next();

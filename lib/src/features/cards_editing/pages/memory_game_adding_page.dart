@@ -7,6 +7,7 @@ import 'package:memory_game_web/src/features/cards_editing/context/memory_game_e
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/features/cards_editing/components/show_cards_component.dart';
 import 'package:memory_game_web/src/widgets/value_listenable_builder_2_widget.dart';
+import 'package:memory_game_web/src/widgets/value_listenable_builder_3_widget.dart';
 
 @RoutePage(name: 'CardAddingRoute')
 class MemoryGameAddingPage extends StatefulWidget {
@@ -24,7 +25,7 @@ class _MemoryGameAddingPageState extends State<MemoryGameAddingPage> {
     return AppBarWidget(
       back: true,
       body: MemoryGameEditingContext(
-        isNew: true,
+        isNewMemoryGame: true,
         child: Center(
           child: Column(
             children: [
@@ -39,10 +40,11 @@ class _MemoryGameAddingPageState extends State<MemoryGameAddingPage> {
                   return Column(
                     children: [
                       const MemoryGameFieldComponent(),
-                      ValueListenableBuilder2Widget(
+                      ValueListenableBuilder3Widget(
                         valueListenable1: memoryGameEditingContext.showEditableCard,
                         valueListenable2: memoryGameEditingContext.showSavedMemoryGame,
-                        builder: (context, showCardsEditing, showSavedMemoryGame) => Stack(
+                        valueListenable3: memoryGameEditingContext.updateCards,
+                        builder: (context, showCardsEditing, showSavedMemoryGame, _) => Stack(
                           children: [
                             ShowCardsComponent(), //não pode ser constante, pois senão não vai atualizar
                             Visibility(

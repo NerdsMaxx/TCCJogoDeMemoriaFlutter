@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
 import 'package:memory_game_web/src/abstract_classes/service_abs.dart';
@@ -7,6 +8,7 @@ import 'package:memory_game_web/src/models/codes_model.dart';
 import 'package:memory_game_web/src/models/gameplay_model.dart';
 import 'package:memory_game_web/src/models/gameplay_result_model.dart';
 import 'package:memory_game_web/src/models/player_added_model.dart';
+import 'package:memory_game_web/src/models/player_result_model.dart';
 import 'package:memory_game_web/src/models/player_score_model.dart';
 import 'package:memory_game_web/src/models/previous_gameplays_creator_model.dart';
 import 'package:memory_game_web/src/models/previous_gameplays_player_model.dart';
@@ -49,10 +51,27 @@ class GameplayService extends Service {
     throw CustomException.anyError();
   }
 
-  Future<GameplayResultModel> finishGameplay(String code, PlayerScoreModel playerScoreModel) async {
+  Future<int> finishGameplay(String code, PlayerScoreModel playerScoreModel) async {
     Response response = await http.post(
       '$path/terminar/$code',
       body: playerScoreModel.toJson(),
+      auth: auth,
+    );
+
+    dynamic json = JsonUtil.tryToDecodeJson(response.body);
+
+    if (json is int) {
+      return json;
+    } else if (json is String) {
+      throw CustomException(json);
+    }
+
+    throw CustomException.anyError();
+  }
+
+  Future<GameplayResultModel> getGameplayScoresByCode(String code) async {
+    Response response = await http.get(
+      '$path/pontuacoes/criador/$code',
       auth: auth,
     );
 
@@ -67,16 +86,16 @@ class GameplayService extends Service {
     throw CustomException.anyError();
   }
 
-  Future<GameplayResultModel> getGameplayScores(String code) async {
+   Future<PlayerResultModel> getGameplayScoresByPlayerAndGameplay(int gameplayId) async {
     Response response = await http.get(
-      '$path/pontuacoes/$code',
+      '$path/pontuacoes/jogador/$gameplayId',
       auth: auth,
     );
 
     dynamic json = JsonUtil.tryToDecodeJson(response.body);
 
     if (json is Map<String, dynamic>) {
-      return GameplayResultModel.fromJson(json);
+      return PlayerResultModel.fromJson(json);
     } else if (json is String) {
       throw CustomException(json);
     }
@@ -135,7 +154,7 @@ class GameplayService extends Service {
     throw CustomException.anyError();
   }
 
-    Future<List<PreviousGameplaysPlayerModel>> getScoresByGameplay(int gameplayId) async {
+  Future<List<PreviousGameplaysPlayerModel>> getScoresByGameplay(int gameplayId) async {
     Response response = await http.get(
       '$path/partidas-anteriores/criador/jogadores/$gameplayId',
       auth: auth,

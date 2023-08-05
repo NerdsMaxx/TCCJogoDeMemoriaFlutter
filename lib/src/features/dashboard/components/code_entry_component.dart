@@ -71,7 +71,8 @@ class _CodeEntryComponentState extends State<CodeEntryComponent> {
               ),
               Visibility(
                 visible: searchCode,
-                child: CustomFutureBuilderWidget<PlayerAddedModel, PlayerAddedModel>(
+                child: 
+                CustomFutureBuilderWidget<PlayerAddedModel, PlayerAddedModel>(
                   future: viewModel.futurePlayerAddedModel,
                   onLoading: (context) => const CircularProgressIndicator(),
                   onData: (context, value) => Column(
@@ -90,17 +91,7 @@ class _CodeEntryComponentState extends State<CodeEntryComponent> {
                       ),
                     ],
                   ),
-                  onError: (context, valueError) => Column(
-                    children: [
-                      SelectableText(
-                        valueError.toString(),
-                      ),
-                      ElevatedButton(
-                        onPressed: viewModel.onPressedRetry,
-                        child: Text(valueError.toString()),
-                      ),
-                    ],
-                  ),
+                 executeOnErrorExtraFunction: () => viewModel.onPressedRetry()
                 ),
               ),
             ],

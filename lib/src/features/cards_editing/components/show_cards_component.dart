@@ -24,6 +24,7 @@ class ShowCardsComponent extends StatelessWidget {
       padding: const EdgeInsets.only(
         left: 50,
         right: 50,
+        bottom: 25,
       ),
       child: Align(
         alignment: Alignment.topLeft,

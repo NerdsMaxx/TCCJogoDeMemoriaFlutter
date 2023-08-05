@@ -47,7 +47,7 @@ class AppRouter extends $AppRouter {
     ),
     AutoRoute(
       page: GameplayManagementRoute.page,
-      path: '/codes',
+      path: '/gameplay-management',
       guards: [AuthGuard()],
     ),
     AutoRoute(

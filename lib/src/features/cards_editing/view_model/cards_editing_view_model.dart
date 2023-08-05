@@ -19,4 +19,8 @@ class CardsEditingViewModel {
     memoryGameEditingContext.addCardsIfNotExists(cardEditing1);
     memoryGameEditingContext.clearCard();
   }
+
+  void onPressedCancel() {
+    memoryGameEditingContext.clearCard();
+  }
 }

@@ -3,7 +3,7 @@ class CustomException implements Exception {
 
   final String _message;
 
-  get message => _message;
+  String get message => _message;
 
   @override
   String toString() => _message;

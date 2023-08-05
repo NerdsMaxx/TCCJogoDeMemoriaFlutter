@@ -1,8 +1,10 @@
 part of 'gameplay_management_page.dart';
 
 class GameplayManagementViewModel {
-  GameplayManagementViewModel(this.context, this.currentGameplays) {
-    if (currentGameplays) {
+  GameplayManagementViewModel(this.context, bool? currentGameplays) {
+    this.currentGameplays = currentGameplays ?? LocalStorage.getBool(Keys.CURRENT_GAMEPLAYS)!;
+
+    if (this.currentGameplays) {
       future = gameplayService.getCodes();
     } else {
       future = gameplayService.getPreviousGameplaysByCreator();
@@ -10,9 +12,9 @@ class GameplayManagementViewModel {
   }
 
   final BuildContext context;
-  final bool currentGameplays;
+  late final bool currentGameplays;
   final GameplayService gameplayService = getIt<GameplayService>();
-  late final Future<Object> future;
+  late Future<Object> future;
 
   void onPressedReload() {
     future = gameplayService.getCodes();
@@ -22,15 +24,41 @@ class GameplayManagementViewModel {
     context.router.push(const DashboardRoute());
   }
 
-  VoidCallback onPressedScore(String code) {
+  VoidCallback onPressedCurrentGameplays(String code) {
+    LocalStorage.setInt(
+      Keys.SCORE_TYPE_ID,
+      ScoreTypeEnum.currentGameplayByCreator.id,
+    );
+
+    LocalStorage.setBool(
+      Keys.ALONE,
+      false,
+    );
+
     return () {
-      context.router.push(ScoreRoute(code: code));
+      context.router.push(ScoreRoute(
+        code: code,
+        scoreType: ScoreTypeEnum.currentGameplayByCreator,
+      ));
     };
   }
 
   VoidCallback onPressedPlayerHistory(int gameplayId) {
+    LocalStorage.setInt(
+      Keys.SCORE_TYPE_ID,
+      ScoreTypeEnum.previousGameplayByCreator.id,
+    );
+
+    LocalStorage.setBool(
+      Keys.ALONE,
+      false,
+    );
+
     return () {
-      context.router.push(ScoreRoute(gameplayId: gameplayId));
+      context.router.push(ScoreRoute(
+        gameplayId: gameplayId,
+        scoreType: ScoreTypeEnum.previousGameplayByCreator,
+      ));
     };
   }
 }

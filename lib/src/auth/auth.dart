@@ -15,6 +15,7 @@ class Auth {
   static const String TOKEN_KEY = 'token';
 
   final HttpInterface _http;
+
   Auth(@Named.from(HttpImpl) this._http);
 
   Future<void> login(String username, String password) async {
@@ -50,13 +51,18 @@ class Auth {
   }
 
   Future<void> changePassword(String username, String newPassword) async {
-    _http.post(
+    final Response response = await _http.post(
       'usuario/mudar-senha',
       body: {
         'username': username,
         'newPassword': newPassword,
       },
     );
+
+    dynamic json = JsonUtil.tryToDecodeJson(response.body);
+    if (json is String && json == 'A senha não pode ser igual a anterior!') {
+      throw CustomException(json);
+    }
   }
 
   String? get token => LocalStorage.getString(TOKEN_KEY);
@@ -65,9 +71,7 @@ class Auth {
     await LocalStorage.clearAll();
   }
 
-  bool isValid() {
-    return token != null;
-  }
+  bool isValid() => token != null;
 
   _User? get _user => _User.getCurrentUser();
 

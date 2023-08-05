@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:memory_game_web/injection.dart';
 import 'package:memory_game_web/src/auth/auth.dart';
+import 'package:memory_game_web/src/exceptions/custom_exception.dart';
 import 'package:memory_game_web/src/features/cards_editing/context/memory_game_editing_context.dart';
 import 'package:memory_game_web/src/models/card_model.dart';
 import 'package:memory_game_web/src/models/memory_game_model.dart';
@@ -41,10 +42,10 @@ class MemoryGameFieldViewModel {
 
   void onChangedSubject(String value) {
     subjects = value;
-    memoryGameEditingContext.subjectList = value.split(', ').toList();
+    memoryGameEditingContext.subjectList = value.split(',').map((e) => e.trim()).toList();
   }
 
-  void onPressedSave() {
+  void onPressedSave() async {
     if (!formKey.currentState!.validate()) {
       return;
     }
@@ -83,16 +84,24 @@ class MemoryGameFieldViewModel {
       subjectList: MemoryGameEditingContext.of(context)!.subjectList,
       cardList: cardList,
     );
+    try {
+      if (memoryGameEditingContext.isNewMemoryGame) {
+        await memoryGameService.saveMemoryGame(memoryGame);
+      } else {
+        await memoryGameService.updateMemoryGame(
+          memoryGameEditingContext.oldMemoryGameName!,
+          memoryGame,
+        );
+      }
 
-    if (memoryGameEditingContext.isNew) {
-      memoryGameService.saveMemoryGame(memoryGame);
-    } else {
-      memoryGameService.updateMemoryGame(
-        memoryGameEditingContext.oldMemoryGameName!,
-        memoryGame,
-      );
+      memoryGameEditingContext.showSavedMemoryGame.value = true;
+    } on CustomException catch (customException) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        SnackBarUtil.showSnackBar(
+          context,
+          CustomSnackBarWidget.forError(customException.toString()),
+        );
+      });
     }
-
-    memoryGameEditingContext.showSavedMemoryGame.value = true;
   }
 }

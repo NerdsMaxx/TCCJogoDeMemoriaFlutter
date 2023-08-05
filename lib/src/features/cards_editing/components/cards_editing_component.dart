@@ -36,6 +36,13 @@ class CardsEditingComponent extends StatelessWidget {
               onPressed: viewModel.onPressedApplyChange,
               child: const Text('Aplicar alteração'),
             ),
+            const SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              onPressed: viewModel.onPressedCancel,
+              child: const Text('Cancelar'),
+            ),
           ],
         ),
       ),

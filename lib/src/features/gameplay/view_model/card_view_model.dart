@@ -12,7 +12,9 @@ class CardViewModel {
   late final MemoryGameGameplayContext memoryGameGameplayContext;
 
   void onPressedCard() {
-    card.turnsCard();
-    memoryGameGameplayContext.setCard(card);
+    if(! card.isAccepted) {
+      card.turnsCard();
+      memoryGameGameplayContext.setCard(card);
+    }
   }
 }

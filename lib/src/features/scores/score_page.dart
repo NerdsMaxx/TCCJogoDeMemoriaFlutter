@@ -1,211 +1,308 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:memory_game_web/src/enums/score_type_enum.dart';
+import 'package:memory_game_web/src/exceptions/custom_exception.dart';
 import 'package:memory_game_web/src/features/scores/score_view_model.dart';
 import 'package:memory_game_web/src/models/gameplay_result_model.dart';
 import 'package:memory_game_web/src/models/player_result_model.dart';
 import 'package:memory_game_web/src/models/previous_gameplays_player_model.dart';
 import 'package:memory_game_web/src/utils/date_util.dart';
 import 'package:memory_game_web/src/utils/size_util.dart';
+import 'package:memory_game_web/src/utils/snack_bar_util.dart';
 import 'package:memory_game_web/src/widgets/app_bar_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_container_widget.dart';
 import 'package:memory_game_web/src/widgets/custom_future_builder_widget.dart';
+import 'package:memory_game_web/src/widgets/custom_snack_bar_widget.dart';
+import 'package:memory_game_web/src/widgets/loading_widget.dart';
 
 @RoutePage(name: 'ScoreRoute')
 class ScorePage extends StatefulWidget {
   const ScorePage({
     super.key,
     this.code,
-    this.isPreviousGameplays = false,
     this.gameplayId,
     this.alone,
+    this.scoreType,
   });
 
   final String? code;
-  final bool isPreviousGameplays;
   final bool? alone;
   final int? gameplayId;
+  final ScoreTypeEnum? scoreType;
 
   @override
   State<ScorePage> createState() => _ScorePageState();
 }
 
 class _ScorePageState extends State<ScorePage> {
-  late final ScoreViewModel viewModel = ScoreViewModel(context, widget.isPreviousGameplays,
-      widget.gameplayId, widget.code, widget.alone);
+  late final ScoreViewModel viewModel =
+      ScoreViewModel(context, widget.scoreType, widget.gameplayId, widget.code, widget.alone);
+
+  @override
+  void dispose() {
+    // viewModel.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return AppBarWidget(
-      back: true,
       body: Center(
-        child: CustomFutureBuilderWidget<Object, Object>(
-          future: viewModel.futureResult,
-          onLoading: (context) => const SizedBox.shrink(),
-          onData: (context, value) => Column(
-            children: [
-              SelectableText(
-                'Pontuações',
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: SizeUtil.widthFactor(context, 0.3),
-                  maxHeight: SizeUtil.heightFactor(context, 0.7),
+        child: ValueListenableBuilder(
+          valueListenable: viewModel.reload,
+          builder: (context, _, __) => CustomFutureBuilderWidget<Object, Object>(
+            future: viewModel.futureResult,
+            onLoading: (context) => const LoadingWidget(),
+            onData: (context, value) => Column(
+              children: [
+                SelectableText(
+                  'Pontuações',
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
-                child: Builder(builder: (context) {
-                  final int length;
-                  final List<int> scoreList;
-                  final List<String> usernameList;
-                  final List<int> numberRightOptionsList,
-                      numberWrongOptionsList,
-                      numberAttemptsList;
-                  List<String> startTimeList = [], endTimeList = [];
+                const SizedBox(
+                  height: 20,
+                ),
+                ConstrainedBox(
+                  constraints: BoxConstraints(
+                    maxWidth: SizeUtil.widthFactor(context, 0.4),
+                    maxHeight: SizeUtil.heightFactor(context, 0.7),
+                  ),
+                  child: Builder(builder: (context) {
+                    final int length;
 
-                  if (widget.isPreviousGameplays) {
-                    final List<PreviousGameplaysPlayerModel> previousGameplayList =
-                        value as List<PreviousGameplaysPlayerModel>;
+                    final List<String> memoryGameList;
+                    final List<String> usernameList;
+                    final List<int> scoreList;
 
-                    length = previousGameplayList.length;
+                    final List<int> numberRightOptionsList;
+                    final List<int> numberWrongOptionsList;
+                    final List<int> numberAttemptsList;
 
-                    scoreList = previousGameplayList
-                        .map((previousGameplay) => previousGameplay.score)
-                        .toList();
+                    final List<String> startTimeList;
+                    final List<String> endTimeList;
 
-                    usernameList = previousGameplayList
-                        .map((previousGameplay) => previousGameplay.creator)
-                        .toList();
+                    if (value is List<PreviousGameplaysPlayerModel>) {
+                      if (value.isEmpty) {
+                        return Center(
+                          child: SelectableText(
+                            (viewModel.scoreType == ScoreTypeEnum.previousGameplayByPlayer)
+                                ? 'Não foram encontradas partidas anteriores.'
+                                : 'Jogadores não encontrados!',
+                            style: (viewModel.scoreType == ScoreTypeEnum.previousGameplayByPlayer)
+                                ? Theme.of(context).textTheme.displaySmall
+                                : Theme.of(context).textTheme.displayMedium,
+                          ),
+                        );
+                      }
 
-                    numberRightOptionsList = previousGameplayList
-                        .map((previousGameplay) => previousGameplay.numberRightOptions)
-                        .toList();
+                      length = value.length;
 
-                    numberWrongOptionsList = previousGameplayList
-                        .map((previousGameplay) => previousGameplay.numberWrongOptions)
-                        .toList();
+                      memoryGameList =
+                          value.map((previousGameplay) => previousGameplay.memoryGame).toList();
 
-                    numberAttemptsList = previousGameplayList
-                        .map((previousGameplay) => previousGameplay.numberAttempts)
-                        .toList();
+                      if (viewModel.scoreType == ScoreTypeEnum.previousGameplayByPlayer) {
+                        usernameList =
+                            value.map((previousGameplay) => previousGameplay.creator).toList();
+                      } else {
+                        usernameList =
+                            value.map((previousGameplay) => previousGameplay.player).toList();
+                      }
 
-                    startTimeList = previousGameplayList
-                        .map((previousGameplay) =>
-                            DateUtil.formateToString(previousGameplay.startTime))
-                        .toList();
+                      scoreList = value.map((previousGameplay) => previousGameplay.score).toList();
 
-                    endTimeList = previousGameplayList
-                        .map((previousGameplay) =>
-                            DateUtil.formateToString(previousGameplay.endTime))
-                        .toList();
-                  } else {
-                    final GameplayResultModel gameplayResult = value as GameplayResultModel;
-                    final List<PlayerResultModel> playerResultList = value.playerResultList;
+                      numberRightOptionsList = value
+                          .map((previousGameplay) => previousGameplay.numberRightOptions)
+                          .toList();
 
-                    length = playerResultList.length;
+                      numberWrongOptionsList = value
+                          .map((previousGameplay) => previousGameplay.numberWrongOptions)
+                          .toList();
 
-                    scoreList = playerResultList.map((playerResult) => playerResult.score).toList();
+                      numberAttemptsList =
+                          value.map((previousGameplay) => previousGameplay.numberAttempts).toList();
 
-                    if (viewModel.alone) {
-                      usernameList = [gameplayResult.creator];
-                    } else {
+                      startTimeList = value
+                          .map((previousGameplay) =>
+                              DateUtil.formatToString(previousGameplay.startTime))
+                          .toList();
+
+                      endTimeList = value
+                          .map((previousGameplay) =>
+                              DateUtil.formatToString(previousGameplay.endTime))
+                          .toList();
+                    } else if (value is GameplayResultModel) {
+                      final List<PlayerResultModel> playerResultList = value.playerResultList;
+
+                      if (playerResultList.isEmpty) {
+                        return Center(
+                          child: SelectableText(
+                            'Jogadores não encontrados!',
+                            style: Theme.of(context).textTheme.displayMedium,
+                          ),
+                        );
+                      }
+
+                      length = playerResultList.length;
+
+                      memoryGameList = List.filled(length, value.memoryGame);
+
+                      scoreList =
+                          playerResultList.map((playerResult) => playerResult.score).toList();
+
                       usernameList =
                           playerResultList.map((playerResult) => playerResult.player).toList();
+
+                      numberRightOptionsList = playerResultList
+                          .map((playerResult) => playerResult.numberRightOptions)
+                          .toList();
+
+                      numberWrongOptionsList = playerResultList
+                          .map((playerResult) => playerResult.numberWrongOptions)
+                          .toList();
+
+                      numberAttemptsList = playerResultList
+                          .map((playerResult) => playerResult.numberAttempts)
+                          .toList();
+
+                      startTimeList = playerResultList
+                          .map((playerResult) => DateUtil.formatToString(playerResult.startTime))
+                          .toList();
+
+                      endTimeList = playerResultList
+                          .map((playerResult) => DateUtil.formatToString(playerResult.endTime))
+                          .toList();
+                    } else if (value is PlayerResultModel) {
+                      length = 1;
+                      memoryGameList = [''];
+                      scoreList = [value.score];
+                      usernameList = [value.creator];
+                      numberRightOptionsList = [value.numberRightOptions];
+                      numberWrongOptionsList = [value.numberWrongOptions];
+                      numberAttemptsList = [value.numberAttempts];
+                      startTimeList = [DateUtil.formatToString(value.startTime)];
+                      endTimeList = [DateUtil.formatToString(value.endTime)];
+                    } else {
+                      SnackBarUtil.showSnackBar(context,
+                          CustomSnackBarWidget.forError(CustomException.anyError().message));
+
+                      return const SizedBox.shrink();
                     }
 
-                    numberRightOptionsList = playerResultList
-                        .map((playerResult) => playerResult.numberRightOptions)
-                        .toList();
+                    String tipoUsuario = '';
+                    if (viewModel.scoreType == ScoreTypeEnum.previousGameplayByCreator ||
+                        viewModel.scoreType == ScoreTypeEnum.currentGameplayByPlayer ||
+                        viewModel.scoreType == ScoreTypeEnum.currentGameplayByCreator) {
+                      tipoUsuario = 'Jogador';
+                    } else if (viewModel.scoreType == ScoreTypeEnum.previousGameplayByPlayer ||
+                        viewModel.scoreType == ScoreTypeEnum.onePlayerGameplay) {
+                      tipoUsuario = 'Criador';
+                    }
 
-                    numberWrongOptionsList = playerResultList
-                        .map((playerResult) => playerResult.numberWrongOptions)
-                        .toList();
-
-                    numberAttemptsList = playerResultList
-                        .map((previousGameplay) => previousGameplay.numberAttempts)
-                        .toList();
-                  }
-
-                  return ListView.builder(
-                    itemCount: length,
-                    itemBuilder: (context, index) => Column(
-                      children: [
-                        CustomContainerWidget(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SelectableText(
-                                'Pontuação: ${scoreList[index]} pontos',
-                                style: Theme.of(context).textTheme.headlineMedium,
-                              ),
-                              SelectableText(
-                                'Nome do ${(widget.isPreviousGameplays || viewModel.alone) ? 'criador' : 'jogador'}: ${usernameList[index]}',
-                                style: Theme.of(context).textTheme.headlineMedium,
-                              ),
-                              SelectableText(
-                                'Quantidade de opções certas: ${numberRightOptionsList[index]}',
-                                style: Theme.of(context).textTheme.headlineMedium,
-                              ),
-                              SelectableText(
-                                'Quantidade de opções erradas: ${numberWrongOptionsList[index]}',
-                                style: Theme.of(context).textTheme.headlineMedium,
-                              ),
-                              SelectableText(
-                                'Quantidade de tentativas: ${numberAttemptsList[index]}',
-                                style: Theme.of(context).textTheme.headlineMedium,
-                              ),
-                              Visibility(
-                                visible: widget.isPreviousGameplays,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SelectableText(
-                                      'Começo: ${startTimeList.isNotEmpty ? startTimeList[index] : null}',
-                                      style: Theme.of(context).textTheme.headlineMedium,
-                                    ),
-                                    SelectableText(
-                                      'Fim: ${endTimeList.isNotEmpty ? endTimeList[index] : null}',
-                                      style: Theme.of(context).textTheme.headlineMedium,
-                                    ),
-                                  ],
+                    return ListView.builder(
+                      itemCount: length,
+                      itemBuilder: (context, index) => Column(
+                        children: [
+                          CustomContainerWidget(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Visibility(
+                                  visible: !(value is PlayerResultModel),
+                                  child: SelectableText(
+                                    'Jogo de memória: ${memoryGameList[index]}',
+                                    style: Theme.of(context).textTheme.headlineMedium,
+                                  ),
                                 ),
-                              ),
-                            ],
+                                SelectableText(
+                                  'Pontuação: ${scoreList[index]} pontos',
+                                  style: Theme.of(context).textTheme.headlineMedium,
+                                ),
+                                SelectableText(
+                                  '$tipoUsuario: ${usernameList[index]}',
+                                  style: Theme.of(context).textTheme.headlineMedium,
+                                ),
+                                SelectableText(
+                                  'Quantidade de opções certas: ${numberRightOptionsList[index]}',
+                                  style: Theme.of(context).textTheme.headlineMedium,
+                                ),
+                                SelectableText(
+                                  'Quantidade de opções erradas: ${numberWrongOptionsList[index]}',
+                                  style: Theme.of(context).textTheme.headlineMedium,
+                                ),
+                                SelectableText(
+                                  'Quantidade de tentativas: ${numberAttemptsList[index]}',
+                                  style: Theme.of(context).textTheme.headlineMedium,
+                                ),
+                                SelectableText(
+                                  'Começo: ${startTimeList[index]}',
+                                  style: Theme.of(context).textTheme.headlineMedium,
+                                ),
+                                SelectableText(
+                                  'Fim: ${endTimeList[index]}',
+                                  style: Theme.of(context).textTheme.headlineMedium,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                      ],
-                    ),
-                  );
-                }),
-              ),
-              Visibility(
-                visible: !viewModel.alone,
-                child: Column(
+                          const SizedBox(
+                            height: 20,
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(
-                      height: 20,
+                    Visibility(
+                      visible: (viewModel.scoreType == ScoreTypeEnum.currentGameplayByPlayer ||
+                          viewModel.scoreType == ScoreTypeEnum.currentGameplayByCreator),
+                      child: Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: viewModel.onPressedReload(context),
+                            child: const Text('Recarregar'),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Visibility(
+                      visible: viewModel.scoreType == ScoreTypeEnum.previousGameplayByCreator ||
+                          viewModel.scoreType == ScoreTypeEnum.currentGameplayByCreator,
+                      child: Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () => context.popRoute(),
+                            child: const Text('Voltar'),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                        ],
+                      ),
                     ),
                     ElevatedButton(
-                      onPressed: viewModel.onPressedReload(context),
-                      child: const Text('Recarregar'),
+                      onPressed: viewModel.onPressedBackToDashboard(context),
+                      child: const Text('Voltar para dashboard'),
                     ),
                   ],
-                ),
+                )
+              ],
+            ),
+            onError: (context, error) => Center(
+              child: SelectableText(
+                error.toString(),
+                style: Theme.of(context).textTheme.displayMedium,
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                onPressed: viewModel.onPressedBackToDashboard(context),
-                child: const Text('Voltar para dashboard'),
-              ),
-            ],
+            ),
           ),
         ),
       ),

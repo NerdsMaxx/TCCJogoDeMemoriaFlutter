@@ -1,10 +1,9 @@
-
 import 'package:http/http.dart';
 import 'package:injectable/injectable.dart';
 import 'package:memory_game_web/src/abstract_classes/service_abs.dart';
 import 'package:memory_game_web/src/api/http_impl.dart';
-import 'package:memory_game_web/src/models/memory_game_model.dart';
 import 'package:memory_game_web/src/exceptions/custom_exception.dart';
+import 'package:memory_game_web/src/models/memory_game_model.dart';
 import 'package:memory_game_web/src/utils/json_util.dart';
 
 @injectable
@@ -87,7 +86,11 @@ class MemoryGameService extends Service {
   }
 
   Future<MemoryGameModel> saveMemoryGame(MemoryGameModel memoryGame) async {
-    Response response = await http.post(path, body: memoryGame.toJson(), auth: auth);
+    Response response = await http.post(
+      path,
+      body: memoryGame.toJson(),
+      auth: auth,
+    );
     dynamic json = JsonUtil.tryToDecodeJson(response.body);
 
     if (json is Map<String, dynamic>) {
@@ -100,7 +103,11 @@ class MemoryGameService extends Service {
   }
 
   Future<MemoryGameModel> updateMemoryGame(String name, MemoryGameModel memoryGame) async {
-    Response response = await http.put('$path/$name', body: memoryGame.toJson(), auth: auth);
+    Response response = await http.put(
+      '$path/$name',
+      body: memoryGame.toJson(),
+      auth: auth,
+    );
     dynamic json = JsonUtil.tryToDecodeJson(response.body);
 
     if (json is Map<String, dynamic>) {

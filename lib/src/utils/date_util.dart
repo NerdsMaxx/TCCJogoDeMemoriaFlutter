@@ -1,8 +1,12 @@
 class DateUtil {
   _DateUtil() {}
 
-  static String formateToString(DateTime dateTime) {
+  static String formatToString(DateTime? dateTime) {
     //dateTime = _fixDateTime(dateTime);
+
+    if(dateTime == null) {
+      return '';
+    }
 
     final String day = _put0Left(dateTime.day);
     final String month = _put0Left(dateTime.month);
@@ -16,5 +20,4 @@ class DateUtil {
   static String _put0Left(int number) => (number >= 10) ? '$number' : '0$number';
 
   //static DateTime _fixDateTime(DateTime dateTime) => dateTime.subtract(const Duration(hours: 3));
-  
 }

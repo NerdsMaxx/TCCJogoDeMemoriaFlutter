@@ -19,9 +19,7 @@ class _CardAddingComponentState extends State<CardAddingComponent> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextButton(
-            onPressed: () {
-              MemoryGameEditingContext.of(context)!.setCard(CardAddingModel());
-            },
+            onPressed: () => MemoryGameEditingContext.of(context)!.setCard(CardAddingModel()),
             child: Text(
               '+',
               style: Theme.of(context).textTheme.displayLarge,

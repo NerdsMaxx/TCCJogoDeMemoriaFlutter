@@ -39,7 +39,7 @@ class _MemoryGameFieldComponentState extends State<MemoryGameFieldComponent> {
                     ),
                     TextFormField(
                       decoration: const InputDecoration(
-                        hintText: 'Matérias',
+                        hintText: 'Matérias (separar por "," ex: "Mat, Geo" )',
                       ),
                       initialValue: viewModel.subjects,
                       onChanged: viewModel.onChangedSubject,

@@ -6,7 +6,7 @@ class MemoryGameEditingContext extends InheritedWidget {
   MemoryGameEditingContext({
     super.key,
     required this.child,
-    required this.isNew,
+    required this.isNewMemoryGame,
     this.card,
   }) : super(
           child: child,
@@ -24,8 +24,9 @@ class MemoryGameEditingContext extends InheritedWidget {
 
   final ValueNotifier<bool> showEditableCard = ValueNotifier(false);
   final ValueNotifier<bool> showSavedMemoryGame = ValueNotifier(false);
+  final ValueNotifier<bool> updateCards = ValueNotifier(false);
 
-  final bool isNew;
+  final bool isNewMemoryGame;
 
   @override
   bool updateShouldNotify(MemoryGameEditingContext oldWidget) => false;
@@ -58,5 +59,9 @@ class MemoryGameEditingContext extends InheritedWidget {
     }
   }
 
-
+  void removeCard(CardEditingModel card) {
+    CardEditingModel otherCard = card.otherCard;
+    cardEditingList.removeWhere((card1) => card1 == card || card1 == otherCard);
+    updateCards.value = !updateCards.value;
+  }
 }
