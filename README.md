@@ -1,16 +1,4 @@
-# memory_game_web
+Olá me chamo Guilherme Henrique. Eu fiz este projeto em Dart e Flutter para meu TCC de Sistema Web de aprendizagem com uso de gamificação.
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Aqui está o link do repositório do meu TCC caso queiram ver. 
+https://repositorio.pucgoias.edu.br/jspui/handle/123456789/6998
